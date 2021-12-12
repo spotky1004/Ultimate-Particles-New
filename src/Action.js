@@ -1,5 +1,3 @@
-import StringExpression from "./StringExpression.js";
-
 const ActionTypeEnum = {
   CreateParticle: 0,
 };
