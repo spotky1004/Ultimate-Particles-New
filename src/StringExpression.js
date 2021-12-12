@@ -18,9 +18,13 @@ class StringExpression {
    */
   static parseExpression(expression) {
     expression = "(" + expression.replace(/\s/g, "") + ")";
+    const LOOP_LIMIT = 1000;
+    let loops = 0;
 
     // Find Minus
     while (true) {
+      loops++;
+      if (loops > LOOP_LIMIT) throw Error("Infinite loop");
       const isMinusExist = expression.match(/(\(|[+\-*/&^])-([^)+\-*/&^]+)/) !== null;
       if (!isMinusExist) break;
       expression = expression.replace(/(\(|[+\-*/&^])-([^)+\-*/&^]+)/g, "$1minus($2)")
@@ -50,6 +54,8 @@ class StringExpression {
     
     // Fix mathFunction
     while (expression.includes("<")) {
+      loops++;
+      if (loops > LOOP_LIMIT) throw Error("Infinite loop");
       expression = expression.replace(/<([^<>]+)>/g, (_, g1) => {
         return "[" + g1.replace(/((?:\[[^[\]]+\]|[^,])+)/g, "($1)") + "]"
       });
@@ -64,6 +70,8 @@ class StringExpression {
     
     let parts = [];
     while (true) {
+      loops++;
+      if (loops > LOOP_LIMIT) throw Error("Infinite loop");
       let part;
       if (expression.match(/{[^{}]+}\([^()]+\)/)) {
         part = expression.match(/({[^{}]+})\(([^()]+)\)/).slice(1).join("");
@@ -94,6 +102,8 @@ class StringExpression {
 
         let sorted = [];
         while (splited.length > 0 && !(splited.length === 1 && typeof splited[0] === "number")) {
+          loops++;
+          if (loops > LOOP_LIMIT) throw Error("Infinite loop");
           let idxToPull = splited.findIndex(v => "^".includes(v));
           if (idxToPull === -1) idxToPull = splited.findIndex(v => "*/".includes(v));
           if (idxToPull === -1) idxToPull = splited.findIndex(v => "-+%".includes(v));
@@ -210,8 +220,6 @@ export default StringExpression;
 // console.log(new StringExpression("$input+\", World!\"").eval({input: "Hello"}));
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
-// let v = StringExpression.parseExpression("$a");
-// let v = StringExpression.parseExpression("\"a\"+\"b\"");
 // console.log(v);
 
 if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
