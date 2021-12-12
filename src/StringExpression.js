@@ -83,11 +83,12 @@ class StringExpression {
         idxConnected.push(parsedExpression.length);
         parsedExpression.push([funcName, ...funcArgs]);
       } else {
-        let splited = part.split(/([+\-/*%])/);
+        let splited = part.split(/([+\-/*%\^])/);
 
         let sorted = [];
         while (splited.length > 0 && !(splited.length === 1 && typeof splited[0] === "number")) {
-          let idxToPull = splited.findIndex(v => "*/".includes(v));
+          let idxToPull = splited.findIndex(v => "^".includes(v));
+          if (idxToPull === -1) idxToPull = splited.findIndex(v => "*/".includes(v));
           if (idxToPull === -1) idxToPull = splited.findIndex(v => "+-%".includes(v));
           if (idxToPull === -1) {
             if (splited.length === 1) {
@@ -148,11 +149,23 @@ class StringExpression {
       case "+": return args[0] + args[1];
       case "-": return args[0] - args[1];
       case "*": return args[0] * args[1];
+      case "^": return args[0] ** args[1];
       case "/": return args[0] / args[1];
-      case "sin": return Math.sin(args[0]/Math.PI*180);
-      case "cos": return Math.cos(args[0]/Math.PI*180);
-      case "tan": return Math.tan(args[0]/Math.PI*180);
+      case "%": return args[0] % args[1];
+      case "sqrt": return Math.sqrt(args[0]);
+      case "sin": return Math.sin(args[0]*Math.PI/180);
+      case "asin": return Math.asin(args[0]*Math.PI/180);
+      case "sinh": return Math.sinh(args[0]*Math.PI/180);
+      case "cos": return Math.cos(args[0]*Math.PI/180);
+      case "acos": return Math.acos(args[0]*Math.PI/180);
+      case "cosh": return Math.cosh(args[0]*Math.PI/180);
+      case "tan": return Math.tan(args[0]*Math.PI/180);
+      case "atan": return Math.atan(args[0]*Math.PI/180);
+      case "tanh": return Math.tanh(args[0]*Math.PI/180);
       case "atan2": return Math.atan2(args[0], args[1]);
+      case "log": return Math.log(args[1]) / Math.log(args[0]);
+      case "log10": return Math.log10(args[0]);
+      case "sign": return Math.sign(args[0]);
       default: return StringExpression.parseValue(sign, tmps, variables);
     }
   }
@@ -180,11 +193,12 @@ class StringExpression {
 export default StringExpression;
 
 
-// console.log(new StringExpression("(1)*(3)*(5)*(7)*((9)*(((1)*(5))*(((9)))))").eval({a: 1, b: 2}));
+// console.log(new StringExpression("log(2, 4)").eval({a: 1, b: 2}));
 // let v = StringExpression.parseExpression("(0*1+2*3+4*5)+(0*1+2*3+4*5)");
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
 // let v = StringExpression.parseExpression("(1+$a)*(sin(cos($e*$d*$b))+(6+$c)) + atan2(($b+$c))");
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
 // let v = StringExpression.parseExpression("$a");
 // console.log(v);
-if (window) window.StringExpression = StringExpression;
+
+if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
