@@ -19,6 +19,13 @@ class StringExpression {
   static parseExpression(expression) {
     expression = "(" + expression.replace(/\s/g, "") + ")";
 
+    // Find Minus
+    while (true) {
+      const isMinusExist = expression.match(/(\(|[+\-*/&^])-([^)+\-*/&^]+)/) !== null;
+      if (!isMinusExist) break;
+      expression = expression.replace(/(\(|[+\-*/&^])-([^)+\-*/&^]+)/g, "$1minus($2)")
+    }
+
     // Find mathFunctions
     expression = expression.replace(/((?<!\$)(?:[a-z][a-z0-9]*))/g, "{$1}");
     let searchingFunctions = [];
@@ -89,7 +96,7 @@ class StringExpression {
         while (splited.length > 0 && !(splited.length === 1 && typeof splited[0] === "number")) {
           let idxToPull = splited.findIndex(v => "^".includes(v));
           if (idxToPull === -1) idxToPull = splited.findIndex(v => "*/".includes(v));
-          if (idxToPull === -1) idxToPull = splited.findIndex(v => "+-%".includes(v));
+          if (idxToPull === -1) idxToPull = splited.findIndex(v => "-+%".includes(v));
           if (idxToPull === -1) {
             if (splited.length === 1) {
               sorted.push([typeof splited[0] === "string" && splited[0].startsWith("p") ? idxConnected[splited[0].slice(1)] : splited[0]]);
@@ -152,6 +159,7 @@ class StringExpression {
       case "^": return args[0] ** args[1];
       case "/": return args[0] / args[1];
       case "%": return args[0] % args[1];
+      case "minus": return -args[0];
       case "sqrt": return Math.sqrt(args[0]);
       case "sin": return Math.sin(args[0]*Math.PI/180);
       case "asin": return Math.asin(args[0]*Math.PI/180);
@@ -193,7 +201,7 @@ class StringExpression {
 export default StringExpression;
 
 
-// console.log(new StringExpression("log(2, 4)").eval({a: 1, b: 2}));
+// console.log(new StringExpression("sign(-1)").eval({a: 1, b: 2}));
 // let v = StringExpression.parseExpression("(0*1+2*3+4*5)+(0*1+2*3+4*5)");
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
 // let v = StringExpression.parseExpression("(1+$a)*(sin(cos($e*$d*$b))+(6+$c)) + atan2(($b+$c))");
