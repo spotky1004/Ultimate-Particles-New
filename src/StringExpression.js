@@ -167,7 +167,6 @@ class StringExpression {
           variables
         );
       }
-      console.log(tmps);
       return tmps[this.expression.length-1];
     } else {
       return this.expression;
