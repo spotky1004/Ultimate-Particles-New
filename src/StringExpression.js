@@ -27,7 +27,7 @@ class StringExpression {
     }
 
     // Find mathFunctions
-    expression = expression.replace(/((?<!\$)(?:[a-z][a-z0-9]*))/g, "{$1}");
+    expression = expression.replace(/((?<![$"]|\w|\s)(?:[a-z][a-z0-9]*)(?![$"]|\w|\s))/g, "{$1}");
     let searchingFunctions = [];
     for (let i = 0; i < expression.length; i++) {
       let char = expression[i];
@@ -129,12 +129,17 @@ class StringExpression {
    * @param {string | number} value 
    * @param {number![]} tmps 
    * @param {Object.<string, number>} variables 
-   * @returns {number}
+   * @returns {number | string}
    */
   static parseValue(value, tmps, variables) {
     if (typeof value === "string") {
-      if (value.startsWith("$")) return variables[value.slice(1)];
-      else return Number(value);
+      if (value.startsWith("$")) {
+        return variables[value.slice(1)];
+      } else if (value.startsWith("\"")) {
+        return value.slice(1, -1);
+      } else {
+        return Number(value);
+      }
     } else {
       return tmps[value];
     }
@@ -144,7 +149,7 @@ class StringExpression {
    * @param {array} part 
    * @param {number![]} tmps 
    * @param {Object.<string, number>} variables
-   * @returns {number}
+   * @returns {number | string}
    */
   static calculatePart(part, tmps, variables) {
     part = [...part];
@@ -202,11 +207,13 @@ export default StringExpression;
 
 
 // console.log(new StringExpression("sign(-1)").eval({a: 1, b: 2}));
+// console.log(new StringExpression("$input+\", World!\"").eval({input: "Hello"}));
 // let v = StringExpression.parseExpression("(0*1+2*3+4*5)+(0*1+2*3+4*5)");
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
 // let v = StringExpression.parseExpression("(1+$a)*(sin(cos($e*$d*$b))+(6+$c)) + atan2(($b+$c))");
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
 // let v = StringExpression.parseExpression("$a");
+// let v = StringExpression.parseExpression("\"a\"+\"b\"");
 // console.log(v);
 
 if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
