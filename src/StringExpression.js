@@ -18,9 +18,11 @@ class StringExpression {
    * @returns {array}
    */
   static parseExpression(expression) {
-    expression = "(" + expression.replace(/\s/g, "") + ")";
     const LOOP_LIMIT = 1000;
     let loops = 0;
+    
+    expression = "(" + expression.replace(/\s/g, "") + ")";
+    if (!expression.match(/^([A-z0-9()$+\-*/%^,]|\s|\"([^"]|\")+\"|\'([^']|\')+\')+$/)) return false;
 
     // Find Minus
     while (true) {
