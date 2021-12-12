@@ -176,7 +176,7 @@ class StringExpression {
       case "atan": return Math.atan(args[0]*Math.PI/180);
       case "tanh": return Math.tanh(args[0]*Math.PI/180);
       case "atan2": return Math.atan2(args[0], args[1]);
-      case "log": return Math.log(args[1]) / Math.log(args[0]);
+      case "log": return Math.log(args[0]) / Math.log(args[1] || Math.E);
       case "log10": return Math.log10(args[0]);
       case "sign": return Math.sign(args[0]);
       default: return StringExpression.parseValue(sign, tmps, variables);
@@ -208,9 +208,7 @@ export default StringExpression;
 
 // console.log(new StringExpression("sign(-1)").eval({a: 1, b: 2}));
 // console.log(new StringExpression("$input+\", World!\"").eval({input: "Hello"}));
-// let v = StringExpression.parseExpression("(0*1+2*3+4*5)+(0*1+2*3+4*5)");
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
-// let v = StringExpression.parseExpression("(1+$a)*(sin(cos($e*$d*$b))+(6+$c)) + atan2(($b+$c))");
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
 // let v = StringExpression.parseExpression("$a");
 // let v = StringExpression.parseExpression("\"a\"+\"b\"");
