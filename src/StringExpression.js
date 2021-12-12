@@ -1,3 +1,5 @@
+const LOGGING = false;
+
 class StringExpression {
   /**
    * @param {number | string} expression 
@@ -9,7 +11,7 @@ class StringExpression {
     this.expression = this.isNumber ? expression : StringExpression.parseExpression(expression);
     this.isVaild = this.expression !== false;
 
-    console.log("Expression", this.expression);
+    if (LOGGING) console.log("Expression", this.expression);
   }
 
   /**
@@ -205,7 +207,7 @@ class StringExpression {
           variables
         );
       }
-      console.log("Results", tmps);
+      if (LOGGING) console.log("Results", tmps);
       return tmps[this.expression.length-1];
     } else {
       return this.expression;
