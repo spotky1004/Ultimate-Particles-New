@@ -168,8 +168,8 @@ class StringExpression {
           tmps,
           variables
         );
-        console.log("Results", tmps);
       }
+      console.log("Results", tmps);
       return tmps[this.expression.length-1];
     } else {
       return this.expression;
