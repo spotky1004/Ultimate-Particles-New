@@ -150,7 +150,7 @@ class StringExpression {
       case "sin": return Math.sin(args[0]/Math.PI*180);
       case "cos": return Math.cos(args[0]/Math.PI*180);
       case "tan": return Math.tan(args[0]/Math.PI*180);
-      case "atan2": return Math.atan2(args[0]/Math.PI*180, args[1]/Math.PI*180);
+      case "atan2": return Math.atan2(args[0], args[1]);
       default: return StringExpression.parseValue(sign, tmps, variables);
     }
   }
