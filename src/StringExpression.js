@@ -6,9 +6,8 @@ class StringExpression {
    */
   constructor(expression) {
     /** @type {boolean} */
-    this.isNumber = typeof expression === "number";
     this.rawExpression = expression;
-    this.expression = this.isNumber ? expression : StringExpression.parseExpression(expression);
+    this.expression = StringExpression.parseExpression(expression);
     this.isVaild = this.expression !== false;
 
     if (LOGGING) console.log("Expression", this.expression);
@@ -198,20 +197,16 @@ class StringExpression {
   eval(variables) {
     if (!this.isVaild) throw new Error("Cannot evaluate invaild expression");
 
-    if (!this.isNumber) {
-      let tmps = new Array(this.expression.length).fill(null);
-      for (let i = 0; i < this.expression.length; i++) {
-        tmps[i] = StringExpression.calculatePart(
-          this.expression[i],
-          tmps,
-          variables
-        );
-      }
-      if (LOGGING) console.log("Results", tmps);
-      return tmps[this.expression.length-1];
-    } else {
-      return this.expression;
+    let tmps = new Array(this.expression.length).fill(null);
+    for (let i = 0; i < this.expression.length; i++) {
+      tmps[i] = StringExpression.calculatePart(
+        this.expression[i],
+        tmps,
+        variables
+      );
     }
+    if (LOGGING) console.log("Results", tmps);
+    return tmps[this.expression.length-1];
   }
 }
 
