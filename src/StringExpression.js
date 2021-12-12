@@ -8,6 +8,8 @@ class StringExpression {
     this.rawExpression = expression;
     this.expression = this.isNumber ? expression : StringExpression.parseExpression(expression);
     this.isVaild = this.expression !== false;
+
+    console.log("Expression", this.expression);
   }
 
   /**
@@ -166,6 +168,7 @@ class StringExpression {
           tmps,
           variables
         );
+        console.log("Results", tmps);
       }
       return tmps[this.expression.length-1];
     } else {
