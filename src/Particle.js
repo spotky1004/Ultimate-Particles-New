@@ -40,6 +40,15 @@ class Particle {
     this._color = new Value(options.color ?? "#000");
   }
 
+  getValues(variables) {
+    variables = {...this.variables, ...variables};
+    return {
+      id: this._id,
+      position: this._position.getValue(variables),
+      size: this._size.getValue(variables),
+      color: this._color.getValue(variables),
+    }
+  }
 
   /**
    * @returns {DrawData}
