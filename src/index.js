@@ -1,3 +1,4 @@
+import Particle from "./Particle.js";
 import loadStage from "./loadStage.js";
 
 // const stageLoaded = await loadStage("https://jsonblob.com/api/jsonBlob/918512895818743808");
