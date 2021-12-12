@@ -103,7 +103,7 @@ class StringExpression {
 
           sorted.push([sortedPart[1], sortedPart[0], sortedPart[2]]);
           splited = splited.slice(0, idxToPull-1)
-            .concat([i+sorted.length])
+            .concat([parsedExpression.length+sorted.length-1])
             .concat(splited.slice(idxToPull-1));
         }
 
@@ -176,13 +176,12 @@ class StringExpression {
 
 export default StringExpression;
 
-window.StringExpression = StringExpression;
 
-// console.log(new StringExpression("$a+$b").eval({a: 1, b: 2}));
-
+// console.log(new StringExpression("(1)*(3)*(5)*(7)*((9)*(((1)*(5))*(((9)))))").eval({a: 1, b: 2}));
 // let v = StringExpression.parseExpression("(0*1+2*3+4*5)+(0*1+2*3+4*5)");
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
 // let v = StringExpression.parseExpression("(1+$a)*(sin(cos($e*$d*$b))+(6+$c)) + atan2(($b+$c))");
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
 // let v = StringExpression.parseExpression("$a");
 // console.log(v);
+if (window) window.StringExpression = StringExpression;
