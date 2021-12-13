@@ -214,7 +214,6 @@ class StringExpression {
 
 export default StringExpression;
 
-
 // console.log(new StringExpression("sign(-1)").eval({a: 1, b: 2}));
 // console.log(new StringExpression("$input+\", World!\"").eval({input: "Hello"}));
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
