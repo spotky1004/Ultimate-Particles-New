@@ -1,3 +1,5 @@
+import Particle from "./Particle.js";
+
 const ActionTypeEnum = {
   CreateParticle: 0,
 };
@@ -36,7 +38,7 @@ class Action {
   perform(stage) {
     switch (this.type) {
       case "CreateParticle":
-        stage.createParticle(this.data);
+        stage.createParticle(new Particle(this.data));
         break;
     }
   }
