@@ -21,8 +21,12 @@ class StringExpression {
     const LOOP_LIMIT = 1000;
     let loops = 0;
     
+    if (
+      !expression.match(/^([A-z0-9()$+\-*/%^,]|\s|\"([^"]|\")+\"|\'([^']|\')+\')+$/) ||
+      expression.match(/^(\s|[A-z0-9])+$/)
+    ) return false;
+    
     expression = "(" + expression.replace(/\s/g, "") + ")";
-    if (!expression.match(/^([A-z0-9()$+\-*/%^,]|\s|\"([^"]|\")+\"|\'([^']|\')+\')+$/)) return false;
 
     // Find Minus
     while (true) {
