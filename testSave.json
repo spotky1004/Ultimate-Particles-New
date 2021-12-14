@@ -1,0 +1,144 @@
+{
+  "actions": [
+    [
+      "CreateParticle",
+      250,
+      {
+        "id": "testParticle1",
+        "variables": {
+          "i": 0
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      500,
+      {
+        "id": "testParticle2",
+        "variables": {
+          "i": 1
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      1250,
+      {
+        "id": "testParticle3",
+        "variables": {
+          "i": 2
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      2500,
+      {
+        "id": "testParticle4",
+        "variables": {
+          "i": 3
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      4250,
+      {
+        "id": "testParticle5",
+        "variables": {
+          "i": 4
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      6500,
+      {
+        "id": "testParticle6",
+        "variables": {
+          "i": 5
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      9250,
+      {
+        "id": "testParticle7",
+        "variables": {
+          "i": 6
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      12500,
+      {
+        "id": "testParticle8",
+        "variables": {
+          "i": 7
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      16250,
+      {
+        "id": "testParticle9",
+        "variables": {
+          "i": 8
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ],
+    [
+      "CreateParticle",
+      20500,
+      {
+        "id": "testParticle10",
+        "variables": {
+          "i": 9
+        },
+        "position": {
+          "x": "$t/($i+15)",
+          "y": "($i+1)*10"
+        }
+      }
+    ]
+  ]
+}
