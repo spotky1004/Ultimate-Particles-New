@@ -1,8 +1,11 @@
 import StringExpression from "./StringExpression.js";
 
+/**
+ * @template T
+ */
 class Value {
   /**
-   * @param {*} value 
+   * @param {T} value 
    */
   constructor(value) {
     /** @type {boolean} */
@@ -72,6 +75,9 @@ class Value {
     }
   }
 
+  /**
+   * @returns {T} 
+   */
   getValue(variables) {
     if (this.isValueFixed) {
       return this.expression;

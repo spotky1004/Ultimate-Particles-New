@@ -2,8 +2,8 @@ import Value from "./Value.js";
 
 /**
  * @typedef Vector2
- * @property {T} width
- * @property {T} height
+ * @property {T} x
+ * @property {T} y
  * @template T
  */
 /**
@@ -19,6 +19,10 @@ import Value from "./Value.js";
  * @property {Size<number | string>} [size] - Size of the particle.
  * @property {Vector2<number | string>} [position] - Position of the particle.
  * @property {string} [color] - Color of the particle.
+ * @property {string | number} [speed]
+ * @property {string | number} [deg]
+ */
+/**
  */
 /**
  * @typedef DrawData
@@ -31,22 +35,41 @@ class Particle {
    * @param {ParticleOptions} options 
    */
   constructor(options, variables) {
-    this.variables = {...variables};
+    this.variables = {
 
-    /** @type {string} */
-    this._id = options.id;
-    this._position = new Value(options.position ?? { x: 50, y: 50 });
-    this._size = new Value(options.size ?? { width: 2, height: 2 });
-    this._color = new Value(options.color ?? "#000");
+    /** @type {ParticleValues["id"]} */
+    const id = options.id;
+    this._id = new Value(id);
+    /** @type {ParticleValues["time"]} */
+    const time = timestemp;
+    this._time = new Value(time);
+    /** @type {ParticleValues["position"]} */
+    const position = options.position ?? { x: 50, y: 50 };
+    this._position = new Value(position);
+    /** @type {ParticleValues["size"]} */
+    const size = options.size ?? { width: 2, height: 2 };
+    this._size = new Value(size);
+    /** @type {ParticleValues["color"]} */
+    const color = options.color ?? "#000";
+    this._color = new Value(color);
+    /** @type {ParticleValues["speed"]} */
+    const speed = options.speed ?? 0;
+    this._speed = new Value(speed);
+    /** @type {ParticleValues["deg"]} */
+    const deg = options.deg ?? 0;
+    this._deg = new Value(deg);
   }
 
-  getValues(variables) {
-    variables = {...this.variables, ...variables};
-    return {
-      id: this._id,
+  updateValues() {
+    this.values = {
+      id: this._id.getValue(variables),
       position: this._position.getValue(variables),
       size: this._size.getValue(variables),
       color: this._color.getValue(variables),
+      speed: this._speed.getValue(variables),
+      deg: this.deg.getValue(variables),
+    };
+  }
     }
   }
 
@@ -55,8 +78,8 @@ class Particle {
    */
   get drawData() {
     return {
-      position: {...this.position},
-      size: {...this.size},
+      position: {...this.values.position},
+      size: {...this.values.size},
     };
   }
 }
