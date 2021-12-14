@@ -3,6 +3,7 @@ import drawCanvas from "./drawCanvas.js";
 
 /**
  * @typedef StageOptions
+ * @property {Particle[]} particlePalette
  * @property {Action[]} actions
  */
 
@@ -55,6 +56,21 @@ class Stage {
 
   stop() {
     this.playing = false;
+  }
+
+  export() {
+    const data = {
+      action: []
+    };
+
+    for (let i = 0; i < this.actions.length; i++) {
+      data.action.push(this.actions[i].export());
+    }
+
+    return data;
+  }
+  toString() {
+    return JSON.stringify(this.export(), null, 2);
   }
 
   /** @param {import("./Particle.js").default} particle */

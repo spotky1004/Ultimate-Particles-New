@@ -22,6 +22,14 @@ class Action {
     this.data = {...data};
   }
 
+  export() {
+    return [this.type, this.time, this.data];
+  }
+  
+  toString() {
+    return this.export.toString();
+  }
+
   /**
    * @param {import("./Stage.js").default} stage
    */
