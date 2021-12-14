@@ -1,17 +1,19 @@
 import Particle from "./Particle.js";
 import loadStage from "./loadStage.js";
 
-// const stageLoaded = await loadStage("https://jsonblob.com/api/jsonBlob/918512895818743808");
-// stageLoaded.play();
+const stageLoaded = await loadStage("https://jsonblob.com/api/jsonBlob/920354248450129920");
+stageLoaded.play();
 
-// let lastTick = new Date().getTime();
-// function tick() {
-//   const timeNow = new Date().getTime();
-//   const dt = timeNow - lastTick;
-//   lastTick = timeNow;
+window.stageLoaded = stageLoaded;
 
-//   stageLoaded.tick(dt);
+let lastTick = new Date().getTime();
+function tick() {
+  const timeNow = new Date().getTime();
+  const dt = timeNow - lastTick;
+  lastTick = timeNow;
 
-//   requestAnimationFrame(tick);
-// }
-// tick();
+  stageLoaded.tick(dt);
+
+  requestAnimationFrame(tick);
+}
+tick();
