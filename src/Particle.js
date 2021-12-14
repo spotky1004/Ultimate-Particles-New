@@ -23,6 +23,14 @@ import Value from "./Value.js";
  * @property {string | number} [deg]
  */
 /**
+ * @typedef ParticleValues
+ * @property {string} id
+ * @property {number} time
+ * @property {Vector2<number>} position
+ * @property {Size<number>} size
+ * @property {string} color
+ * @property {number} speed
+ * @property {number} deg
  */
 /**
  * @typedef DrawData
@@ -36,6 +44,11 @@ class Particle {
    */
   constructor(options, variables) {
     this.variables = {
+      t: 0,
+      ...variables
+    };
+    /** @type {ParticleValues} */
+    this.values = {};
 
     /** @type {ParticleValues["id"]} */
     const id = options.id;
@@ -70,7 +83,28 @@ class Particle {
       deg: this.deg.getValue(variables),
     };
   }
+
+  /**
+   * @param {number} dt 
+   */
+  update(dt) {
+    updateValues();
+
+    const t = dt/1000;
+    this.variables.t += dt;
+
+    // Update position
+    if (this._position.isValueFixed) {
+      const speed = this.values.speed;
+      const [ dx, dy ] = [
+        Math.sin(this.values.deg/180*Math.PI),
+        -Math.cos(this.values.deg/180*Math.PI)
+      ];
+      this._position.changeValue("x", speed*dx*t);
+      this._position.changeValue("y", speed*dy*t);
     }
+
+    updateValues();
   }
 
   /**
