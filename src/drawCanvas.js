@@ -1,6 +1,10 @@
-const canvas = document.getElementById("display-canvas");
+const canvas = document.getElementById("draw-canvas");
 /** @type {CanvasRenderingContext2D} */
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d", { alpha: false });
+const displayCanvas = document.getElementById('display-canvas');
+/** @type {CanvasRenderingContext2D} */
+const displayCtx = displayCanvas.getContext("2d");
+
 const ceil = Math.ceil;
 
 /**
@@ -18,7 +22,7 @@ function drawCanvas(stage) {
   const { particles } = stage.playingData;
 
   for (let v of particles) {
-    const particle = v[1];
+    const particle = v[1].values;
     let { width: w, height: h } = particle.size;
     const { x, y } = particle.position;
     ctx.fillStyle = particle.color;
@@ -29,6 +33,10 @@ function drawCanvas(stage) {
       ceil(s * h)
     );
   }
+
+  displayCanvas.height = canvasSize;
+  displayCanvas.width = canvasSize;
+  displayCtx.drawImage(canvas, 0, 0);
 }
 
 export default drawCanvas;
