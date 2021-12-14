@@ -126,7 +126,7 @@ let test = new Particle({
   id: "test",
   color: "\"#\"+0+0+0+\"f\"+0+1",
   position: {
-    x: "$a",
+    x: "$a+$t/10",
     y: "$b"
   },
   size: {
