@@ -51,6 +51,11 @@ class Stage {
       action.perform(this);
     }
 
+    for (const v of this.playingData.particles) {
+      let particle = v[1];
+      particle.update(dt);
+    }
+
     drawCanvas(this);
   }
 
