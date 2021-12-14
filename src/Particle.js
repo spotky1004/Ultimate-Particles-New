@@ -68,6 +68,8 @@ class Particle {
     /** @type {ParticleValues["deg"]} */
     const deg = options.deg ?? 0;
     this._deg = new Value(deg);
+
+    this.updateValues();
   }
 
   updateValues() {
@@ -123,20 +125,20 @@ class Particle {
 
 export default Particle;
 
-let test = new Particle({
-  id: "test",
-  color: "\"#\"+0+0+0+\"f\"+0+1",
-  position: {
-    x: "$a+$t/10",
-    y: "$b"
-  },
-  size: {
-    x: "$a*$b",
-    y: "$b/$a"
-  }
-}, {
-  a: 5,
-  b: 6
-});
-window.Particle = Particle;
-window.test = test;
+// let test = new Particle({
+//   id: "test",
+//   color: "\"#\"+0+0+0+\"f\"+0+1",
+//   position: {
+//     x: "$a+$t/10",
+//     y: "$b"
+//   },
+//   size: {
+//     x: "$a*$b",
+//     y: "$b/$a"
+//   }
+// }, {
+//   a: 5,
+//   b: 6
+// });
+// window.Particle = Particle;
+// window.test = test;
