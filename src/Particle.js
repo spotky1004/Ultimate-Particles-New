@@ -70,21 +70,25 @@ class Particle {
   }
 
   updateValues() {
+    const variables = this.variables;
+
     this.values = {
       id: this._id.getValue(variables),
       position: this._position.getValue(variables),
       size: this._size.getValue(variables),
       color: this._color.getValue(variables),
       speed: this._speed.getValue(variables),
-      deg: this.deg.getValue(variables),
+      deg: this._deg.getValue(variables),
     };
+
+    return this;
   }
 
   /**
    * @param {number} dt 
    */
   update(dt) {
-    updateValues();
+    this.updateValues();
 
     const t = dt/1000;
     this.variables.t += dt;
@@ -100,7 +104,9 @@ class Particle {
       this._position.changeValue("y", speed*dy*t);
     }
 
-    updateValues();
+    this.updateValues();
+
+    return this;
   }
 
   /**
