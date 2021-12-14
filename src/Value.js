@@ -80,7 +80,7 @@ class Value {
    */
   getValue(variables) {
     if (this.isValueFixed) {
-      return this.expression;
+      return this.value;
     } else {
       if (this.type === "simple") {
         return this.value.eval(variables);
