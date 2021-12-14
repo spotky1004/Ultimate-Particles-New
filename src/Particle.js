@@ -16,6 +16,7 @@ import Value from "./Value.js";
 /**
  * @typedef ParticleOptions
  * @property {string} id - Id of the particle, use to recognize particle.
+ * @property {Object.<string, number | string>} variables
  * @property {Size<number | string>} [size] - Size of the particle.
  * @property {Vector2<number | string>} [position] - Position of the particle.
  * @property {string} [color] - Color of the particle.
@@ -41,10 +42,10 @@ class Particle {
   /**
    * @param {ParticleOptions} options 
    */
-  constructor(options, variables) {
+  constructor(options) {
     this.variables = {
       t: 0,
-      ...variables
+      ...options.variables
     };
     /** @type {ParticleValues} */
     this.values = {};
