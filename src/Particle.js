@@ -25,7 +25,6 @@ import Value from "./Value.js";
 /**
  * @typedef ParticleValues
  * @property {string} id
- * @property {number} time
  * @property {Vector2<number>} position
  * @property {Size<number>} size
  * @property {string} color
@@ -53,9 +52,6 @@ class Particle {
     /** @type {ParticleValues["id"]} */
     const id = options.id;
     this._id = new Value(id);
-    /** @type {ParticleValues["time"]} */
-    const time = timestemp;
-    this._time = new Value(time);
     /** @type {ParticleValues["position"]} */
     const position = options.position ?? { x: 50, y: 50 };
     this._position = new Value(position);
