@@ -1,7 +1,6 @@
-import Particle from "./Particle.js";
 import loadStage from "./loadStage.js";
 
-const stageLoaded = await loadStage("https://jsonblob.com/api/jsonBlob/920354248450129920");
+const stageLoaded = await loadStage("https://raw.githubusercontent.com/spotky1004/Ultimate-Particles-New/main/testSave.json");
 stageLoaded.play();
 
 window.stageLoaded = stageLoaded;
