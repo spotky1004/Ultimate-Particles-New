@@ -60,11 +60,11 @@ class Stage {
 
   export() {
     const data = {
-      action: []
+      actions: []
     };
 
     for (let i = 0; i < this.actions.length; i++) {
-      data.action.push(this.actions[i].export());
+      data.actions.push(this.actions[i].export());
     }
 
     return data;
@@ -75,11 +75,12 @@ class Stage {
 
   /** @param {import("./Particle.js").default} particle */
   createParticle(particle) {
+    const particleId = particle.values.id
     if (
-      !particle.id ||
-      this.playingData.particles.has(particle.id)
+      !particleId ||
+      this.playingData.particles.has(particleId)
     ) return;
-    this.playingData.particles.set(particle.id, particle);
+    this.playingData.particles.set(particleId, particle);
   }
 }
 
