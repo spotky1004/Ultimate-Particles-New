@@ -4,6 +4,7 @@ import drawCanvas from "./drawCanvas.js";
 /**
  * @typedef StageOptions
  * @property {Particle[]} particlePalette
+ * @property {number} [maximumTickLength]
  * @property {Action[]} actions
  */
 
@@ -13,6 +14,7 @@ class Stage {
    */
   constructor(options) {
     this.actions = options.actions.sort((a, b) => a.time - b.time);
+    this.maximumTickLength = options.maximumTickLength ?? 10;
     /** @type {boolean} */
     this.playing = false;
     /**
@@ -35,6 +37,8 @@ class Stage {
   }
 
   tick(dt) {
+    dt = Math.min(this.maximumTickLength, dt);
+
     if (!this.playing) return;
 
     this.playingData.time += dt;
