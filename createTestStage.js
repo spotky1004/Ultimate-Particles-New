@@ -23,7 +23,7 @@ let actionData = [
   },
   {
     loopCount: 70,
-    interval: "1*sqrt($i)"
+    interval: "10*sqrt($i)"
   }
 ];
 stageData.actions.push(new Action(...actionData));
