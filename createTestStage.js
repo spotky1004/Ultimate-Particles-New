@@ -5,13 +5,13 @@ let stageData = {
   actions: []
 };
 
-for (let i = 0; i < 10; i++) {
-  /** @type {[keyof import("./src/Action.js").ActionDatas, number, import("./src/Particle").ParticleOptions]} */
+for (let i = 0; i < 1; i++) {
+  /** @type {[keyof import("./src/Action.js").ActionDatas, number, import("./src/Particle").ParticleOptions, import("./src/Action.js").ActionLooper]} */
   let actionData = [
     "CreateParticle",
     (i**2+1) * 250,
     {
-      id: "testParticle" + (i + 1),
+      id: "\"testParticle\"+$i",
       variables: {
         i: i
       },
@@ -23,10 +23,15 @@ for (let i = 0; i < 10; i++) {
         width: "$i/2+1",
         height: "$i/2+1"
       }
+    },
+    {
+      loopCount: 10,
+      interval: "500*$i"
     }
   ];
   stageData.actions.push(new Action(...actionData));
 }
 
 let stage = new Stage(stageData);
-console.log(stage.toString());
+// console.log(stage.toString());
+export default stage;

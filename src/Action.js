@@ -1,4 +1,5 @@
 import Particle from "./Particle.js";
+import Value from "./Value.js";
 
 const ActionTypeEnum = {
   CreateParticle: 0,
@@ -10,6 +11,12 @@ const ActionTypeEnum = {
  */
 
 /**
+ * @typedef ActionLooper
+ * @property {number} interval
+ * @property {number} loopCount
+ */
+
+/**
  * @template {keyof typeof ActionTypeEnum} T
  */
 class Action {
@@ -17,15 +24,28 @@ class Action {
    * @param {T} type 
    * @param {number} time - In ms
    * @param {ActionDatas[T]} data 
+   * @param {ActionLooper} looperData
    */
-  constructor(type, time, data) {
+  constructor(type, time, data, looperData) {
     this.type = type;
     this.time = time;
-    this.data = {...data};
+    this.data = {...(data ?? {})};
+    /** @type {number} */
+    const loopInterval = (looperData && looperData.interval) ?? Infinity;
+    this._loopInterval = new Value(loopInterval);
+    this.loopCount = (looperData && looperData.loopCount) ?? 1;
+  }
+
+  /**
+   * @param {number} loopCount 
+   * @returns {number}
+   */
+  getLoopInterval(loopCount) {
+    return this._loopInterval.getValue({ i: loopCount });
   }
 
   export() {
-    return [this.type, this.time, this.data];
+    return [this.type, this.time, this.data, this.looper];
   }
   
   toString() {
@@ -34,11 +54,16 @@ class Action {
 
   /**
    * @param {import("./Stage.js").default} stage
+   * @param {number} loop
    */
-  perform(stage) {
+  perform(stage, loop=0) {
     switch (this.type) {
       case "CreateParticle":
-        stage.createParticle(new Particle(this.data));
+        let variables = {
+          ...(this.data.variables ?? {}),
+          i: loop
+        };
+        stage.createParticle(new Particle({ ...this.data, variables }));
         break;
     }
   }

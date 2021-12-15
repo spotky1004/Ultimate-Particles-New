@@ -14,14 +14,23 @@ class Stage {
    */
   constructor(options) {
     this.actions = options.actions.sort((a, b) => a.time - b.time);
-    this.maximumTickLength = options.maximumTickLength ?? 10;
+    this.maximumTickLength = options.maximumTickLength ?? Math.ceil(1000/60);
     /** @type {boolean} */
     this.playing = false;
+    /**
+     * @typedef LoopingAction
+     * @property {Action} action
+     * @property {number} lastPerformed
+     * @property {number} performCount
+     * @property {import("./Action.js").ActionLooper} interval
+     * @property {number} intervalUpdatedAt
+     */
     /**
      * @typedef PlayingData
      * @property {number} time
      * @property {Map<string, import("./Particle.js").default>} particles
      * @property {number} actionIdx
+     * @property {LoopingAction[]} loopingActions - [Action, loopCount]
      */
     /** @type {PlayingData} */
     this.playingData = {};
@@ -32,7 +41,8 @@ class Stage {
     this.playingData = {
       time: 0,
       particles: new Map([]),
-      actionIdx: 0
+      actionIdx: 0,
+      loopingActions: []
     };
   }
 
@@ -42,19 +52,47 @@ class Stage {
     if (!this.playing) return;
 
     this.playingData.time += dt;
+    const time = this.playingData.time;
 
     let actionsToPerform = [];
+    // Perform action
     for (let i = this.playingData.actionIdx; i < this.actions.length; i++) {
       const action = this.actions[i];
-      if (action.time > this.playingData.time) break;
-      actionsToPerform.push(action);
+      if (action.time > time) break;
+      actionsToPerform.push([ action, 0 ]);
+      if (action.loopCount >= 2) {
+        this.playingData.loopingActions.push({
+          action,
+          lastPerformed: action.time,
+          performCount: 1,
+          interval: null,
+          intervalUpdatedAt: null,
+        });
+      }
       this.playingData.actionIdx++;
     }
-    for (let i = 0; i < actionsToPerform.length; i++) {
-      const action = actionsToPerform[i];
-      action.perform(this);
+
+    // Action looper
+    for (let i = 0; i < this.playingData.loopingActions.length; i++) {
+      const loopingAction = this.playingData.loopingActions[i];
+      if (loopingAction.intervalUpdatedAt !== loopingAction.performCount) {
+        loopingAction.interval = loopingAction.action.getLoopInterval(loopingAction.performCount);
+      }
+      const bulkLoop = Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval );
+      for (let j = 0; j < bulkLoop; j++) {
+        actionsToPerform.push([ loopingAction.action, loopingAction.performCount+j ]);
+        loopingAction.performCount++;
+        loopingAction.lastPerformed += loopingAction.interval;
+      }
     }
 
+    // Perform action
+    for (let i = 0; i < actionsToPerform.length; i++) {
+      const [ action, loopCount ] = actionsToPerform[i];
+      action.perform(this, loopCount);
+    }
+
+    // Update particles
     for (const v of this.playingData.particles) {
       let particle = v[1];
       particle.update(dt);
@@ -84,7 +122,8 @@ class Stage {
 
   /** @param {import("./Particle.js").default} particle */
   createParticle(particle) {
-    const particleId = particle.values.id
+    console.log(particle);
+    const particleId = particle.values.id;
     if (
       !particleId ||
       this.playingData.particles.has(particleId)
