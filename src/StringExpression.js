@@ -181,8 +181,10 @@ class StringExpression {
       case "^": return args[0] ** args[1];
       case "/": return args[0] / args[1];
       case "%": return args[0] % args[1];
+
       case "minus": return -args[0];
       case "sqrt": return Math.sqrt(args[0]);
+
       case "sin": return Math.sin(args[0]*Math.PI/180);
       case "asin": return Math.asin(args[0]*Math.PI/180);
       case "sinh": return Math.sinh(args[0]*Math.PI/180);
@@ -193,9 +195,16 @@ class StringExpression {
       case "atan": return Math.atan(args[0]*Math.PI/180);
       case "tanh": return Math.tanh(args[0]*Math.PI/180);
       case "atan2": return Math.atan2(args[0], args[1]);
+
       case "log": return Math.log(args[0]) / Math.log(args[1] || Math.E);
       case "log10": return Math.log10(args[0]);
+
       case "sign": return Math.sign(args[0]);
+
+      case "round": return Math.round(args[0]);
+      case "floor": return Math.floor(args[0]);
+      case "ceil": return Math.ceil(args[0]);
+      
       default: return StringExpression.parseValue(sign, tmps, variables);
     }
   }
