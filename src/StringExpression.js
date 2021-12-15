@@ -22,7 +22,7 @@ class StringExpression {
     let loops = 0;
     
     if (
-      !expression.match(/^([A-z0-9()$+\-*/%^,]|\s|\"([^"]|\")+\"|\'([^']|\')+\')+$/) ||
+      !expression.match(/^([A-z0-9()$+\-*/%^,\.]|\s|\"([^"]|\")+\"|\'([^']|\')+\')+$/) ||
       expression.match(/^(\s|[A-z0-9])+$/)
     ) return false;
     
@@ -232,4 +232,4 @@ export default StringExpression;
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
 // console.log(v);
-// if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
+if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
