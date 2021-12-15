@@ -83,6 +83,11 @@ class Stage {
         actionsToPerform.push([ loopingAction.action, loopingAction.performCount+j ]);
         loopingAction.performCount++;
         loopingAction.lastPerformed += loopingAction.interval;
+        if (loopingAction.performCount+j >= loopingAction.action.loopCount) {
+          this.playingData.loopingActions.splice(i, 1);
+          i--;
+          break;
+        }
       }
     }
 
