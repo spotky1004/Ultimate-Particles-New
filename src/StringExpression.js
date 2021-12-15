@@ -204,6 +204,9 @@ class StringExpression {
       case "round": return Math.round(args[0]);
       case "floor": return Math.floor(args[0]);
       case "ceil": return Math.ceil(args[0]);
+
+      case "hex": return `#${args[0].toString(16).padStart(2, "0")}${args[1].toString(16).padStart(2, "0")}${args[2].toString(16).padStart(2, "0")}`;
+      case "hsl": return `hsl(${args[0]%360}, ${args[1]}%, ${args[2]}%)`;
       
       default: return StringExpression.parseValue(sign, tmps, variables);
     }
