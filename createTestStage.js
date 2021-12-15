@@ -8,12 +8,9 @@ let stageData = {
 /** @type {[keyof import("./src/Action.js").ActionDatas, number, import("./src/Particle").ParticleOptions, import("./src/Action.js").ActionLooper]} */
 let actionData = [
   "CreateParticle",
-  (i**2+1) * 250,
+  500,
   {
     id: "\"testParticle\"+$i",
-    variables: {
-      i: i
-    },
     position: {
       x: "($t/10)/(15-$i)",
       y: "($i+1)*10"
