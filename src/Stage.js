@@ -122,7 +122,6 @@ class Stage {
 
   /** @param {import("./Particle.js").default} particle */
   createParticle(particle) {
-    console.log(particle);
     const particleId = particle.values.id;
     if (
       !particleId ||
