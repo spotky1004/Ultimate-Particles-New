@@ -80,8 +80,11 @@ class Stage {
         loopingAction.interval = loopingAction.action.getLoopInterval(loopingAction.performCount);
       }
       const bulkLoop = Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval );
+      const offsetOffset = (time - loopingAction.lastPerformed) % loopingAction.interval;
       for (let j = 0; j < bulkLoop; j++) {
-        actionsToPerform.push([ loopingAction.action, loopingAction.performCount, -loopingAction.interval*(bulkLoop-j-1) ]);
+        const offset = loopingAction.interval*(bulkLoop-j-1)+offsetOffset;
+        console.log(offset);
+        actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset ]);
         loopingAction.performCount++;
         loopingAction.lastPerformed += loopingAction.interval;
         if (loopingAction.performCount >= loopingAction.action.loopCount) {
@@ -94,8 +97,8 @@ class Stage {
 
     // Perform action
     for (let i = 0; i < actionsToPerform.length; i++) {
-      const [ action, loopCount ] = actionsToPerform[i];
-      action.perform(this, loopCount);
+      const [ action, loopCount, offset ] = actionsToPerform[i];
+      action.perform(this, loopCount, offset);
     }
 
     // Update particles
