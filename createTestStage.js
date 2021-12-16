@@ -12,18 +12,18 @@ let actionData = [
   {
     id: "\"testParticle\"+$i",
     position: {
-      x: "sin($t/20*(1+$i/10))*0.94^$i*50 + 50",
-      y: "-1*cos($t/20*(1+$i/10))*0.94^$i*50 + 50"
+      x: "sin($t/20*(1+$i/10))*0.99^$i*50 + 50",
+      y: "-1*cos($t/20*(1+$i/10))*0.99^$i*50 + 50"
     },
     size: {
-      width: "6*0.95^$i",
-      height: "6*0.95^$i"
+      width: "max(3*0.99^$i, 0.2)",
+      height: "max(3*0.99^$i, 0.2)"
     },
     color: "hsl($i*20, 50, 50)"
   },
   {
-    loopCount: 70,
-    interval: "10*sqrt($i)"
+    loopCount: 2000,
+    interval: 1
   }
 ];
 stageData.actions.push(new Action(...actionData));
