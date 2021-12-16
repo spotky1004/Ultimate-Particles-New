@@ -207,6 +207,9 @@ class StringExpression {
 
       case "hex": return `#${args[0].toString(16).padStart(2, "0")}${args[1].toString(16).padStart(2, "0")}${args[2].toString(16).padStart(2, "0")}`;
       case "hsl": return `hsl(${args[0]%360}, ${args[1]}%, ${args[2]}%)`;
+
+      case "min": return Math.min(...args);
+      case "max": return Math.max(...args);
       
       default: return StringExpression.parseValue(sign, tmps, variables);
     }
