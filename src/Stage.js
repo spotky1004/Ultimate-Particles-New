@@ -80,10 +80,10 @@ class Stage {
       }
       const bulkLoop = Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval );
       for (let j = 0; j < bulkLoop; j++) {
-        actionsToPerform.push([ loopingAction.action, loopingAction.performCount+j ]);
+        actionsToPerform.push([ loopingAction.action, loopingAction.performCount ]);
         loopingAction.performCount++;
         loopingAction.lastPerformed += loopingAction.interval;
-        if (loopingAction.performCount+j >= loopingAction.action.loopCount) {
+        if (loopingAction.performCount >= loopingAction.action.loopCount) {
           this.playingData.loopingActions.splice(i, 1);
           i--;
           break;
