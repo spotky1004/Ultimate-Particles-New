@@ -32,8 +32,10 @@ class Action {
     this.data = {...(data ?? {})};
     /** @type {number} */
     const loopInterval = (looperData && looperData.interval) ?? Infinity;
+    this.rawInterval = looperData.interval;
     this._loopInterval = new Value(loopInterval);
     this.loopCount = (looperData && looperData.loopCount) ?? 1;
+    
   }
 
   /**
@@ -45,7 +47,7 @@ class Action {
   }
 
   export() {
-    return [this.type, this.time, this.data, this.looper];
+    return [this.type, this.time, this.data, {interval: this.rawInterval, loopCount: this.loopCount}];
   }
   
   toString() {
