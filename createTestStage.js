@@ -23,7 +23,7 @@ let actionData = [
   },
   {
     loopCount: 2000,
-    interval: 1
+    interval: 10
   }
 ];
 stageData.actions.push(new Action(...actionData));
