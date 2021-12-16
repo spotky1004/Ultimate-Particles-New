@@ -91,14 +91,12 @@ class Particle {
    * @param {number} dt 
    */
   update(dt) {
-    this.updateValues();
-
     const t = dt/1000;
     this.variables.t += dt;
 
     // Update position
     if (this._position.isValueFixed) {
-      const speed = this.values.speed;
+      const speed = this._speed.getValue(this.variables);
       const [ dx, dy ] = [
         Math.sin(this.values.deg/180*Math.PI),
         -Math.cos(this.values.deg/180*Math.PI)
