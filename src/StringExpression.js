@@ -169,10 +169,14 @@ class StringExpression {
    * @returns {number | string}
    */
   static calculatePart(part, tmps, variables) {
-    part = [...part];
+    part = part.slice(0);
 
-    let sign = part.splice(0, 1)[0];
-    let args = part.slice(0).map(v => StringExpression.parseValue(v, tmps, variables));
+    let sign = part.shift();
+    let args = [];
+    for (let i = 0; i < part.length; i++) {
+      const p = part[i];
+      args.push(StringExpression.parseValue(p, tmps, variables));
+    }
 
     switch (sign) {
       case "+": return args[0] + args[1];
