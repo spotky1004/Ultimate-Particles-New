@@ -56,13 +56,15 @@ class Action {
   /**
    * @param {import("./Stage.js").default} stage
    * @param {number} loop
+   * @param {number} timeOffset
    */
-  perform(stage, loop=0) {
+  perform(stage, loop=0, timeOffset=0) {
     switch (this.type) {
       case "CreateParticle":
         let variables = {
+          t: timeOffset,
           ...(this.data.variables ?? {}),
-          i: loop
+          i: loop,
         };
         stage.createParticle(new Particle({ ...this.data, variables }));
         break;

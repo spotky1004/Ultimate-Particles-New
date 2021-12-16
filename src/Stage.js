@@ -54,12 +54,13 @@ class Stage {
     this.playingData.time += dt;
     const time = this.playingData.time;
 
-    let actionsToPerform = [];
+    /** @type {[Action, number, number][]} */
+    let actionsToPerform = []; // [Action, loop, timeOffset]
     // Perform action
     for (let i = this.playingData.actionIdx; i < this.actions.length; i++) {
       const action = this.actions[i];
       if (action.time > time) break;
-      actionsToPerform.push([ action, 0 ]);
+      actionsToPerform.push([ action, 0, 0 ]);
       if (action.loopCount >= 2) {
         this.playingData.loopingActions.push({
           action,
@@ -80,7 +81,7 @@ class Stage {
       }
       const bulkLoop = Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval );
       for (let j = 0; j < bulkLoop; j++) {
-        actionsToPerform.push([ loopingAction.action, loopingAction.performCount ]);
+        actionsToPerform.push([ loopingAction.action, loopingAction.performCount, -loopingAction.interval*(bulkLoop-j-1) ]);
         loopingAction.performCount++;
         loopingAction.lastPerformed += loopingAction.interval;
         if (loopingAction.performCount >= loopingAction.action.loopCount) {
