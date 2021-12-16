@@ -83,7 +83,6 @@ class Stage {
       const offsetOffset = (time - loopingAction.lastPerformed) % loopingAction.interval;
       for (let j = 0; j < bulkLoop; j++) {
         const offset = loopingAction.interval*(bulkLoop-j-1)+offsetOffset;
-        console.log(offset);
         actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset ]);
         loopingAction.performCount++;
         loopingAction.lastPerformed += loopingAction.interval;
