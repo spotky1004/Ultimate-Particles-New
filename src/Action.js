@@ -35,7 +35,6 @@ class Action {
     this.rawInterval = looperData.interval;
     this._loopInterval = new Value(loopInterval);
     this.loopCount = (looperData && looperData.loopCount) ?? 1;
-    
   }
 
   /**
