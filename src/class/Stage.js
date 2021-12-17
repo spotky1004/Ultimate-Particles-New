@@ -1,5 +1,5 @@
 import Action from "./Action.js";
-import drawCanvas from "./drawCanvas.js";
+import drawCanvas from "../drawCanvas.js";
 
 /**
  * @typedef StageOptions

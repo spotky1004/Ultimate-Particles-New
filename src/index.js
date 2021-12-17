@@ -1,4 +1,5 @@
 import createTestStage from "../createTestStage.js";
+import Stage from "./class/Stage.js";
 import loadStage from "./loadStage.js";
 
 // const stageLoaded = await loadStage("https://raw.githubusercontent.com/spotky1004/Ultimate-Particles-New/main/testSave.json");

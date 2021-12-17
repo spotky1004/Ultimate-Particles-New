@@ -1,11 +1,11 @@
-import Stage from "./src/Stage.js";
-import Action from "./src/Action.js";
+import Stage from "./src/class/Stage.js";
+import Action from "./src/class/Action.js";
 
 let stageData = {
   actions: []
 };
 
-/** @type {[keyof import("./src/Action.js").ActionDatas, number, import("./src/Particle").ParticleOptions, import("./src/Action.js").ActionLooper]} */
+/** @type {[keyof import("./src/Action.js").ActionDatas, number, import("./src/class/Particle").ParticleOptions, import("./src/Action.js").ActionLooper]} */
 let actionData = [
   "CreateParticle",
   500,
