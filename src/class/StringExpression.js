@@ -222,7 +222,7 @@ class StringExpression {
     }
   }
 
-  eval(variables) {
+  eval(variables={}) {
     if (!this.isVaild) throw new Error("Cannot evaluate invaild expression");
 
     let tmps = new Array(this.expression.length).fill(null);

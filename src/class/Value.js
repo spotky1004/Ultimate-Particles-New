@@ -6,8 +6,9 @@ import StringExpression from "./StringExpression.js";
 class Value {
   /**
    * @param {T} value 
+   * @param {Objsct.<string, string | number>} variables
    */
-  constructor(value) {
+  constructor(value, variables) {
     /** @type {boolean} */
     this.isValueFixed = false;
     /** @type {number | string | StringExpression! | Value[] | Object.<string, Value>} */
@@ -26,8 +27,16 @@ class Value {
         this.isValueFixed = true;
         this.value = value;
       } else {
-        this.isValueFixed = false;
-        this.value = expression;
+        if (
+          expression.expression.length === 1 &&
+          expression.expression[0][0][0] === "$"
+        ) {
+          this.isValueFixed = true;
+          this.value = expression.eval(variables);
+        } else {
+          this.isValueFixed = false;
+          this.value = expression;
+        }
       }
     } else if (Array.isArray(value)) {
       this.type = "array";
@@ -35,7 +44,7 @@ class Value {
       value = [...value];
       let isValuesAllFixed = true;
       for (let i = 0; i < value.length; i++) {
-        value[i] = new Value(value[i]);
+        value[i] = new Value(value[i], variables);
         if (!value[i].isValueFixed) isValuesAllFixed = false;
       }
 
@@ -47,7 +56,7 @@ class Value {
       value = {...value};
       let isValuesAllFixed = true;
       for (const key in value) {
-        value[key] = new Value(value[key]);
+        value[key] = new Value(value[key], variables);
         if (!value[key].isValueFixed) isValuesAllFixed = false;
       }
 

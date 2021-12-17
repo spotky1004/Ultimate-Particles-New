@@ -43,10 +43,12 @@ class Particle {
    * @param {ParticleOptions} options 
    */
   constructor(options) {
-    this.variables = {
+    const variables = {
       t: 0,
       ...options.variables
     };
+    /** @type {Object.<string, number | string>} */
+    this.variables = new Value(variables).getValue(variables);
     /** @type {ParticleValues} */
     this.values = {};
 
@@ -54,19 +56,19 @@ class Particle {
     this.group = options.group ?? "default";
     /** @type {ParticleValues["position"]} */
     const position = options.position ?? { x: 50, y: 50 };
-    this._position = new Value(position);
+    this._position = new Value(position, this.variables);
     /** @type {ParticleValues["size"]} */
     const size = options.size ?? { width: 2, height: 2 };
-    this._size = new Value(size);
+    this._size = new Value(size, this.variables);
     /** @type {ParticleValues["color"]} */
     const color = options.color ?? "#000";
-    this._color = new Value(color);
+    this._color = new Value(color, this.variables);
     /** @type {ParticleValues["speed"]} */
     const speed = options.speed ?? 0;
-    this._speed = new Value(speed);
+    this._speed = new Value(speed, this.variables);
     /** @type {ParticleValues["deg"]} */
     const deg = options.deg ?? 0;
-    this._deg = new Value(deg);
+    this._deg = new Value(deg, this.variables);
 
     this.updateValues();
   }
