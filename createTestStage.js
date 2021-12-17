@@ -5,7 +5,7 @@ let stageData = {
   actions: []
 };
 
-/** @type {[keyof import("./src/Action.js").ActionDatas, number, import("./src/class/Particle").ParticleOptions, import("./src/Action.js").ActionLooper]} */
+/** @type {[keyof import("./src/class/Action.js").ActionDatas, number, import("./src/class/Particle.js").ParticleOptions, import("./src/class/Action.js").ActionLooper]} */
 let actionData = [
   "CreateParticle",
   500,
@@ -29,5 +29,5 @@ let actionData = [
 stageData.actions.push(new Action(...actionData));
 
 let stage = new Stage(stageData);
-// console.log(stage.toString());
+console.log(stage.toString());
 export default stage;
