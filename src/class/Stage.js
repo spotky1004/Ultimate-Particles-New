@@ -109,10 +109,15 @@ class Stage {
     drawCanvas(this);
   }
 
+  
   stop() {
     this.playing = false;
   }
-
+  
+  continue() {
+    this.playing = true;
+  }
+  
   export() {
     const data = {
       actions: []
