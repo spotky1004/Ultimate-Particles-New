@@ -69,7 +69,7 @@ class Value {
     }
 
     if (key) {
-      this.value[key] = value;
+      this.value[key].value = value;
     } else {
       this.value = value;
     }
@@ -79,7 +79,7 @@ class Value {
    * @returns {T} 
    */
   getValue(variables) {
-    if (this.isValueFixed) {
+    if (this.isValueFixed && this.type === "simple") {
       return this.value;
     } else {
       if (this.type === "simple") {
