@@ -18,7 +18,7 @@ body {
   background-color: #222;
 }
 
-#canvas-warpper {
+#canvas-wrapper {
   position: absolute;
   left: 5vw;
   top: 5vh;
