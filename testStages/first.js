@@ -1,5 +1,5 @@
-import Stage from "./src/class/Stage.js";
-import Action from "./src/class/Action.js";
+import Stage from "../src/class/Stage.js";
+import Action from "../src/class/Action.js";
 
 let stageData = {
   actions: []

@@ -1,7 +1,7 @@
-import createTestStage from "../createTestStage.js";
+import testStage from "../testStages/first.js";
 import StagePlayer from "./class/StagePlayer.js";
 
-const stagePlayer = await new StagePlayer().load(createTestStage);
+const stagePlayer = await new StagePlayer().load(testStage);
 stagePlayer.play();
 
 window.stagePlayer = stagePlayer;
