@@ -32,9 +32,9 @@ class StringExpression {
     while (true) {
       loops++;
       if (loops > LOOP_LIMIT) throw Error("Infinite loop");
-      const isMinusExist = expression.match(/(\(|[+\-*/&^])-([^)+\-*/&^]+)/) !== null;
+      const isMinusExist = expression.match(/(\(|[+\-*/&^,])-([^,)+\-*/&^]+)/) !== null;
       if (!isMinusExist) break;
-      expression = expression.replace(/(\(|[+\-*/&^])-([^)+\-*/&^]+)/g, "$1minus($2)")
+      expression = expression.replace(/(\(|[+\-*/&^,])-([^,)+\-*/&^]+)/g, "$1minus($2)")
     }
 
     // Find mathFunctions
