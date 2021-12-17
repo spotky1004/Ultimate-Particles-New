@@ -214,6 +214,9 @@ class StringExpression {
 
       case "min": return Math.min(...args);
       case "max": return Math.max(...args);
+
+      case "rand": return Math.random();
+      case "randr": return args[0]+Math.random()*(args[1]-args[0]);
       
       default: return StringExpression.parseValue(sign, tmps, variables);
     }
