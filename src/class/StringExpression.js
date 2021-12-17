@@ -63,7 +63,7 @@ class StringExpression {
     while (expression.includes("<")) {
       loops++;
       if (loops > LOOP_LIMIT) throw Error("Infinite loop");
-      expression = expression.replace(/<([^<>]+)>/g, (_, g1) => {
+      expression = expression.replace(/<([^<>]*)>/g, (_, g1) => {
         return "[" + g1.replace(/((?:\[[^[\]]+\]|[^,])+)/g, "($1)") + "]"
       });
     }
@@ -80,12 +80,12 @@ class StringExpression {
       loops++;
       if (loops > LOOP_LIMIT) throw Error("Infinite loop");
       let part;
-      if (expression.match(/{[^{}]+}\([^()]+\)/)) {
-        part = expression.match(/({[^{}]+})\(([^()]+)\)/).slice(1).join("");
-        expression = expression.replace(/{[^{}]+}\([^()]+\)/, `p${parts.length}`);
-      } else if (expression.match(/\(([^()]+)\)/)) {
-        part = expression.match(/\(([^()]+)\)/)[1];
-        expression = expression.replace(/\(([^()]+)\)/, `p${parts.length}`);
+      if (expression.match(/{[^{}]+}\([^()]*\)/)) {
+        part = expression.match(/({[^{}]+})\(([^()]*)\)/).slice(1).join("");
+        expression = expression.replace(/{[^{}]+}\([^()]*\)/, `p${parts.length}`);
+      } else if (expression.match(/\(([^()]*)\)/)) {
+        part = expression.match(/\(([^()]*)\)/)[1];
+        expression = expression.replace(/\(([^()]*)\)/, `p${parts.length}`);
       }
       if (!part) break;
       parts.push(part);
@@ -244,5 +244,6 @@ export default StringExpression;
 // console.log(new StringExpression("$input+\", World!\"").eval({input: "Hello"}));
 // let v = StringExpression.parseExpression("sin((1+$a)*(sin(cos((2+3)*(4+5)*$b))+(6+$c)) + atan2($b+$c, $d*($f+$g)))");
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
+// let v = StringExpression.parseExpression("160+20*rand()");
 // console.log(v);
 // if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
