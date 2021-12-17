@@ -33,10 +33,10 @@ class Action {
     this.time = time;
     this.data = {...(data ?? {})};
     /** @type {number} */
-    const loopInterval = (looperData && looperData.interval) ?? Infinity;
-    this.rawInterval = looperData && looperData.interval;
+    const loopInterval = looperData?.interval ?? Infinity;
+    this.rawInterval = looperData?.interval;
     this._loopInterval = new Value(loopInterval);
-    this.loopCount = (looperData && looperData.loopCount) ?? 1;
+    this.loopCount = looperData?.loopCount ?? 1;
   }
 
   /**
