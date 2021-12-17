@@ -12,7 +12,7 @@ const ActionTypeEnum = {
 
 /**
  * @typedef ActionLooper
- * @property {number} interval
+ * @property {number | string} interval
  * @property {number} loopCount
  */
 
