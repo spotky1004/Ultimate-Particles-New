@@ -17,26 +17,33 @@ let actionDatas = [];
 function addAction(type, time, data, looperData) {
   actionDatas.push([...arguments])
 }
+
 addAction(
   "CreateParticle",
-  250,
+  0,
   {
-    group: "test",
-    position: {
-      x: "sin($t/20*(1+$i/10))*0.99^$i*50 + 50",
-      y: "-1*cos($t/20*(1+$i/10))*0.99^$i*50 + 50"
+    variables: {
+      xPos: "randr(-20, 120)",
+      deg: "160+20*rand()",
     },
+    color: "hsl($i, 50, 50)",
+    speed: "$i/50+10",
     size: {
-      width: "max(3*0.99^$i, 0.2)",
-      height: "max(3*0.99^$i, 0.2)"
+      width: "max(1, 5-$t/(max(500, 3000-$i*1.2)))",
+      height: "max(1, 5-$t/(max(500, 3000-$i*1.2)))"
     },
-    color: "hsl($i*20, 50, 50)"
+    deg: "$deg",
+    group: "drops",
+    position: {
+      x: "$xPos",
+      y: -20
+    }
   },
   {
-    loopCount: 2000,
-    interval: 10
+    loopCount: 1500,
+    interval: "100/sqrt($i/50+1)",
   }
-);
+)
 
 stageData.actions = actionDatas.map(data => new Action(...data));
 let stage = new Stage(stageData);
