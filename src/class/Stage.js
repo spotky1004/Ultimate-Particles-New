@@ -13,6 +13,7 @@ class Stage {
    * @param {StageOptions} options 
    */
   constructor(options) {
+    if (!(options.actions[0] instanceof Action)) options.actions = [...options.actions].map(actionData => new Action(...actionData));
     this.actions = options.actions.sort((a, b) => a.time - b.time);
     this.maximumTickLength = options.maximumTickLength ?? Math.ceil(1000/60);
     /** @type {boolean} */

@@ -1,22 +1,13 @@
 import createTestStage from "../createTestStage.js";
-import Stage from "./class/Stage.js";
-import loadStage from "./loadStage.js";
+import StagePlayer from "./class/StagePlayer.js";
 
-// const stageLoaded = await loadStage("https://raw.githubusercontent.com/spotky1004/Ultimate-Particles-New/main/testSave.json");
-const stageLoaded = createTestStage;
-stageLoaded.play();
+const stagePlayer = await new StagePlayer().load(createTestStage);
+stagePlayer.play();
 
-window.stageLoaded = stageLoaded;
+window.stagePlayer = stagePlayer;
 
-let lastTick = new Date().getTime();
 function tick() {
-  if (stageLoaded && stageLoaded instanceof Stage) {
-    const timeNow = new Date().getTime();
-    const dt = timeNow - lastTick;
-    lastTick = timeNow;
-  
-    stageLoaded.tick(dt);
-  }
+  stagePlayer.tick();
 
   requestAnimationFrame(tick);
 }
