@@ -29,7 +29,7 @@ class Stage {
     /**
      * @typedef PlayingData
      * @property {number} time
-     * @property {Map<string, import("./Particle.js").default>} particles
+     * @property {Object.<string, import("./Particle.js").default[]>} particles
      * @property {number} actionIdx
      * @property {LoopingAction[]} loopingActions - [Action, loopCount]
      */
@@ -41,7 +41,10 @@ class Stage {
     this.playing = true;
     this.playingData = {
       time: 0,
-      particles: new Map([]),
+      particles: {
+        player: [],
+        default: []
+      },
       actionIdx: 0,
       loopingActions: []
     };
@@ -102,9 +105,11 @@ class Stage {
     }
 
     // Update particles
-    for (const v of this.playingData.particles) {
-      let particle = v[1];
-      particle.update(dt);
+    for (const groupName in this.playingData.particles) {
+      const particleGroup = this.playingData.particles[groupName];
+      for (let i = 0; i < particleGroup.length; i++) {
+        particleGroup[i].tick(dt);
+      }
     }
 
     drawCanvas(this);
@@ -136,12 +141,9 @@ class Stage {
 
   /** @param {import("./Particle.js").default} particle */
   createParticle(particle) {
-    const particleId = particle.values.id;
-    if (
-      !particleId ||
-      this.playingData.particles.has(particleId)
-    ) return;
-    this.playingData.particles.set(particleId, particle);
+    const particleGroup = particle.values.group;
+    if (!this.playingData.particles[particleGroup]) this.playingData.particles[particleGroup] = [];
+    this.playingData.particles[particleGroup].push(particle);
   }
 }
 

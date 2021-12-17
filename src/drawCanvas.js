@@ -8,7 +8,7 @@ const displayCtx = displayCanvas.getContext("2d");
 const ceil = Math.ceil;
 
 /**
- * @param {import("./Stage.js").default} stage 
+ * @param {import("./class/Stage.js").default} stage 
  */
 function drawCanvas(stage) {
   const canvasSize = Math.min(innerWidth, innerHeight) * 0.9;
@@ -21,17 +21,20 @@ function drawCanvas(stage) {
 
   const { particles } = stage.playingData;
 
-  for (let v of particles) {
-    const particle = v[1].values;
-    let { width: w, height: h } = particle.size;
-    const { x, y } = particle.position;
-    ctx.fillStyle = particle.color;
-    ctx.fillRect(
-      ceil(s * (x - h/2)),
-      ceil(s * (y - w/2)),
-      ceil(s * w),
-      ceil(s * h)
-    );
+  for (const groupName in particles) {
+    const particleGroup = particles[groupName];
+    for (let i = 0; i < particleGroup.length; i++) {
+      const particle = particleGroup[i].values;
+      let { width: w, height: h } = particle.size;
+      const { x, y } = particle.position;
+      ctx.fillStyle = particle.color;
+      ctx.fillRect(
+        ceil(s * (x - h/2)),
+        ceil(s * (y - w/2)),
+        ceil(s * w),
+        ceil(s * h)
+      );
+    }
   }
 
   displayCanvas.height = canvasSize;

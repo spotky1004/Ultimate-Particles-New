@@ -15,7 +15,7 @@ import Value from "./Value.js";
 
 /**
  * @typedef ParticleOptions
- * @property {string} id - Id of the particle, use to recognize particle.
+ * @property {string | string[]} [group] - Particle group
  * @property {Object.<string, number | string>} variables
  * @property {Size<number | string>} [size] - Size of the particle.
  * @property {Vector2<number | string>} [position] - Position of the particle.
@@ -25,7 +25,7 @@ import Value from "./Value.js";
  */
 /**
  * @typedef ParticleValues
- * @property {string} id
+ * @property {string} group
  * @property {Vector2<number>} position
  * @property {Size<number>} size
  * @property {string} color
@@ -50,9 +50,8 @@ class Particle {
     /** @type {ParticleValues} */
     this.values = {};
 
-    /** @type {ParticleValues["id"]} */
-    const id = options.id;
-    this._id = new Value(id);
+    /** @type {ParticleValues["group"]} */
+    this.group = options.group ?? "default";
     /** @type {ParticleValues["position"]} */
     const position = options.position ?? { x: 50, y: 50 };
     this._position = new Value(position);
@@ -76,7 +75,7 @@ class Particle {
     const variables = this.variables;
 
     this.values = {
-      id: this._id.getValue(variables),
+      group: this.group,
       position: this._position.getValue(variables),
       size: this._size.getValue(variables),
       color: this._color.getValue(variables),
@@ -90,7 +89,7 @@ class Particle {
   /**
    * @param {number} dt 
    */
-  update(dt) {
+  tick(dt) {
     const t = dt/1000;
     this.variables.t += dt;
 
