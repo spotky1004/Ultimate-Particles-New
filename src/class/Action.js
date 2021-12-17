@@ -3,11 +3,13 @@ import Value from "./Value.js";
 
 const ActionTypeEnum = {
   CreateParticle: 0,
+  ParticleGroupEvent: 1,
 };
 
 /**
  * @typedef ActionDatas
  * @property {import("./Particle.js").ParticleOptions} CreateParticle
+ * @property {{ name: string, type : import("./ParticleGroup.js").EventTypes, data: import("./ParticleGroup.js").EventDatas[import("./ParticleGroup.js").EventTypes] }} ParticleGroupEvent
  */
 
 /**
@@ -32,7 +34,7 @@ class Action {
     this.data = {...(data ?? {})};
     /** @type {number} */
     const loopInterval = (looperData && looperData.interval) ?? Infinity;
-    this.rawInterval = looperData.interval;
+    this.rawInterval = looperData && looperData.interval;
     this._loopInterval = new Value(loopInterval);
     this.loopCount = (looperData && looperData.loopCount) ?? 1;
   }
@@ -67,6 +69,9 @@ class Action {
           i: loop,
         };
         stage.createParticle(new Particle({ ...this.data, variables }));
+        break;
+      case "ParticleGroupEvent":
+        stage.emitGroupEvent(this.data.name, this.data.type, this.data.data);
         break;
     }
   }

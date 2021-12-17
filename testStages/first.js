@@ -5,12 +5,23 @@ let stageData = {
   actions: []
 };
 
-/** @type {[keyof import("./src/class/Action.js").ActionDatas, number, import("./src/class/Particle.js").ParticleOptions, import("./src/class/Action.js").ActionLooper]} */
-let actionData = [
+let actionDatas = [];
+
+/**
+ * @template {keyof import("../src/class/Action.js").ActionDatas} T
+ * @param {T} type 
+ * @param {number} time 
+ * @param {import("../src/class/Action.js").ActionDatas[T]} data 
+ * @param {import("../src/class/Action.js").ActionLooper} looperData 
+ */
+function addAction(type, time, data, looperData) {
+  actionDatas.push([...arguments])
+}
+addAction(
   "CreateParticle",
-  500,
+  250,
   {
-    id: "\"testParticle\"+$i",
+    group: "test",
     position: {
       x: "sin($t/20*(1+$i/10))*0.99^$i*50 + 50",
       y: "-1*cos($t/20*(1+$i/10))*0.99^$i*50 + 50"
@@ -25,9 +36,18 @@ let actionData = [
     loopCount: 2000,
     interval: 10
   }
-];
-stageData.actions.push(new Action(...actionData));
+);
+addAction(
+  "ParticleGroupEvent",
+  10000,
+  {
+    name: "test",
+    type: "DestroyAll",
+    data: {}
+  }
+);
 
+stageData.actions = actionDatas.map(data => new Action(...data));
 let stage = new Stage(stageData);
 console.log(stage.toString());
 export default stage;

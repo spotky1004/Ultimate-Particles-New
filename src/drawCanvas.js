@@ -19,10 +19,10 @@ function drawCanvas(stage) {
   ctx.fillStyle = "#ffc966";
   ctx.fillRect(0, 0, canvasSize, canvasSize);
 
-  const { particles } = stage.playingData;
+  const { particleGroups } = stage.playingData;
 
-  for (const groupName in particles) {
-    const particleGroup = particles[groupName];
+  for (const groupName in particleGroups) {
+    const particleGroup = particleGroups[groupName].particles;
     for (let i = 0; i < particleGroup.length; i++) {
       const particle = particleGroup[i].values;
       let { width: w, height: h } = particle.size;

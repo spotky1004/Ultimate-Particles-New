@@ -1,4 +1,5 @@
 import Action from "./Action.js";
+import ParticleGroup from "./ParticleGroup.js";
 import drawCanvas from "../drawCanvas.js";
 
 /**
@@ -29,7 +30,7 @@ class Stage {
     /**
      * @typedef PlayingData
      * @property {number} time
-     * @property {Object.<string, import("./Particle.js").default[]>} particles
+     * @property {Object.<string, ParticleGroup>} particleGroups
      * @property {number} actionIdx
      * @property {LoopingAction[]} loopingActions - [Action, loopCount]
      */
@@ -41,9 +42,9 @@ class Stage {
     this.playing = true;
     this.playingData = {
       time: 0,
-      particles: {
-        player: [],
-        default: []
+      particleGroups: {
+        player: new ParticleGroup(),
+        default: new ParticleGroup()
       },
       actionIdx: 0,
       loopingActions: []
@@ -105,8 +106,8 @@ class Stage {
     }
 
     // Update particles
-    for (const groupName in this.playingData.particles) {
-      const particleGroup = this.playingData.particles[groupName];
+    for (const groupName in this.playingData.particleGroups) {
+      const particleGroup = this.playingData.particleGroups[groupName].particles;
       for (let i = 0; i < particleGroup.length; i++) {
         particleGroup[i].tick(dt);
       }
@@ -142,8 +143,28 @@ class Stage {
   /** @param {import("./Particle.js").default} particle */
   createParticle(particle) {
     const particleGroup = particle.values.group;
-    if (!this.playingData.particles[particleGroup]) this.playingData.particles[particleGroup] = [];
-    this.playingData.particles[particleGroup].push(particle);
+    if (!this.playingData.particleGroups[particleGroup]) this.playingData.particleGroups[particleGroup] = new ParticleGroup();
+    this.playingData.particleGroups[particleGroup].particles.push(particle);
+  }
+
+  /**
+   * @param {string} name 
+   * @param {import("./ParticleGroup.js").EventTypes} type 
+   * @param {import("./ParticleGroup.js").EventDatas} data 
+   */
+  emitGroupEvent(name, type, data) {
+    if (this.playingData.particleGroups[name]) {
+      this.playingData.particleGroups[name].emitEvent(type, data);
+    }
+  }
+
+  /**
+   * @param {string} name 
+   */
+  deleteGroup(name) {
+    if (this.playingData.particleGroups[name]) {
+      delete this.playingData.particleGroups[name];
+    }
   }
 }
 
