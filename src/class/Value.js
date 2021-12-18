@@ -100,11 +100,11 @@ class Value {
         }
         return value;
       } else if (this.type === "object") {
-        let value = {};
-        for (const key in this.value) {
-          value[key] = this.value[key].getValue(variables);
-        }
-        return value;
+        return Object.fromEntries(
+          Object.entries(this.value).map(
+            ([key, value]) => [key, value.getValue(variables)]
+          )
+        );
       }
     }
   }

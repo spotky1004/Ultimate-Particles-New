@@ -162,6 +162,46 @@ class StringExpression {
     }
   }
 
+  static funcs = {
+    "+": ([x, y]) => x + y,
+    "-": ([x, y]) => x - y,
+    "*": ([x, y]) => x * y,
+    "^": ([x, y]) => x ** y,
+    "/": ([x, y]) => x / y,
+    "%": ([x, y]) => x % y,
+
+    "minus": ([x]) => -x,
+    "sqrt": ([x]) => Math.sqrt(x),
+
+    "sin": ([x]) => Math.sin(x*Math.PI/180),
+    "asin": ([x]) => Math.asin(x*Math.PI/180),
+    "sinh": ([x]) => Math.sinh(x*Math.PI/180),
+    "cos": ([x]) => Math.cos(x*Math.PI/180),
+    "acos": ([x]) => Math.acos(x*Math.PI/180),
+    "cosh": ([x]) => Math.cosh(x*Math.PI/180),
+    "tan": ([x]) => Math.tan(x*Math.PI/180),
+    "atan": ([x]) => Math.atan(x*Math.PI/180),
+    "tanh": ([x]) => Math.tanh(x*Math.PI/180),
+
+    "log": ([x, base]) => Math.log(x) / Math.log(base || Math.E),
+    "log10": ([x]) => Math.log10(x),
+
+    "sign": ([x]) => Math.sign(x),
+
+    "round": ([x]) => Math.round(x),
+    "floor": ([x]) => Math.floor(x),
+    "ceil": ([x]) => Math.ceil(x),
+
+    "hex": ([r, g, b]) => `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`,
+    "hsl": ([h, s, l]) => `hsl(${h%360}, ${s}%, ${l}%)`,
+
+    "min": (s) => Math.min(...s),
+    "max": (s) => Math.max(...s),
+
+    "rand": () => Math.random(),
+    "randr": ([min, max]) => min+Math.random()*(max-min)
+  }
+
   /**
    * @param {array} part 
    * @param {number![]} tmps 
@@ -169,63 +209,22 @@ class StringExpression {
    * @returns {number | string}
    */
   static calculatePart(part, tmps, variables) {
-    part = part.slice(0);
-
-    let sign = part.shift();
+    let operator = part[0];
     let args = [];
-    for (let i = 0; i < part.length; i++) {
+    for (let i = 1; i < part.length; i++) {
       const p = part[i];
       args.push(StringExpression.parseValue(p, tmps, variables));
     }
 
-    switch (sign) {
-      case "+": return args[0] + args[1];
-      case "-": return args[0] - args[1];
-      case "*": return args[0] * args[1];
-      case "^": return args[0] ** args[1];
-      case "/": return args[0] / args[1];
-      case "%": return args[0] % args[1];
-
-      case "minus": return -args[0];
-      case "sqrt": return Math.sqrt(args[0]);
-
-      case "sin": return Math.sin(args[0]*Math.PI/180);
-      case "asin": return Math.asin(args[0]*Math.PI/180);
-      case "sinh": return Math.sinh(args[0]*Math.PI/180);
-      case "cos": return Math.cos(args[0]*Math.PI/180);
-      case "acos": return Math.acos(args[0]*Math.PI/180);
-      case "cosh": return Math.cosh(args[0]*Math.PI/180);
-      case "tan": return Math.tan(args[0]*Math.PI/180);
-      case "atan": return Math.atan(args[0]*Math.PI/180);
-      case "tanh": return Math.tanh(args[0]*Math.PI/180);
-      case "atan2": return Math.atan2(args[0], args[1]);
-
-      case "log": return Math.log(args[0]) / Math.log(args[1] || Math.E);
-      case "log10": return Math.log10(args[0]);
-
-      case "sign": return Math.sign(args[0]);
-
-      case "round": return Math.round(args[0]);
-      case "floor": return Math.floor(args[0]);
-      case "ceil": return Math.ceil(args[0]);
-
-      case "hex": return `#${args[0].toString(16).padStart(2, "0")}${args[1].toString(16).padStart(2, "0")}${args[2].toString(16).padStart(2, "0")}`;
-      case "hsl": return `hsl(${args[0]%360}, ${args[1]}%, ${args[2]}%)`;
-
-      case "min": return Math.min(...args);
-      case "max": return Math.max(...args);
-
-      case "rand": return Math.random();
-      case "randr": return args[0]+Math.random()*(args[1]-args[0]);
-      
-      default: return StringExpression.parseValue(sign, tmps, variables);
-    }
+    const func = StringExpression.funcs[operator];
+    if (func) return func(args);
+    else return StringExpression.parseValue(operator, tmps, variables);
   }
 
   eval(variables={}) {
     if (!this.isVaild) throw new Error("Cannot evaluate invaild expression");
 
-    let tmps = new Array(this.expression.length).fill(null);
+    let tmps = [];
     for (let i = 0; i < this.expression.length; i++) {
       tmps[i] = StringExpression.calculatePart(
         this.expression[i],

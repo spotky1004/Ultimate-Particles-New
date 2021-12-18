@@ -34,7 +34,7 @@ addAction(
   },
   {
     loopCount: 2000,
-    interval: 10
+    interval: 1
   }
 );
 
