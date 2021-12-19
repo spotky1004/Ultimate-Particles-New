@@ -199,7 +199,9 @@ class StringExpression {
     "max": (s) => Math.max(...s),
 
     "rand": () => Math.random(),
-    "randr": ([min, max]) => min+Math.random()*(max-min)
+    "randr": ([min, max]) => min+Math.random()*(max-min),
+    "randbool": () => Math.floor(Math.random()*2),
+    "randsign": () => Math.floor(Math.random()*2)*2-1,
   }
 
   /**
