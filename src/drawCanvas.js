@@ -27,7 +27,7 @@ function drawCanvas(stage) {
       const particle = particleGroup[i].values;
       let { width: w, height: h } = particle.size;
       const { x, y } = particle.position;
-      ctx.fillStyle = particle.color;
+      ctx.fillStyle = particle.color || "#000";
       ctx.fillRect(
         ceil(s * (x - h/2)),
         ceil(s * (y - w/2)),
