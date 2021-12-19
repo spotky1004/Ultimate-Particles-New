@@ -79,6 +79,7 @@ class Action {
           t: timeOffset,
           ...(this.data.variables ?? {}),
           i: loop,
+          j: innerLoop,
         };
         stage.createParticle(new Particle({ ...this.data, variables }));
         break;
