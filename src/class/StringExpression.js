@@ -31,7 +31,7 @@ class StringExpression {
     // Find Minus
     while (true) {
       loops++;
-      if (loops > LOOP_LIMIT) throw Error("Infinite loop");
+      if (loops > LOOP_LIMIT) return false;
       const isMinusExist = expression.match(/(\(|[+\-*/&^,])-([^,)+\-*/&^]+)/) !== null;
       if (!isMinusExist) break;
       expression = expression.replace(/(\(|[+\-*/&^,])-([^,)+\-*/&^]+)/g, "$1minus($2)")
@@ -62,7 +62,7 @@ class StringExpression {
     // Fix mathFunction
     while (expression.includes("<")) {
       loops++;
-      if (loops > LOOP_LIMIT) throw Error("Infinite loop");
+      if (loops > LOOP_LIMIT) return false;
       expression = expression.replace(/<([^<>]*)>/g, (_, g1) => {
         return "[" + g1.replace(/((?:\[[^[\]]+\]|[^,])+)/g, "($1)") + "]"
       });
@@ -78,7 +78,7 @@ class StringExpression {
     let parts = [];
     while (true) {
       loops++;
-      if (loops > LOOP_LIMIT) throw Error("Infinite loop");
+      if (loops > LOOP_LIMIT) return false;
       let part;
       if (expression.match(/{[^{}]+}\([^()]*\)/)) {
         part = expression.match(/({[^{}]+})\(([^()]*)\)/).slice(1).join("");
@@ -110,7 +110,7 @@ class StringExpression {
         let sorted = [];
         while (splited.length > 0 && !(splited.length === 1 && typeof splited[0] === "number")) {
           loops++;
-          if (loops > LOOP_LIMIT) throw Error("Infinite loop");
+          if (loops > LOOP_LIMIT) return false;
           let idxToPull = splited.findIndex(v => "^".includes(v));
           if (idxToPull === -1) idxToPull = splited.findIndex(v => "*/".includes(v));
           if (idxToPull === -1) idxToPull = splited.findIndex(v => "-+%".includes(v));
@@ -250,4 +250,4 @@ export default StringExpression;
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
 // let v = StringExpression.parseExpression("160+20*rand()");
 // console.log(v);
-// if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
+if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
