@@ -91,9 +91,9 @@ class Stage {
         for (let k = 0; k < innerLoopCount; k++) {
           const offset = loopingAction.interval*(bulkLoop-j-1)+offsetOffset || 0;
           actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset, k ]);
-          loopingAction.performCount++;
           loopingAction.lastPerformed += loopingAction.interval;
         }
+        loopingAction.performCount++;
         if (loopingAction.performCount >= loopingAction.action.loopCount) {
           this.playingData.loopingActions.splice(i, 1);
           i--;
