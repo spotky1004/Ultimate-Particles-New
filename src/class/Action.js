@@ -16,6 +16,7 @@ const ActionTypeEnum = {
  * @typedef ActionLooper
  * @property {number | string} interval
  * @property {number} loopCount
+ * @property {number} innerLoop
  */
 
 /**
@@ -37,6 +38,16 @@ class Action {
     this.rawInterval = looperData?.interval;
     this._loopInterval = new Value(loopInterval);
     this.loopCount = looperData?.loopCount ?? 1;
+    const innerLoop = looperData?.innerLoop ?? 1;
+    this._innerLoop = new Value(innerLoop);
+  }
+
+  /**
+   * @param {number} loop 
+   * @returns {number}
+   */
+  getInnerLoop(loop) {
+    return this._innerLoop.getValue({ i: loop });
   }
 
   /**
@@ -59,8 +70,9 @@ class Action {
    * @param {import("./Stage.js").default} stage
    * @param {number} loop
    * @param {number} timeOffset
+   * @param {number} innerLoop
    */
-  perform(stage, loop=0, timeOffset=0) {
+  perform(stage, loop=0, timeOffset=0, innerLoop=0) {
     switch (this.type) {
       case "CreateParticle":
         let variables = {

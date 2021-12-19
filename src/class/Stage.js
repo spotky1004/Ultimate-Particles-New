@@ -60,12 +60,12 @@ class Stage {
     const time = this.playingData.time;
 
     /** @type {[Action, number, number][]} */
-    let actionsToPerform = []; // [Action, loop, timeOffset]
+    let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
     // Perform action
     for (let i = this.playingData.actionIdx; i < this.actions.length; i++) {
       const action = this.actions[i];
       if (action.time > time) break;
-      actionsToPerform.push([ action, 0, 0 ]);
+      actionsToPerform.push([ action, 0, 0, 0 ]);
       if (action.loopCount >= 2) {
         this.playingData.loopingActions.push({
           action,
@@ -87,10 +87,13 @@ class Stage {
       const bulkLoop = Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval );
       const offsetOffset = (time - loopingAction.lastPerformed) % loopingAction.interval;
       for (let j = 0; j < bulkLoop; j++) {
-        const offset = loopingAction.interval*(bulkLoop-j-1)+offsetOffset || 0;
-        actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset ]);
-        loopingAction.performCount++;
-        loopingAction.lastPerformed += loopingAction.interval;
+        const innerLoopCount = loopingAction.action.getInnerLoop(loopingAction.performCount);
+        for (let k = 0; k < innerLoopCount; k++) {
+          const offset = loopingAction.interval*(bulkLoop-j-1)+offsetOffset || 0;
+          actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset, k ]);
+          loopingAction.performCount++;
+          loopingAction.lastPerformed += loopingAction.interval;
+        }
         if (loopingAction.performCount >= loopingAction.action.loopCount) {
           this.playingData.loopingActions.splice(i, 1);
           i--;
@@ -101,8 +104,8 @@ class Stage {
 
     // Perform action
     for (let i = 0; i < actionsToPerform.length; i++) {
-      const [ action, loopCount, offset ] = actionsToPerform[i];
-      action.perform(this, loopCount, offset);
+      const [ action, loopCount, offset, innerLoop ] = actionsToPerform[i];
+      action.perform(this, loopCount, offset, innerLoop);
     }
 
     // Update particles
