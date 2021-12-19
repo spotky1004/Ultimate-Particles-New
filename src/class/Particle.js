@@ -48,7 +48,10 @@ class Particle {
       ...options.variables
     };
     /** @type {Object.<string, number | string>} */
-    this.variables = new Value(variables).getValue(variables);
+    this.variables = {};
+    for (const key in variables) {
+      this.variables[key] = new Value(variables[key]).getValue(this.variables);
+    }
     /** @type {ParticleValues} */
     this.values = {};
 
