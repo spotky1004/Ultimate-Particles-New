@@ -4,12 +4,14 @@ import Value from "./Value.js";
 const ActionTypeEnum = {
   CreateParticle: 0,
   ParticleGroupEvent: 1,
+  ChangeStageAttributes: 2,
 };
 
 /**
  * @typedef ActionDatas
  * @property {import("./Particle.js").ParticleOptions} CreateParticle
  * @property {{ name: string, type : import("./ParticleGroup.js").EventTypes, data: import("./ParticleGroup.js").EventDatas[import("./ParticleGroup.js").EventTypes] }} ParticleGroupEvent
+ * @property {{ name: keyof import("./Stage.js").StageAttribute, value: any }} ChangeStageAttributes
  */
 
 /**
@@ -85,6 +87,9 @@ class Action {
         break;
       case "ParticleGroupEvent":
         stage.emitGroupEvent(this.data.name, this.data.type, this.data.data);
+        break;
+      case "ChangeStageAttributes":
+        stage.playingData.stageAttribute[this.data.name] = new Value(this.data.value).getValue({ i: loop });
         break;
     }
   }

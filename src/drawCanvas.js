@@ -16,7 +16,7 @@ function drawCanvas(stage) {
   canvas.width = canvasSize;
   const s = canvasSize/100;
 
-  ctx.fillStyle = "#ffc966";
+  ctx.fillStyle = stage.playingData.stageAttribute.bgColor || "#ffc966";
   ctx.fillRect(0, 0, canvasSize, canvasSize);
 
   const { particleGroups } = stage.playingData;

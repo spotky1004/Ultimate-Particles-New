@@ -9,6 +9,12 @@ import drawCanvas from "../drawCanvas.js";
  * @property {Action[]} actions
  */
 
+/**
+ * @typedef StageAttribute
+ * @property {string} bgColor
+ * @property {number} outOfBounds
+ */
+
 class Stage {
   /**
    * @param {StageOptions} options 
@@ -30,6 +36,7 @@ class Stage {
     /**
      * @typedef PlayingData
      * @property {number} time
+     * @property {StageAttribute} stageAttribute
      * @property {Object.<string, ParticleGroup>} particleGroups
      * @property {number} actionIdx
      * @property {LoopingAction[]} loopingActions - [Action, loopCount]
@@ -42,6 +49,10 @@ class Stage {
     this.playing = true;
     this.playingData = {
       time: 0,
+      stageAttribute: {
+        bgColor: "#ffc966",
+        outOfBounds: 200,
+      },
       particleGroups: {
         player: new ParticleGroup(),
         default: new ParticleGroup()
@@ -110,9 +121,11 @@ class Stage {
 
     // Update particles
     for (const groupName in this.playingData.particleGroups) {
-      const particleGroup = this.playingData.particleGroups[groupName].particles;
-      for (let i = 0; i < particleGroup.length; i++) {
-        particleGroup[i].tick(dt);
+      const particleGroup = this.playingData.particleGroups[groupName];
+      particleGroup.destroyOutOfBounds(this.playingData.stageAttribute.outOfBounds);
+      const particles = particleGroup.particles;
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].tick(dt);
       }
     }
 
