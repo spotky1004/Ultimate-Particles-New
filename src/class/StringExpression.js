@@ -202,6 +202,8 @@ class StringExpression {
     "randr": ([min, max]) => min+Math.random()*(max-min),
     "randbool": () => Math.floor(Math.random()*2),
     "randsign": () => Math.floor(Math.random()*2)*2-1,
+
+    "not": (a) => !a,
   }
 
   /**
