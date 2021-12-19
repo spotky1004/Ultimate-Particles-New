@@ -171,6 +171,7 @@ class StringExpression {
     "%": ([x, y]) => x % y,
 
     "minus": ([x]) => -x,
+    "abs": ([x]) => Math.abs(x),
     "sqrt": ([x]) => Math.sqrt(x),
 
     "sin": ([x]) => Math.sin(x*Math.PI/180),
@@ -192,18 +193,18 @@ class StringExpression {
     "floor": ([x]) => Math.floor(x),
     "ceil": ([x]) => Math.ceil(x),
 
-    "hex": ([r, g, b]) => `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`,
-    "hsl": ([h, s, l]) => `hsl(${h%360}, ${s}%, ${l}%)`,
-
     "min": (s) => Math.min(...s),
     "max": (s) => Math.max(...s),
+    
+    "hex": ([r, g, b]) => `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`,
+    "hsl": ([h, s, l]) => `hsl(${h%360}, ${s}%, ${l}%)`,
 
     "rand": () => Math.random(),
     "randr": ([min, max]) => min+Math.random()*(max-min),
     "randbool": () => Math.floor(Math.random()*2),
     "randsign": () => Math.floor(Math.random()*2)*2-1,
 
-    "not": (a) => !a,
+    "not": ([a]) => !a,
   }
 
   /**
