@@ -31,6 +31,13 @@ class stagePlayer {
     return this;
   }
 
+  unload() {
+    if (this.stage === null) return;
+
+    this.stop();
+    this.stage = null;
+  }
+
   play() {
     if (this.stage === null) return;
     this.stage.play();
