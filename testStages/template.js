@@ -1,7 +1,9 @@
 import Stage from "../src/class/Stage.js";
 import Action from "../src/class/Action.js";
 
+/** @type {import("../src/class/Stage.js").StageOptions} */
 let stageData = {
+  maximumTickLength: 17,
   actions: []
 };
 

@@ -28,8 +28,10 @@ class Value {
         this.value = value;
       } else {
         if (
+          variables &&
           expression.expression.length === 1 &&
-          expression.expression[0][0][0] === "$"
+          expression.expression[0][0][0] === "$" &&
+          typeof variables[expression.expression[0][0].slice(1)] !== "undefined"
         ) {
           this.isValueFixed = true;
           this.value = expression.eval(variables);
@@ -119,3 +121,5 @@ class Value {
 }
 
 export default Value;
+
+window.Value = Value;

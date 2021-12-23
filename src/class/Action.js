@@ -5,6 +5,8 @@ const ActionTypeEnum = {
   CreateParticle: 0,
   ParticleGroupEvent: 1,
   ChangeStageAttributes: 2,
+  SetGlobalVariable: 3,
+  AddStatus: 4,
 };
 
 /**
@@ -12,6 +14,8 @@ const ActionTypeEnum = {
  * @property {import("./Particle.js").ParticleOptions} CreateParticle
  * @property {{ name: string, type : import("./ParticleGroup.js").EventTypes, data: import("./ParticleGroup.js").EventDatas[import("./ParticleGroup.js").EventTypes] }} ParticleGroupEvent
  * @property {{ name: keyof import("./Stage.js").StageAttribute, value: any }} ChangeStageAttributes
+ * @property {{ name: string, value: (number | string) }} SetGlobalVariable
+ * @property {{ name: string, type: import("./StatusItem.js").StatusItemType, data: import("./StatusItem.js").StatusItemData[import("./StatusItem.js").StatusItemType] }} AddStatus
  */
 
 /**
@@ -74,23 +78,29 @@ class Action {
    * @param {number} timeOffset
    * @param {number} innerLoop
    */
-  perform(stage, loop=0, timeOffset=0, innerLoop=0) {
-    switch (this.type) {
-      case "CreateParticle":
-        let variables = {
-          t: timeOffset,
-          ...(this.data.variables ?? {}),
-          i: loop,
-          j: innerLoop,
-        };
-        stage.createParticle(new Particle({ ...this.data, variables }));
-        break;
-      case "ParticleGroupEvent":
-        stage.emitGroupEvent(this.data.name, this.data.type, this.data.data);
-        break;
-      case "ChangeStageAttributes":
-        stage.playingData.stageAttribute[this.data.name] = new Value(this.data.value).getValue({ i: loop });
-        break;
+  perform(stage, loop=0, timeOffset=0, innerLoop=0, globalVariables={}) {
+    if (this.type === "CreateParticle") {
+      const variables = {
+        t: timeOffset,
+        ...(this.data.variables ?? {}),
+        i: loop,
+        j: innerLoop,
+      };
+      stage.createParticle(new Particle({ ...this.data, variables }));
+    } else if (this.type === "ParticleGroupEvent") {
+      stage.emitGroupEvent(this.data.name, this.data.type, this.data.data);
+    } else if (this.type === "ChangeStageAttributes") {
+      stage.playingData.stageAttribute[this.data.name] = new Value(this.data.value).getValue({ i: loop });
+    } else if (this.type === "SetGlobalVariable") {
+      const variables = {...globalVariables, i: loop, j: innerLoop};
+      const value = new Value(this.data.value).getValue(variables);
+      stage.playingData.globalVariables.changeValue({
+        key: this.data.name,
+        value: value,
+        variables: variables
+      });
+    } else if (this.type === "AddStatus") {
+      stage.playingData.status.addItem(this.data.name, this.data.type, this.data.data);
     }
   }
 }

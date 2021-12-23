@@ -1,4 +1,6 @@
 import Action from "./Action.js";
+import Status from "./Status.js";
+import Value from "./Value.js";
 import ParticleGroup from "./ParticleGroup.js";
 import drawCanvas from "../drawCanvas.js";
 
@@ -40,6 +42,8 @@ class Stage {
      * @property {Object.<string, ParticleGroup>} particleGroups
      * @property {number} actionIdx
      * @property {LoopingAction[]} loopingActions - [Action, loopCount]
+     * @property {Value<Object.<string, number | string>>} globalVariables
+     * @property {Status} status
      */
     /** @type {PlayingData} */
     this.playingData = {};
@@ -58,7 +62,12 @@ class Stage {
         default: new ParticleGroup()
       },
       actionIdx: 0,
-      loopingActions: []
+      loopingActions: [],
+      globalVariables: new Value({
+        life: 10,
+        maxLife: 10,
+      }),
+      status: new Status()
     };
   }
 
@@ -69,6 +78,8 @@ class Stage {
 
     this.playingData.time += dt;
     const time = this.playingData.time;
+    
+    const globalVariables = this.playingData.globalVariables.getValue({t: time, ...this.playingData.globalVariables});
 
     /** @type {[Action, number, number][]} */
     let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
@@ -116,7 +127,7 @@ class Stage {
     // Perform action
     for (let i = 0; i < actionsToPerform.length; i++) {
       const [ action, loopCount, offset, innerLoop ] = actionsToPerform[i];
-      action.perform(this, loopCount, offset, innerLoop);
+      action.perform(this, loopCount, offset, innerLoop, globalVariables);
     }
 
     // Update particles
@@ -125,9 +136,12 @@ class Stage {
       particleGroup.destroyOutOfBounds(this.playingData.stageAttribute.outOfBounds);
       const particles = particleGroup.particles;
       for (let i = 0; i < particles.length; i++) {
-        particles[i].tick(dt);
+        particles[i].tick(dt, globalVariables);
       }
     }
+
+    // Update status
+    this.playingData.status.update(globalVariables);
 
     drawCanvas(this);
   }
