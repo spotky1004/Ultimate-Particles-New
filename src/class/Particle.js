@@ -76,16 +76,16 @@ class Particle {
     this.updateValues();
   }
 
-  updateValues() {
-    const variables = this.variables;
+  updateValues(variables) {
+    const _variables = {...this.variables, ...variables};
 
     this.values = {
       group: this.group,
-      position: this._position.getValue(variables),
-      size: this._size.getValue(variables),
-      color: this._color.getValue(variables),
-      speed: this._speed.getValue(variables),
-      deg: this._deg.getValue(variables),
+      position: this._position.getValue(_variables),
+      size: this._size.getValue(_variables),
+      color: this._color.getValue(_variables),
+      speed: this._speed.getValue(_variables),
+      deg: this._deg.getValue(_variables),
     };
 
     return this;
@@ -94,7 +94,7 @@ class Particle {
   /**
    * @param {number} dt 
    */
-  tick(dt) {
+  tick(dt, variables) {
     const t = dt/1000;
     this.variables.t += dt;
 
@@ -110,7 +110,7 @@ class Particle {
       this._position.changeValue({ key: "y", value: Number(position.y) + speed*dy*t });
     }
 
-    this.updateValues();
+    this.updateValues(variables);
 
     return this;
   }
