@@ -38,11 +38,10 @@ body {
   position: absolute;
   padding: 1.5vmin 2.5vmin;
 
-  width: 22vmin;
-
   z-index: 1;
   overflow: visible;
 
+  user-select: none;
   opacity: 0.8;
 }
 .status__item {
@@ -76,6 +75,8 @@ body {
   --bgCol: #111;
   --slashCol: #ffffff08;
   --progress: 65%;
+
+  width: 22vmin;
 
   background: linear-gradient(
     70deg,
