@@ -68,19 +68,27 @@ class Value {
   /**
    * @param {object} obj
    * @param {*} obj.value 
-   * @param {string | number | undefined} obj.key 
-   * @param {boolean} [isExpression]
+   * @param {string | number | (string | number)[]} obj.key 
+   * @param {Object.<string, number>} [obj.variables]
    */
-  changeValue({ key, value, isExpression}) {
-    if (isExpression && typeof value === "string") {
-      const expression = new StringExpression(value);
-      if (expression.isVaild) value = expression;
-    }
+  changeValue({ key, value, variables }) {
+    if (this.type === "object" || this.type === "array") {
+      const isKeyArray = Array.isArray(key)
+      const keyToUse = isKeyArray ? key[0] : key;
+      const restKeys = isKeyArray ? key.slice(1) : undefined;
+      
+      if (typeof this.value[keyToUse] === "undefined") {
+        if (restKeys) return;
 
-    if (key) {
-      this.value[key].value = value;
+        let _value = new Value(value, variables);
+        this.value[keyToUse] = _value;
+        if (!_value.isValueFixed) this.isValueFixed = false;
+      } else {
+        this.value[keyToUse].changeValue({ key: restKeys, value, variables });
+      }
     } else {
-      this.value = value;
+      let _value = new Value(value, variables);
+      this.value = _value.isValueFixed ? value : _value;
     }
   }
 
@@ -111,3 +119,5 @@ class Value {
 }
 
 export default Value;
+
+window.Value = Value;
