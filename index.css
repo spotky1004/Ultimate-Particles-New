@@ -42,6 +42,8 @@ body {
 
   z-index: 1;
   overflow: visible;
+
+  opacity: 0.8;
 }
 .status__item {
   position: relative;
