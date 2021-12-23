@@ -6,7 +6,7 @@ import StringExpression from "./StringExpression.js";
 class Value {
   /**
    * @param {T} value 
-   * @param {Objsct.<string, string | number>} variables
+   * @param {Object.<string, string | number>} variables
    */
   constructor(value, variables) {
     /** @type {boolean} */
