@@ -70,7 +70,7 @@ class Particle {
     const speed = options.speed ?? 0;
     this._speed = new Value(speed, this.variables);
     /** @type {ParticleValues["deg"]} */
-    const deg = options.deg ?? 0;
+    const deg = options.deg ?? null;
     this._deg = new Value(deg, this.variables);
 
     this.updateValues();
@@ -101,7 +101,7 @@ class Particle {
     this.variables.t += dt;
 
     // Update position
-    if (this._position.isValueFixed) {
+    if (this._position.isValueFixed && this._deg.getValue(this.variables) !== null) {
       const speed = this._speed.getValue(this.variables);
       const position = this._position.getValue(this.variables);
       const [ dx, dy ] = [
