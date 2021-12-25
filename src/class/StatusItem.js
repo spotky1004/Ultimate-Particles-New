@@ -57,7 +57,7 @@ class StatusItem {
       style.setProperty("--barStartCol", value.barStartCol);
       style.setProperty("--barEndCol", value.barEndCol);
       style.setProperty("--progress", Math.max(0, Math.min(1, value.value/value.max))*100+"%");
-      value.content = `${value.value ? Math.floor(value.value) : "null"}/${value.max ? Math.floor(value.max) : null}`;
+      value.content = `${value.value ? Math.floor(value.value) : 0}/${value.max ? Math.floor(value.max) : 0}`;
     }
     ele.setAttribute("content", value.content);
   }
