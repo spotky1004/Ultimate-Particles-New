@@ -64,6 +64,13 @@ class ParticleGroup {
     }
     this.particles = particles;
   }
+
+  /**
+   * @param {import("./Particle.js").default} particle 
+   */
+  removeParticle(particle) {
+    this.particles = this.particles.filter(p => p !== particle);
+  }
 }
 
 export default ParticleGroup;
