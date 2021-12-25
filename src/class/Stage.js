@@ -210,7 +210,7 @@ class Stage {
               playerY < particleY + particleHeight &&
               playerHeight + playerY > particleY
             ) {
-              this.playingData.globalVariables.changeValue({ key: "life", value: globalVariables.life - 1 });
+              this.playingData.globalVariables.changeValue({ key: "life", value: Math.max(0, globalVariables.life - 1) });
               globalVariables = this.playingData.globalVariables.getValue(globalVariables);
               particlesToRemove.push(particle);
               continue outLoop;
