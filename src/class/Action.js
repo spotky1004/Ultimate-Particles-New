@@ -40,11 +40,12 @@ class Action {
     this.time = time;
     this.data = {...(data ?? {})};
     /** @type {number} */
-    const loopInterval = looperData?.interval ?? Infinity;
     this.rawInterval = looperData?.interval;
+    const loopInterval = this.rawInterval ?? Infinity;
     this._loopInterval = new Value(loopInterval);
     this.loopCount = looperData?.loopCount ?? 1;
-    const innerLoop = looperData?.innerLoop ?? 1;
+    this.rawInnerLoop = looperData?.innerLoop;
+    const innerLoop = this.rawInnerLoop ?? 1;
     this._innerLoop = new Value(innerLoop);
   }
 
@@ -65,7 +66,7 @@ class Action {
   }
 
   export() {
-    return [this.type, this.time, this.data, {interval: this.rawInterval, loopCount: this.loopCount}];
+    return [this.type, this.time, this.data, {interval: this.rawInterval, loopCount: this.loopCount, innerLoop: this.rawInnerLoop}];
   }
   
   toString() {
