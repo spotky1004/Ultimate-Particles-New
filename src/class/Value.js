@@ -121,5 +121,3 @@ class Value {
 }
 
 export default Value;
-
-window.Value = Value;
