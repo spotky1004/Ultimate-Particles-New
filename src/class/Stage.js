@@ -161,9 +161,11 @@ class Stage {
       left: Boolean(keyPressed.KeyA || keyPressed.ArrowLeft),
       right: Boolean(keyPressed.KeyD || keyPressed.ArrowRight),
     }
+    const focusMode = Boolean(keyPressed.ShiftLeft || keyPressed.ShiftRight);
+    const playerSpeedFactor = (focusMode ? 0.5 : 1);
     const playerVec = {
-      x: playerDirections.right - playerDirections.left,
-      y: playerDirections.down - playerDirections.up
+      x: playerSpeedFactor * (playerDirections.right - playerDirections.left),
+      y: playerSpeedFactor * (playerDirections.down - playerDirections.up)
     };
     const playerParticles = this.playingData.particleGroups["player"].particles;
     for (let i = 0; i < playerParticles.length; i++) {
