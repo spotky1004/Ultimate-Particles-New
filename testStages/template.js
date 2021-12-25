@@ -30,7 +30,7 @@ addAction(
       x: 50,
       y: 50
     },
-    speed: 4,
+    speed: 40,
     size: {
       height: 2,
       width: 2
