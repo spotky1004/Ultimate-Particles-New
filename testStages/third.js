@@ -21,6 +21,23 @@ function addAction(type, time, data, looperData) {
 }
 
 addAction(
+  "CreateParticle",
+  0,
+  {
+    group: "player",
+    color: "#f00",
+    position: {
+      x: 50,
+      y: 50
+    },
+    speed: 40,
+    size: {
+      height: "3+sin($t)/8",
+      width: "3+sin($t)/8"
+    }
+  }
+);
+addAction(
   "AddStatus",
   0,
   {
@@ -60,7 +77,7 @@ addAction(
   },
   {
     interval: "max(50, 100*(0.99^$i))",
-    innerLoop: "15",
+    innerLoop: 15,
     loopCount: Infinity
   }
 );
@@ -74,18 +91,6 @@ addAction(
   {
     loopCount: 100,
     interval: 25,
-  }
-);
-addAction(
-  "SetGlobalVariable",
-  1000,
-  {
-    name: "life",
-    value: "$life-0.01"
-  },
-  {
-    interval: 30,
-    loopCount: 1000
   }
 );
 addAction(

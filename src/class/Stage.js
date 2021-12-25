@@ -42,7 +42,7 @@ class Stage {
      * @property {Object.<string, ParticleGroup>} particleGroups
      * @property {number} actionIdx
      * @property {LoopingAction[]} loopingActions - [Action, loopCount]
-     * @property {Value<Object.<string, number | string>>} globalVariables
+     * @property {Value<Object.<string, (number | string)>>} globalVariables
      * @property {Status} status
      */
     /** @type {PlayingData} */
@@ -71,7 +71,13 @@ class Stage {
     };
   }
 
-  tick(dt, updateCanvas=true) {
+  /**
+   * @param {number} dt 
+   * @param {boolean} updateCanvas 
+   * @param {Object.<string, boolean>} keyPressed 
+   * @returns {boolean}
+   */
+  tick(dt, updateCanvas=true, keyPressed={}) {
     dt = Math.min(this.maximumTickLength, dt);
 
     if (!this.playing) return;
@@ -82,7 +88,7 @@ class Stage {
     this.playingData.time += dt;
     const time = this.playingData.time;
     
-    const globalVariables = this.playingData.globalVariables.getValue({t: time, ...this.playingData.globalVariables});
+    let globalVariables = this.playingData.globalVariables.getValue({t: time, ...this.playingData.globalVariables});
 
     /** @type {[Action, number, number][]} */
     let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
@@ -148,23 +154,88 @@ class Stage {
       action.perform(this, loopCount, offset, innerLoop, globalVariables);
     }
 
-    // Update particles
+    // Player move
+    const playerDirections = {
+      up: Boolean(keyPressed.KeyW || keyPressed.ArrowUp),
+      down: Boolean(keyPressed.KeyS || keyPressed.ArrowDown),
+      left: Boolean(keyPressed.KeyA || keyPressed.ArrowLeft),
+      right: Boolean(keyPressed.KeyD || keyPressed.ArrowRight),
+    }
+    const playerVec = {
+      x: playerDirections.right - playerDirections.left,
+      y: playerDirections.down - playerDirections.up
+    };
+    const playerParticles = this.playingData.particleGroups["player"].particles;
+    for (let i = 0; i < playerParticles.length; i++) {
+      const particle = playerParticles[i];
+      const speed = particle.values.speed;
+      const size = particle.values.size;
+      particle.x = Math.min(100-size.width/2, Math.max(0+size.width/2, particle.x + speed*playerVec.x*dt/1000));
+      particle.y = Math.min(100-size.height/2, Math.max(0+size.height/2, particle.y + speed*playerVec.y*dt/1000));
+      particle.updateValues(globalVariables);
+    }
+
+    // Particle loop
     for (const groupName in this.playingData.particleGroups) {
       loops++;
       if (loops > LOOP_LIMIT) return false;
-
+      
       const particleGroup = this.playingData.particleGroups[groupName];
       particleGroup.destroyOutOfBounds(this.playingData.stageAttribute.outOfBounds);
       const particles = particleGroup.particles;
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].tick(dt, globalVariables);
+      const particlesToRemove = [];
+      outLoop: for (let i = 0; i < particles.length; i++) {
+        const particle = particles[i];
+
+        // Update particles
+        particle.tick(dt, globalVariables);
+
+        // Player collision
+        if (groupName !== "player") {
+          for (let j = 0; j < playerParticles.length; j++) {
+            const playerParticle = playerParticles[j];
+
+            let { x: playerX, y: playerY } = playerParticle.values.position;
+            const { width: playerWidth, height: playerHeight } = playerParticle.values.size;
+            playerX -= playerWidth/2;
+            playerY -= playerHeight/2;
+            let { x: particleX, y: particleY } = particle.values.position;
+            const { width: particleWidth, height: particleHeight } = particle.values.size;
+            particleX -= particleWidth/2;
+            particleY -= particleHeight/2;
+
+            if (
+              playerX < particleX + particleWidth &&
+              playerX + playerWidth > particleX &&
+              playerY < particleY + particleHeight &&
+              playerHeight + playerY > particleY
+            ) {
+              this.playingData.globalVariables.changeValue({ key: "life", value: globalVariables.life - 1 });
+              globalVariables = this.playingData.globalVariables.getValue(globalVariables);
+              particlesToRemove.push(particle);
+              continue outLoop;
+            }
+          }
+        }
+      }
+      for (let i = 0; i < particlesToRemove.length; i++) {
+        particleGroup.removeParticle(particlesToRemove[i]);
       }
     }
 
+    
     // Update status
     this.playingData.status.update(globalVariables);
-
+    
     if (updateCanvas) drawCanvas(this);
+    
+    // Life check
+    if (globalVariables.life <= 0) {
+      this.stop();
+      return false;
+    }
+
+    return true;
   }
 
   
