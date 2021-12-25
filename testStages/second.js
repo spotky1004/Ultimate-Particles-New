@@ -22,6 +22,37 @@ addAction(
   "CreateParticle",
   0,
   {
+    group: "player",
+    color: "#f00",
+    position: {
+      x: 50,
+      y: 50
+    },
+    speed: 40,
+    size: {
+      height: 2,
+      width: 2
+    }
+  }
+);
+addAction(
+  "AddStatus",
+  0,
+  {
+    name: "Life",
+    type: "Progress",
+    data: {
+      barStartCol: "#cf4646",
+      barEndCol: "#ff8888",
+      max: "$maxLife",
+      value: "$life"
+    }
+  }
+);
+addAction(
+  "CreateParticle",
+  0,
+  {
     variables: {
       xPos: "randr(-20, 120)",
       deg: "160+20*rand()",
