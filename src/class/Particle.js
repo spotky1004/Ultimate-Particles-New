@@ -85,11 +85,11 @@ class Particle {
 
   /** @param {number} position */
   set x(position) {
-    this._position.changeValue("x", position);
+    this._position.changeValue({ key: "x", value: position });
   }
   /** @param {number} position */
   set y(position) {
-    this._position.changeValue("y", position);
+    this._position.changeValue({ key: "y", value: position });
   }
 
   updateValues(variables) {
