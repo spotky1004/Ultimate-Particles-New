@@ -20,9 +20,9 @@ function drawCanvas(stage) {
   ctx.fillRect(0, 0, canvasSize, canvasSize);
 
   const { particleGroups } = stage.playingData;
-
-  for (const groupName in particleGroups) {
-    const particleGroup = particleGroups[groupName].particles;
+  const groupNames = Object.keys(particleGroups);
+  for (let i = groupNames.length-1; i >= 0; i--) {
+    const particleGroup = particleGroups[groupNames[i]].particles;
     for (let i = 0; i < particleGroup.length; i++) {
       const particle = particleGroup[i].values;
       let { width: w, height: h } = particle.size;
