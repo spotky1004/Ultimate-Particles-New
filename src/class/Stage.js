@@ -71,10 +71,13 @@ class Stage {
     };
   }
 
-  tick(dt) {
+  tick(dt, updateCanvas=true) {
     dt = Math.min(this.maximumTickLength, dt);
 
     if (!this.playing) return;
+
+    const LOOP_LIMIT = 10000;
+    let loops = 0;
 
     this.playingData.time += dt;
     const time = this.playingData.time;
@@ -85,6 +88,9 @@ class Stage {
     let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
     // Perform action
     for (let i = this.playingData.actionIdx; i < this.actions.length; i++) {
+      loops++;
+      if (loops > LOOP_LIMIT) return false;
+
       const action = this.actions[i];
       if (action.time > time) break;
       actionsToPerform.push([ action, 0, 0, 0 ]);
@@ -102,6 +108,9 @@ class Stage {
 
     // Action looper
     for (let i = 0; i < this.playingData.loopingActions.length; i++) {
+      loops++;
+      if (loops > LOOP_LIMIT) return false;
+
       const loopingAction = this.playingData.loopingActions[i];
       if (loopingAction.intervalUpdatedAt !== loopingAction.performCount) {
         loopingAction.interval = loopingAction.action.getLoopInterval(loopingAction.performCount);
@@ -109,8 +118,14 @@ class Stage {
       const bulkLoop = Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval );
       const offsetOffset = (time - loopingAction.lastPerformed) % loopingAction.interval;
       for (let j = 0; j < bulkLoop; j++) {
+        loops++;
+        if (loops > LOOP_LIMIT) return false;
+
         const innerLoopCount = loopingAction.action.getInnerLoop(loopingAction.performCount);
         for (let k = 0; k < innerLoopCount; k++) {
+          loops++;
+          if (loops > LOOP_LIMIT) return false;
+          
           const offset = loopingAction.interval*(bulkLoop-j-1)+offsetOffset || 0;
           actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset, k ]);
         }
@@ -126,12 +141,18 @@ class Stage {
 
     // Perform action
     for (let i = 0; i < actionsToPerform.length; i++) {
+      loops++;
+      if (loops > LOOP_LIMIT) return false;
+
       const [ action, loopCount, offset, innerLoop ] = actionsToPerform[i];
       action.perform(this, loopCount, offset, innerLoop, globalVariables);
     }
 
     // Update particles
     for (const groupName in this.playingData.particleGroups) {
+      loops++;
+      if (loops > LOOP_LIMIT) return false;
+
       const particleGroup = this.playingData.particleGroups[groupName];
       particleGroup.destroyOutOfBounds(this.playingData.stageAttribute.outOfBounds);
       const particles = particleGroup.particles;
@@ -143,7 +164,7 @@ class Stage {
     // Update status
     this.playingData.status.update(globalVariables);
 
-    drawCanvas(this);
+    if (updateCanvas) drawCanvas(this);
   }
 
   
