@@ -69,7 +69,7 @@ body {
 
   content: attr(name);
 }
-.status__item.progress {
+.status__item.progress, .status__item.text-progress {
   --barStartCol: #cf4646;
   --barEndCol: #ff8888;
   --bgCol: #111;
@@ -78,27 +78,12 @@ body {
 
   width: 22vmin;
 
-  background: linear-gradient(
+  background: repeating-linear-gradient(
     70deg,
     var(--slashCol) 0%,
-    var(--slashCol) 10%,
-    #fff0 10%,
-    #fff0 20%,
-    var(--slashCol) 20%,
-    var(--slashCol) 30%,
-    #fff0 30%,
-    #fff0 40%,
-    var(--slashCol) 40%,
-    var(--slashCol) 50%,
-    #fff0 50%,
-    #fff0 60%,
-    var(--slashCol) 60%,
-    var(--slashCol) 70%,
-    #fff0 70%,
-    #fff0 80%,
-    var(--slashCol) 80%,
-    var(--slashCol) 90%,
-    #fff0 90%
+    var(--slashCol) 5%,
+    #fff0 5%,
+    #fff0 10%
   ), linear-gradient(
     80deg,
     var(--barStartCol) 0%,
@@ -107,7 +92,7 @@ body {
     var(--bgCol) 100%
   );
   background-size: 202%;
-  background-position: calc(100% - var(--progress));
+  background-position: calc(99.8% - var(--progress));
   border-radius: 1vmin;
 
   transition: background-position cubic-bezier(.3,.81,.43,.97) 0.1s;
@@ -127,42 +112,7 @@ body {
   content: attr(name) ": " attr(content);
 }
 .status__item.text-progress {
-  --barStartCol: #cf4646;
-  --barEndCol: #ff8888;
-  --bgCol: #111;
-  --slashCol: #ffffff08;
-  --progress: 65%;
-
-  background: linear-gradient(
-    70deg,
-    var(--slashCol) 0%,
-    var(--slashCol) 10%,
-    #fff0 10%,
-    #fff0 20%,
-    var(--slashCol) 20%,
-    var(--slashCol) 30%,
-    #fff0 30%,
-    #fff0 40%,
-    var(--slashCol) 40%,
-    var(--slashCol) 50%,
-    #fff0 50%,
-    #fff0 60%,
-    var(--slashCol) 60%,
-    var(--slashCol) 70%,
-    #fff0 70%,
-    #fff0 80%,
-    var(--slashCol) 80%,
-    var(--slashCol) 90%,
-    #fff0 90%
-  ), linear-gradient(
-    80deg,
-    var(--barStartCol) 0%,
-    var(--barEndCol) 50%,
-    var(--bgCol) 50%,
-    var(--bgCol) 100%
-  );
-  background-size: 202%;
-  background-position: calc(100% - var(--progress));
+  width: auto;
 
   background-clip: text;
   -webkit-background-clip: text;
