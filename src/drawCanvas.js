@@ -5,8 +5,6 @@ const displayCanvas = document.getElementById('display-canvas');
 /** @type {CanvasRenderingContext2D} */
 const displayCtx = displayCanvas.getContext("2d");
 
-const ceil = Math.ceil;
-
 /**
  * @param {import("./class/Stage.js").default} stage 
  */
@@ -29,10 +27,10 @@ function drawCanvas(stage) {
       const { x, y } = particle.position;
       ctx.fillStyle = particle.color || "#000";
       ctx.fillRect(
-        ceil(s * (x - h/2)),
-        ceil(s * (y - w/2)),
-        ceil(s * w),
-        ceil(s * h)
+        s * (x - h/2),
+        s * (y - w/2),
+        s * w,
+        s * h
       );
     }
   }
