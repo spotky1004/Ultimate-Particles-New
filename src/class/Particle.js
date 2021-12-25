@@ -76,6 +76,15 @@ class Particle {
     this.updateValues();
   }
 
+  /** @param {number} position */
+  set x(position) {
+    this._position.changeValue("x", position);
+  }
+  /** @param {number} position */
+  set y(position) {
+    this._position.changeValue("y", position);
+  }
+
   updateValues(variables) {
     const _variables = {};
     for (const key in this.variables) _variables[key] = this.variables[key];
