@@ -16,7 +16,7 @@ class Value {
     /** @type {"simple" | "array" | "object"} */
     this.type = null;
 
-    if (typeof value === "number") {
+    if (typeof value === "number" || value === null || typeof value === "undefined") {
       this.type = "simple";
       this.isValueFixed = true;
       this.value = value;
