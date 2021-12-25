@@ -50,6 +50,14 @@ addAction(
   }
 );
 addAction(
+  "ChangeStageAttributes",
+  0,
+  {
+    name: "playerHitboxFactor",
+    value: 0.1
+  }
+)
+addAction(
   "CreateParticle",
   0,
   {

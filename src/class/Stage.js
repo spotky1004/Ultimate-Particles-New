@@ -15,6 +15,7 @@ import drawCanvas from "../drawCanvas.js";
  * @typedef StageAttribute
  * @property {string} bgColor
  * @property {number} outOfBounds
+ * @property {number} playerHitboxFactor
  */
 
 class Stage {
@@ -56,6 +57,7 @@ class Stage {
       stageAttribute: {
         bgColor: "#ffc966",
         outOfBounds: 200,
+        playerHitboxFactor: 1
       },
       particleGroups: {
         player: new ParticleGroup(),
@@ -198,7 +200,10 @@ class Stage {
             const playerParticle = playerParticles[j];
 
             let { x: playerX, y: playerY } = playerParticle.values.position;
-            const { width: playerWidth, height: playerHeight } = playerParticle.values.size;
+            let { width: playerWidth, height: playerHeight } = playerParticle.values.size;
+            const playerHitboxFactor = this.playingData.stageAttribute.playerHitboxFactor;
+            playerWidth *= playerHitboxFactor;
+            playerHeight *= playerHitboxFactor;
             playerX -= playerWidth/2;
             playerY -= playerHeight/2;
             let { x: particleX, y: particleY } = particle.values.position;
