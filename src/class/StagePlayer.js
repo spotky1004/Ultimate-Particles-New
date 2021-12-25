@@ -1,6 +1,20 @@
 import loadStage from "../loadStage.js";
 import Stage from "./Stage.js";
 
+/** @type {Object.<string, boolean>} */
+const keyPressed = {};
+document.addEventListener("keydown", function (e) {
+  keyPressed[e.code] = true;
+});
+document.addEventListener("keyup", function (e) {
+  keyPressed[e.code] = false;
+});
+document.addEventListener("blur", function (e) {
+  for (const code in keyPressed) {
+    keyPressed[code] = false;
+  }
+});
+
 class stagePlayer {
   constructor() {
     /** @type {Stage!} */
@@ -50,7 +64,7 @@ class stagePlayer {
     const timeNow = new Date().getTime();
     const dt = timeNow - this.lastTick;
     this.lastTick = timeNow;
-    this.stage.tick(dt);
+    this.stage.tick(dt, true, keyPressed);
 
     return this;
   }
