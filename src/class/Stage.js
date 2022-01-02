@@ -96,7 +96,7 @@ class Stage {
     
     let globalVariables = this.playingData.globalVariables.getValue({t: time, ...this.playingData.globalVariables});
     globalVariables.playTime = time;
-    globalVariables.dt = dt;
+    globalVariables.dt = dt/1000;
 
     /** @type {[Action, number, number][]} */
     let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
