@@ -1,4 +1,4 @@
-import testStage from "../testStages/second.js";
+import testStage from "../testStages/fourth.js";
 import StagePlayer from "./class/StagePlayer.js";
 
 const stagePlayer = await new StagePlayer().load(testStage);
