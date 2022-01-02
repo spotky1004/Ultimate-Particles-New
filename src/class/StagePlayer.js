@@ -20,6 +20,8 @@ class stagePlayer {
     /** @type {Stage!} */
     this.stage = null;
     /** @type {number} */
+    this.stageStuck = 0;
+    /** @type {number} */
     this.lastTick = new Date().getTime();
     /** @type {boolean} */
     this.loadingStage = false;
@@ -64,7 +66,14 @@ class stagePlayer {
     const timeNow = new Date().getTime();
     const dt = timeNow - this.lastTick;
     this.lastTick = timeNow;
-    this.stage.tick(dt, true, keyPressed);
+    const result = this.stage.tick(dt, true, keyPressed);
+    if (!result) {
+      this.stageStuck++;
+      if (this.stageStuck >= 10) {
+        alert("Terminated stage due to infinite loop");
+        this.unload();
+      }
+    }
 
     return this;
   }
