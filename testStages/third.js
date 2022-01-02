@@ -126,7 +126,7 @@ addAction(
 );
 addAction(
   "SetGlobalVariable",
-  2100,
+  2000,
   {
     name: "mana",
     value: "min(400, $mana + 0.001*$i)",

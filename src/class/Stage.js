@@ -94,7 +94,7 @@ class Stage {
 
     /** @type {[Action, number, number][]} */
     let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
-    // Perform action
+    // Prepare to perform action
     for (let i = this.playingData.actionIdx; i < this.actions.length; i++) {
       loops++;
       if (loops > LOOP_LIMIT) return false;
@@ -154,6 +154,10 @@ class Stage {
 
       const [ action, loopCount, offset, innerLoop ] = actionsToPerform[i];
       action.perform(this, loopCount, offset, innerLoop, globalVariables);
+
+      if (action.type === "SetGlobalVariable") {
+        globalVariables[action.data.name] = this.playingData.globalVariables.value[action.data.name].getValue({t: time, ...this.playingData.globalVariables});
+      }
     }
 
     // Player move
