@@ -162,7 +162,7 @@ class Stage {
       action.perform(this, loopCount, offset, innerLoop, globalVariables);
 
       if (action.type === "SetGlobalVariable") {
-        globalVariables[action.data.name] = this.playingData.globalVariables.value[action.data.name].getValue({t: time, ...this.playingData.globalVariables});
+        globalVariables[action.data.name] = this.playingData.globalVariables.value[action.data.name].getValue(globalVariables);
       }
     }
 
@@ -241,7 +241,7 @@ class Stage {
               playerHeight + playerY > particleY
             ) {
               this.playingData.globalVariables.changeValue({ key: "life", value: Math.max(0, globalVariables.life - 1) });
-              globalVariables = this.playingData.globalVariables.getValue(globalVariables);
+              globalVariables.life = this.playingData.globalVariables.value.life.getValue(globalVariables);
               particlesToRemove.push(particle);
               continue outLoop;
             }
