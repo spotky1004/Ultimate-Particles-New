@@ -14,8 +14,10 @@ import drawCanvas from "../drawCanvas.js";
 /**
  * @typedef StageAttribute
  * @property {string} bgColor
- * @property {number} outOfBounds
+ * @property {number} outOfBoundsFactor
  * @property {number} playerHitboxFactor
+ * @property {number} width
+ * @property {number} height
  */
 
 class Stage {
@@ -56,8 +58,10 @@ class Stage {
       time: 0,
       stageAttribute: {
         bgColor: "#ffc966",
-        outOfBounds: 200,
-        playerHitboxFactor: 1
+        outOfBoundsFactor: 2,
+        width: 100,
+        height: 100,
+        playerHitboxFactor: 1,
       },
       particleGroups: {
         player: new ParticleGroup(),
@@ -184,16 +188,28 @@ class Stage {
     }
 
     // Particle loop
+    const outOfBoundsFactor = this.playingData.stageAttribute.outOfBoundsFactor;
+    const { width: stageWidth, height: stageHeight } = this.playingData.stageAttribute;
     for (const groupName in this.playingData.particleGroups) {
       loops++;
       if (loops > LOOP_LIMIT) return false;
       
       const particleGroup = this.playingData.particleGroups[groupName];
-      particleGroup.destroyOutOfBounds(this.playingData.stageAttribute.outOfBounds);
       const particles = particleGroup.particles;
       const particlesToRemove = [];
       outLoop: for (let i = 0; i < particles.length; i++) {
         const particle = particles[i];
+
+        // Check OutOfBounds
+        if (
+          particle.values.position.x > stageWidth * outOfBoundsFactor ||
+          particle.values.position.x < stageWidth * -(outOfBoundsFactor-1) ||
+          particle.values.position.y > stageHeight * outOfBoundsFactor ||
+          particle.values.position.y < stageHeight * -(outOfBoundsFactor-1)
+        ) {
+          particlesToRemove.push(particle);
+          continue;
+        }
 
         // Update particles
         particle.tick(dt, globalVariables);
@@ -215,6 +231,7 @@ class Stage {
             particleX -= particleWidth/2;
             particleY -= particleHeight/2;
 
+            // Player collision
             if (
               playerX < particleX + particleWidth &&
               playerX + playerWidth > particleX &&

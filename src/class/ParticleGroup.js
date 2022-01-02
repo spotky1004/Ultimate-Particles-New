@@ -19,20 +19,6 @@ class ParticleGroup {
   }
 
   /**
-   * @param {number} outOfBounds 
-   */
-  destroyOutOfBounds(outOfBounds) {
-    let particles = [];
-    for (let i = 0; i < this.particles.length; i++) {
-      const particle = this.particles[i];
-      const position = particle.values.position;
-      if (Math.max(Math.abs(position.x), Math.abs(position.y)) > outOfBounds) continue;
-      particles.push(particle);
-    }
-    this.particles = particles;
-  }
-
-  /**
    * @template {keyof typeof EventTypeEnum} T
    * @param {T} type 
    * @param {EventDatas[T]} data 
