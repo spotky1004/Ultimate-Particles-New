@@ -94,8 +94,8 @@ class Particle {
 
   updateValues(variables) {
     const _variables = {};
-    for (const key in this.variables) _variables[key] = this.variables[key];
     for (const key in variables) _variables[key] = variables[key];
+    for (const key in this.variables) _variables[key] = this.variables[key];
 
     this.values = {
       group: this.group,
