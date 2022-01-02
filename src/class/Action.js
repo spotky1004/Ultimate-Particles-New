@@ -80,20 +80,23 @@ class Action {
    * @param {number} innerLoop
    */
   perform(stage, loop=0, timeOffset=0, innerLoop=0, globalVariables={}) {
-    if (this.type === "CreateParticle") {
-      const variables = {
+    const variables = Object.assign(
+      {},
+      globalVariables,
+      {
         t: timeOffset,
-        ...(this.data.variables ?? {}),
         i: loop,
-        j: innerLoop,
-      };
+        j: innerLoop
+      },
+    );
+
+    if (this.type === "CreateParticle") {
       stage.createParticle(new Particle({ ...this.data, variables }));
     } else if (this.type === "ParticleGroupEvent") {
       stage.emitGroupEvent(this.data.name, this.data.type, this.data.data);
     } else if (this.type === "ChangeStageAttributes") {
-      stage.playingData.stageAttribute[this.data.name] = new Value(this.data.value).getValue({ i: loop });
+      stage.playingData.stageAttribute[this.data.name] = new Value(this.data.value).getValue(variables);
     } else if (this.type === "SetGlobalVariable") {
-      const variables = {...globalVariables, i: loop, j: innerLoop};
       const value = new Value(this.data.value).getValue(variables);
       stage.playingData.globalVariables.changeValue({
         key: this.data.name,
