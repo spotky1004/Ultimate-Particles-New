@@ -42,7 +42,7 @@ class Particle {
   /**
    * @param {ParticleOptions} options 
    */
-  constructor(options) {
+  constructor(options, globalVariables) {
     const variables = {
       t: 0,
       ...options.variables
@@ -50,7 +50,7 @@ class Particle {
     /** @type {Object.<string, number | string>} */
     this.variables = {};
     for (const key in variables) {
-      this.variables[key] = new Value(variables[key]).getValue(this.variables);
+      this.variables[key] = new Value(variables[key]).getValue(Object.assign(this.variables, globalVariables));
     }
     /** @type {ParticleValues} */
     this.values = {};

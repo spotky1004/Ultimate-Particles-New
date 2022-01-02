@@ -91,7 +91,7 @@ class Action {
     );
 
     if (this.type === "CreateParticle") {
-      stage.createParticle(new Particle({ ...this.data, variables }));
+      stage.createParticle(new Particle({ ...this.data, t: timeOffset, i: loop, j: innerLoop }, variables));
     } else if (this.type === "ParticleGroupEvent") {
       stage.emitGroupEvent(this.data.name, this.data.type, this.data.data);
     } else if (this.type === "ChangeStageAttributes") {
