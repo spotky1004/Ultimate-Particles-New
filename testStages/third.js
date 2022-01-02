@@ -52,6 +52,18 @@ addAction(
   }
 );
 addAction(
+  "SetGlobalVariable",
+  0,
+  {
+    name: "life",
+    value: "min(10, $life + $dt)",
+  },
+  {
+    interval: 10,
+    loopCount: Infinity,
+  }
+);
+addAction(
   "CreateParticle",
   200,
   {
