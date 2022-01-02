@@ -129,7 +129,7 @@ class Stage {
       if (loopingAction.intervalUpdatedAt !== loopingAction.performCount) {
         loopingAction.interval = loopingAction.action.getLoopInterval(loopingAction.performCount);
       }
-      const bulkLoop = Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval );
+      const bulkLoop = loopingAction.interval > 0 ? Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval ) : this.maximumTickLength;
       const offsetOffset = (time - loopingAction.lastPerformed) % loopingAction.interval;
       for (let j = 0; j < bulkLoop; j++) {
         loops++;
