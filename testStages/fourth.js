@@ -201,7 +201,7 @@ addAction(
       x: "$posX",
       y: "$posY"
     },
-    speed: "$speed",
+    speed: "$speed+$t/1000",
     deg: "$deg",
     size: {
       height: "$size",
