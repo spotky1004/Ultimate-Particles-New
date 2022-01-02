@@ -41,7 +41,7 @@ class Action {
     this.data = {...(data ?? {})};
     /** @type {number} */
     this.rawInterval = looperData?.interval;
-    const loopInterval = this.rawInterval ?? Infinity;
+    const loopInterval = this.rawInterval ?? 0;
     this._loopInterval = new Value(loopInterval);
     this.loopCount = looperData?.loopCount ?? 1;
     this.rawInnerLoop = looperData?.innerLoop;
