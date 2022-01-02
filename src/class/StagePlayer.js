@@ -57,6 +57,8 @@ class stagePlayer {
   play() {
     if (this.stage === null) return;
     this.stage.play();
+    document.getElementById("status").innerHTML = "";
+    this.stageStuck = 0;
 
     return this;
   }
@@ -68,10 +70,14 @@ class stagePlayer {
     this.lastTick = timeNow;
     const result = this.stage.tick(dt, true, keyPressed);
     if (!result) {
-      this.stageStuck++;
-      if (this.stageStuck >= 10) {
-        alert("Terminated stage due to infinite loop");
-        this.unload();
+      if (this.stage.playing) {
+        this.stageStuck++;
+        if (this.stageStuck >= 10) {
+          alert("Terminated stage due to infinite loop");
+          this.unload();
+        }
+      } else {
+        this.play();
       }
     }
 
