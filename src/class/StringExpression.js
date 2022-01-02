@@ -199,6 +199,8 @@ class StringExpression {
     "hex": ([r, g, b]) => `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`,
     "hsl": ([h, s, l]) => `hsl(${h%360}, ${s}%, ${l}%)`,
 
+    "fix": ([x, p]) => typeof x === "number" ? x.toFixed(p) : null,
+
     "rand": () => Math.random(),
     "randr": ([min, max]) => min+Math.random()*(max-min),
     "randbool": () => Math.floor(Math.random()*2),
