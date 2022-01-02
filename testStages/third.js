@@ -55,8 +55,16 @@ addAction(
   "SetGlobalVariable",
   0,
   {
+    name: "maxLife",
+    value: "25",
+  }
+);
+addAction(
+  "SetGlobalVariable",
+  0,
+  {
     name: "life",
-    value: "min(10, $life + $dt)",
+    value: "min($maxLife, $life + $dt)",
   },
   {
     interval: 10,
@@ -141,7 +149,7 @@ addAction(
   2000,
   {
     name: "mana",
-    value: "min(400, $mana + 0.001*$i)",
+    value: "min($maxMana, $mana + 0.001*$i)",
   },
   {
     interval: 20,
