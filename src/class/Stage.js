@@ -17,10 +17,10 @@ import fixNumber from "../util/fixNumber.js";
  * @property {string} bgColor
  * @property {number} outOfBoundsFactor
  * @property {number} playerHitboxFactor
- * @property {number} width
- * @property {number} height
- * @property {number} posX
- * @property {number} posY
+ * @property {number} stageWidth
+ * @property {number} stageHeight
+ * @property {number} stageX
+ * @property {number} stageY
  */
 
 class Stage {
@@ -64,8 +64,8 @@ class Stage {
         outOfBoundsFactor: 2,
         width: 100,
         height: 100,
-        posX: 0,
-        posY: 0,
+        stageX: 0,
+        stageY: 0,
         playerHitboxFactor: 1,
       },
       particleGroups: {
@@ -94,10 +94,10 @@ class Stage {
     dt = Math.min(this.maximumTickLength, dt);
 
     // Fix stageAttribute
-    this.playingData.stageAttribute.width = fixNumber(this.playingData.stageAttribute.width, 0, 100, 100);
-    this.playingData.stageAttribute.height = fixNumber(this.playingData.stageAttribute.height, 0, 100, 100);
-    this.playingData.stageAttribute.posX = fixNumber(this.playingData.stageAttribute.posX, -999999, 999999, 0);
-    this.playingData.stageAttribute.posY = fixNumber(this.playingData.stageAttribute.posY, -999999, 999999, 0);
+    this.playingData.stageAttribute.stageWidth = fixNumber(this.playingData.stageAttribute.stageWidth, 0, 100, 100);
+    this.playingData.stageAttribute.stageHeight = fixNumber(this.playingData.stageAttribute.stageHeight, 0, 100, 100);
+    this.playingData.stageAttribute.stageX = fixNumber(this.playingData.stageAttribute.stageX, -999999, 999999, 0);
+    this.playingData.stageAttribute.stageY = fixNumber(this.playingData.stageAttribute.stageY, -999999, 999999, 0);
 
     // Init loop limit
     const LOOP_LIMIT = 10000;
@@ -110,10 +110,10 @@ class Stage {
     let globalVariables = this.playingData.globalVariables.getValue({t: time, ...this.playingData.globalVariables});
     globalVariables.playTime = time;
     globalVariables.dt = dt/1000;
-    globalVariables.stageWidth = this.playingData.stageAttribute.width;
-    globalVariables.stageHeight = this.playingData.stageAttribute.height;
-    globalVariables.stageX = this.playingData.stageAttribute.posX;
-    globalVariables.stageY = this.playingData.stageAttribute.posY;
+    globalVariables.stageWidth = this.playingData.stageAttribute.stageWidth;
+    globalVariables.stageHeight = this.playingData.stageAttribute.stageHeight;
+    globalVariables.stageX = this.playingData.stageAttribute.stageX;
+    globalVariables.stageY = this.playingData.stageAttribute.stageY;
 
     /** @type {[Action, number, number][]} */
     let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
@@ -184,8 +184,8 @@ class Stage {
     }
     
     // Player move
-    const { width: stageWidth, height: stageHeight } = this.playingData.stageAttribute;
-    const { posX: stageX, posY: stageY } = this.playingData.stageAttribute;
+    const { stageWidth, stageHeight } = this.playingData.stageAttribute;
+    const { stageX, stageY } = this.playingData.stageAttribute;
     const playerDirections = {
       up: Boolean(keyPressed.KeyW || keyPressed.ArrowUp),
       down: Boolean(keyPressed.KeyS || keyPressed.ArrowDown),
