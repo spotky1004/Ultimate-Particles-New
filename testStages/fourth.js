@@ -160,6 +160,31 @@ addAction(
 
 
 addAction(
+  "ChangeStageAttributes",
+  0,
+  {
+    name: "stageWidth",
+    value: "95+2.5*(sin($stageTime*250)^2)"
+  },
+  {
+    loopCount: Infinity,
+  }
+);
+addAction(
+  "ChangeStageAttributes",
+  0,
+  {
+    name: "stageX",
+    value: "-1.25*(sin($stageTime*250)^2)"
+  },
+  {
+    loopCount: Infinity,
+  }
+);
+
+
+
+addAction(
   "CreateParticle",
   0,
   {
