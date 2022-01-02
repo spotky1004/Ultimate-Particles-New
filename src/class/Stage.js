@@ -107,7 +107,7 @@ class Stage {
     this.playingData.time += dt;
     const time = this.playingData.time;
     
-    let globalVariables = this.playingData.globalVariables.getValue({t: time, ...this.playingData.globalVariables});
+    let globalVariables = this.playingData.globalVariables.getValue({t: time/1000, ...this.playingData.globalVariables});
     globalVariables.dt = dt/1000;
     globalVariables.stageTime = time/1000;
     globalVariables.stageWidth = this.playingData.stageAttribute.stageWidth;
@@ -192,8 +192,9 @@ class Stage {
       left: Boolean(keyPressed.KeyA || keyPressed.ArrowLeft),
       right: Boolean(keyPressed.KeyD || keyPressed.ArrowRight),
     }
+    const isBothDirections = Boolean((playerDirections.up ^ playerDirections.down) && (playerDirections.left ^ playerDirections.right));
     const focusMode = Boolean(keyPressed.ShiftLeft || keyPressed.ShiftRight);
-    const playerSpeedFactor = (focusMode ? 0.5 : 1);
+    const playerSpeedFactor = (focusMode ? 0.5 : 1) / (isBothDirections ? Math.SQRT2 : 1);
     const playerVec = {
       x: playerSpeedFactor * (playerDirections.right - playerDirections.left),
       y: playerSpeedFactor * (playerDirections.down - playerDirections.up)
