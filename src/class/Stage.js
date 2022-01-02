@@ -3,6 +3,7 @@ import Status from "./Status.js";
 import Value from "./Value.js";
 import ParticleGroup from "./ParticleGroup.js";
 import drawCanvas from "../drawCanvas.js";
+import fixNumber from "../util/fixNumber.js";
 
 /**
  * @typedef StageOptions
@@ -18,6 +19,8 @@ import drawCanvas from "../drawCanvas.js";
  * @property {number} playerHitboxFactor
  * @property {number} width
  * @property {number} height
+ * @property {number} posX
+ * @property {number} posY
  */
 
 class Stage {
@@ -61,6 +64,8 @@ class Stage {
         outOfBoundsFactor: 2,
         width: 100,
         height: 100,
+        posX: 0,
+        posY: 0,
         playerHitboxFactor: 1,
       },
       particleGroups: {
@@ -84,19 +89,31 @@ class Stage {
    * @returns {boolean}
    */
   tick(dt, updateCanvas=true, keyPressed={}) {
+    if (!this.playing) return;
+    
     dt = Math.min(this.maximumTickLength, dt);
 
-    if (!this.playing) return;
+    // Fix stageAttribute
+    this.playingData.stageAttribute.width = fixNumber(this.playingData.stageAttribute.width, 0, 100, 100);
+    this.playingData.stageAttribute.height = fixNumber(this.playingData.stageAttribute.height, 0, 100, 100);
+    this.playingData.stageAttribute.posX = fixNumber(this.playingData.stageAttribute.posX, -999999, 999999, 0);
+    this.playingData.stageAttribute.posY = fixNumber(this.playingData.stageAttribute.posY, -999999, 999999, 0);
 
+    // Init loop limit
     const LOOP_LIMIT = 10000;
     let loops = 0;
 
+    // GlobalVariables
     this.playingData.time += dt;
     const time = this.playingData.time;
     
     let globalVariables = this.playingData.globalVariables.getValue({t: time, ...this.playingData.globalVariables});
     globalVariables.playTime = time;
     globalVariables.dt = dt/1000;
+    globalVariables.stageWidth = this.playingData.stageAttribute.width;
+    globalVariables.stageHeight = this.playingData.stageAttribute.height;
+    globalVariables.stageX = this.playingData.stageAttribute.posX;
+    globalVariables.stageY = this.playingData.stageAttribute.posY;
 
     /** @type {[Action, number, number][]} */
     let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
@@ -165,8 +182,10 @@ class Stage {
         globalVariables[action.data.name] = this.playingData.globalVariables.value[action.data.name].getValue(globalVariables);
       }
     }
-
+    
     // Player move
+    const { width: stageWidth, height: stageHeight } = this.playingData.stageAttribute;
+    const { posX: stageX, posY: stageY } = this.playingData.stageAttribute;
     const playerDirections = {
       up: Boolean(keyPressed.KeyW || keyPressed.ArrowUp),
       down: Boolean(keyPressed.KeyS || keyPressed.ArrowDown),
@@ -184,14 +203,13 @@ class Stage {
       const particle = playerParticles[i];
       const speed = particle.values.speed;
       const size = particle.values.size;
-      particle.x = Math.min(100-size.width/2, Math.max(0+size.width/2, particle.x + speed*playerVec.x*dt/1000));
-      particle.y = Math.min(100-size.height/2, Math.max(0+size.height/2, particle.y + speed*playerVec.y*dt/1000));
+      particle.x = Math.min(stageWidth-size.width/2+stageX, Math.max(0+size.width/2+stageX, particle.x + speed*playerVec.x*dt/1000));
+      particle.y = Math.min(stageHeight-size.height/2+stageY, Math.max(0+size.height/2+stageY, particle.y + speed*playerVec.y*dt/1000));
       particle.updateValues(globalVariables);
     }
 
     // Particle loop
     const outOfBoundsFactor = this.playingData.stageAttribute.outOfBoundsFactor;
-    const { width: stageWidth, height: stageHeight } = this.playingData.stageAttribute;
     for (const groupName in this.playingData.particleGroups) {
       loops++;
       if (loops > LOOP_LIMIT) return false;
@@ -203,14 +221,16 @@ class Stage {
         const particle = particles[i];
 
         // Check OutOfBounds
-        if (
-          particle.values.position.x > stageWidth * outOfBoundsFactor ||
-          particle.values.position.x < stageWidth * -(outOfBoundsFactor-1) ||
-          particle.values.position.y > stageHeight * outOfBoundsFactor ||
-          particle.values.position.y < stageHeight * -(outOfBoundsFactor-1)
-        ) {
-          particlesToRemove.push(particle);
-          continue;
+        if (groupName !== "player") {
+          if (
+            (particle.values.position.x - stageX) > stageWidth * outOfBoundsFactor ||
+            (particle.values.position.x - stageX) < stageWidth * -(outOfBoundsFactor-1) ||
+            (particle.values.position.y - stageY) > stageHeight * outOfBoundsFactor ||
+            (particle.values.position.y - stageY) < stageHeight * -(outOfBoundsFactor-1)
+          ) {
+            particlesToRemove.push(particle);
+            continue;
+          }
         }
 
         // Update particles
