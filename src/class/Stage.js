@@ -95,7 +95,7 @@ class Stage {
     const time = this.playingData.time;
     
     let globalVariables = this.playingData.globalVariables.getValue({t: time, ...this.playingData.globalVariables});
-    globalVariables.t = time;
+    globalVariables.playTime = time;
     globalVariables.dt = dt;
 
     /** @type {[Action, number, number][]} */
