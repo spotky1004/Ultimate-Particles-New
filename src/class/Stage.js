@@ -5,7 +5,7 @@ import Value from "./Value.js";
 import ParticleGroup from "./ParticleGroup.js";
 import drawCanvas from "../drawCanvas.js";
 import fixNumber from "../util/fixNumber.js";
-
+  
 /**
  * @typedef {ActionBase} AnyAction
  */
