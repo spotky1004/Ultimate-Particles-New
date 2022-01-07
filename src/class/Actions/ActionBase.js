@@ -36,8 +36,9 @@ class ActionBase {
     this.data = data;
     /** @type {number} */
     this.rawInterval = looperData?.interval;
+    const loopCount = looperData?.loopCount;
     /** @type {number} */
-    this.rawloopCount = looperData?.loopCount;
+    this.rawloopCount = loopCount === null ? Infinity : loopCount;
     /** @type {number} */
     this.rawInnerLoop = looperData?.innerLoop;
 
