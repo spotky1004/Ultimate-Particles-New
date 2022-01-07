@@ -56,7 +56,7 @@ class ActionBase {
   }
 
   export() {
-    return JSON.stringify({
+    return {
       type: (this.type ?? "Null").toString(),
       startTime: this.startTime,
       data: this.data,
@@ -65,11 +65,11 @@ class ActionBase {
         loopCount: this.rawloopCount,
         innerLoop: this.rawInnerLoop
       }
-    }, null, 2);
+    };
   }
 
   toString() {
-    return this.export();
+    return JSON.stringify(this.export(), null, 2);
   }
 
   /** @param {PerformParams} param0 */
