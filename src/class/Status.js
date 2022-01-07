@@ -13,12 +13,20 @@ class Status {
     }
   }
 
+  /**
+   * @param {string} name 
+   * @param {import("./StatusItem.js").StatusItemType} type 
+   * @param {import("./StatusItem.js").StatusItemData[import("./StatusItem.js").StatusItemType]} data 
+   */
   addItem(name, type, data) {
     const item = new StatusItem(name, type, data);
     this.items.push(item);
     this.ele.appendChild(item.ele);
   }
 
+  /**
+   * @param {string} name 
+   */
   removeItem(name) {
     const toRemove = this.items.findIndex(item => item.name === name);
     if (toRemove !== -1) {
