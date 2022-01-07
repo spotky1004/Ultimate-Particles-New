@@ -23,11 +23,11 @@ class ActionBase {
    * @param {Object.<string, any>} param0.data 
    * @param {LooperData} param0.looperData 
    */
-  constructor({ type, startTime=0, data={}, looperData={} }) {
+  constructor({ type="Null", startTime=0, data={}, looperData={} }) {
     /** @type {string} */
     this.type = type;
     /** @type {number} */
-    this.startTime = startTime;
+    this.startTime = Number(startTime);
     /** @type {Object.<string, any>} */
     this.data = data;
     /** @type {number} */
@@ -41,7 +41,7 @@ class ActionBase {
       interval: this.rawInterval ?? 0,
       loopCount: this.rawloopCount ?? 1,
       innerLoop: this.rawInnerLoop ?? 1
-    }
+    };
 
     /** @type {Value<_looperData>} */
     this._looperData = new Value(_looperData);
@@ -52,11 +52,20 @@ class ActionBase {
   }
 
   export() {
-    return [this.type, this.time, this.data, {interval: this.rawInterval, loopCount: this.rawloopCount, innerLoop: this.rawInnerLoop}];
+    return [
+      (this.type ?? "Null").toString(),
+      this.startTime,
+      JSON.stringify(this.data, null, 2),
+      JSON.stringify({
+        interval: this.rawInterval,
+        loopCount: this.rawloopCount,
+        innerLoop: this.rawInnerLoop
+      }, null, 2)
+    ];
   }
 
   toString() {
-    return this.export().toString();
+    return this.export().join(",\n");
   }
 
   /** @param {PerformParams} param0 */
