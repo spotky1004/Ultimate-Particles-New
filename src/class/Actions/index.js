@@ -4,6 +4,18 @@ export { default as ChangeStageAttribute } from "./ChangeStageAttribute.js";
 export { default as SetGlobalVariable } from "./SetGlobalVariable.js";
 export { default as AddStatus } from "./AddStatus.js";
 
+const ActionTypeEnum = {
+  CreateParticle: 0,
+  ParticleGroupEvent: 1,
+  ChangeStageAttribute: 2,
+  SetGlobalVariable: 3,
+  AddStatus: 4,
+}
+
+/**
+ * @typedef {keyof ActionTypeEnum} ActionType
+ */
+
 /**
  * @typedef ActionDatas
  * @property {import("./CreateParticle.js").ActionData} CreateParticle
