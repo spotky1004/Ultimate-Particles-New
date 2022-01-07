@@ -1,5 +1,4 @@
 import Stage from "./class/Stage.js";
-import Action from "./class/Action.js";
 
 function loadJSON(link) {
   return new Promise((resolve, reject) => {
