@@ -6,6 +6,14 @@ import Value from "../Value.js";
  * @property {number} loopCount
  * @property {number} innerLoop
  */
+/**
+ * @typedef PerformParams
+ * @property {import("../Stage.js").default} stage
+ * @property {number} loop
+ * @property {number} innerLoop
+ * @property {number} timeOffset
+ * @property {Object.<string, string | number>} globalVariables
+ */
 
 class ActionBase {
   /**
@@ -49,6 +57,25 @@ class ActionBase {
 
   toString() {
     return this.export().toString();
+  }
+
+  /** @param {PerformParams} param0 */
+  getVariables({ globalVariables={}, timeOffset=0, loop=0, innerLoop=0 }) {
+    return Object.assign(
+      {},
+      globalVariables,
+      {
+        t: timeOffset,
+        i: loop,
+        j: innerLoop
+      },
+    );
+  }
+
+  /** @param {PerformParams} param0 */
+  perform({ stage, loop=0, innerLoop=0, timeOffset=0, globalVariables={} }) {
+    const variables = this.getVariables(arguments[0]);
+    variables, stage, loop, innerLoop, timeOffset, globalVariables;
   }
 }
 
