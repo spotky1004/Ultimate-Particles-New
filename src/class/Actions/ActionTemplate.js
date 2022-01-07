@@ -9,7 +9,7 @@ class ActionTemplate extends ActionBase {
    * @param {Omit<import("./ActionBase.js").ActionBaseParams, "data"> & { data: ActionData }} param0 
    */
   constructor({ data }) {
-    super(arguments[0]);
+    super({ ...arguments[0], type: "ActionTemplate" });
 
     /** @type {ActionData} */
     this.data = data;

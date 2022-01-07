@@ -24,11 +24,11 @@ class AddStatus extends ActionBase {
    * @param {Omit<import("./ActionBase.js").ActionBaseParams, "data"> & { data: _ActionData }} param0 
    */
 
-  constructor({ data: { type, name, data } = {} }) {
-    super(arguments[0]);
+  constructor({ data }) {
+    super({ ...arguments[0], type: "AddStatus" });
 
     /** @type {_ActionData} */
-    this.data = { type, name, data };
+    this.data = data;
   }
 
   /**

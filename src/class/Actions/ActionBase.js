@@ -27,7 +27,7 @@ class ActionBase {
   /**
    * @param {ActionBaseParams} param0
    */
-  constructor({ type="Null", startTime=0, data={}, looperData={} }) {
+  constructor({ type="ActionBase", startTime=0, data={}, looperData={} }) {
     /** @type {string} */
     this.type = type;
     /** @type {number} */
