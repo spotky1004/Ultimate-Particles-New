@@ -15,13 +15,17 @@ import Value from "../Value.js";
  * @property {Object.<string, string | number>} globalVariables
  */
 
+/**
+ * @typedef ActionBaseParams
+ * @property {string} type
+ * @property {number} startTime
+ * @property {Object.<string, any>} data
+ * @property {LooperData} looperData
+ */
+
 class ActionBase {
   /**
-   * @param {object} param0
-   * @param {string} param0.type
-   * @param {number} param0.startTime 
-   * @param {Object.<string, any>} param0.data 
-   * @param {LooperData} param0.looperData 
+   * @param {ActionBaseParams} param0
    */
   constructor({ type="Null", startTime=0, data={}, looperData={} }) {
     /** @type {string} */

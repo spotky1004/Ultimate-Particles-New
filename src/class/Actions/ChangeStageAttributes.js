@@ -8,8 +8,7 @@ import ActionBase from "./ActionBase.js";
 
 class ChangeStageAttribute extends ActionBase {
   /**
-   * @param {object} param0 
-   * @param {ActionData} param0.data
+   * @param {Omit<import("./ActionBase.js").ActionBaseParams, "data"> & { data: ActionData }} param0 
    */
   constructor({ data }) {
     super(arguments[0]);

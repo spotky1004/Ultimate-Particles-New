@@ -16,16 +16,17 @@ import ActionBase from "./ActionBase.js";
  */
 class ParticleGroupEvent extends ActionBase {
   /**
-   * @param {object} param0 
-   * @param {object} param0.data
-   * @param {T} param0.data.type
-   * @param {string} param0.data.name
-   * @param {ParticleGroupEventDatas[T]} param0.data.data
+   * @typedef _ActionData
+   * @property {T} type
+   * @property {string} name
+   * @property {ParticleGroupEventDatas[T]} data
+   * 
+   * @param {Omit<import("./ActionBase.js").ActionBaseParams, "data"> & { data: _ActionData }} param0 
    */
   constructor({ data: { type, name, data } = {} }) {
     super(arguments[0]);
 
-    /** @type {{ type: T, name: string, data: ParticleGroupEventDatas[T] }} */
+    /** @type {_ActionData} */
     this.data = { type, name, data };
   }
 
@@ -41,3 +42,5 @@ class ParticleGroupEvent extends ActionBase {
 window.ParticleGroupEvent = ParticleGroupEvent;
 
 export default ParticleGroupEvent;
+
+

@@ -16,16 +16,18 @@ import ActionBase from "./ActionBase.js";
  */
 class AddStatus extends ActionBase {
   /**
-   * @param {object} param0 
-   * @param {object} param0.data
-   * @param {T} param0.data.type
-   * @param {string} param0.data.name
-   * @param {StatusItemData[T]} param0.data.data
+   * @typedef _ActionData
+   * @property {T} type
+   * @property {string} name
+   * @property {StatusItemData[T]} data
+   * 
+   * @param {Omit<import("./ActionBase.js").ActionBaseParams, "data"> & { data: _ActionData }} param0 
    */
+
   constructor({ data: { type, name, data } = {} }) {
     super(arguments[0]);
 
-    /** @type {{ type: T, name: string, data: StatusItemData[T] }} */
+    /** @type {_ActionData} */
     this.data = { type, name, data };
   }
 
