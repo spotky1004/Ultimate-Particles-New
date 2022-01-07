@@ -1,5 +1,5 @@
 import Stage from "../src/class/Stage.js";
-import Action from "../src/class/Action.js";
+import * as Actions from "../src/class/Actions/index.js";
 
 /** @type {import("../src/class/Stage.js").StageOptions} */
 let stageData = {
@@ -7,17 +7,18 @@ let stageData = {
   actions: []
 };
 
-let actionDatas = [];
-
 /**
- * @template {keyof import("../src/class/Action.js").ActionDatas} T
+ * @template {keyof typeof Actions} T
  * @param {T} type 
- * @param {number} time 
- * @param {import("../src/class/Action.js").ActionDatas[T]} data 
- * @param {import("../src/class/Action.js").ActionLooper} looperData 
+ * @param {number} startTime 
+ * @param {import("../src/class/Actions/index.js").ActionDatas[T]} data 
+ * @param {import("../src/class/Actions/ActionBase.js").LooperData} looperData 
  */
-function addAction(type, time, data, looperData) {
-  actionDatas.push([...arguments])
+function addAction(type, startTime, data, looperData) {
+  const actionData = {type, startTime, data, looperData};
+  const Action = Actions[type];
+  const action = new Action(actionData);
+  stageData.actions.push(JSON.parse(action.toString()));
 }
 
 addAction(
@@ -123,7 +124,7 @@ addAction(
   }
 );
 addAction(
-  "ChangeStageAttributes",
+  "ChangeStageAttribute",
   0,
   {
     name: "bgColor",
@@ -146,7 +147,7 @@ addAction(
   }
 );
 addAction(
-  "ChangeStageAttributes",
+  "ChangeStageAttribute",
   0,
   {
     name: "stageY",
@@ -160,7 +161,7 @@ addAction(
 
 
 addAction(
-  "ChangeStageAttributes",
+  "ChangeStageAttribute",
   0,
   {
     name: "stageWidth",
@@ -171,7 +172,7 @@ addAction(
   }
 );
 addAction(
-  "ChangeStageAttributes",
+  "ChangeStageAttribute",
   0,
   {
     name: "stageX",
@@ -215,7 +216,6 @@ addAction(
   }
 )
 
-stageData.actions = actionDatas.map(data => new Action(...data));
 let stage = new Stage(stageData);
 console.log(stage.toString());
 export default stage;
