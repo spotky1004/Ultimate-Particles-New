@@ -9,11 +9,11 @@ import Value from "../Value.js";
 
 class ActionBase {
   /**
-   * @param {object} obj
-   * @param {string} obj.type
-   * @param {number} obj.startTime 
-   * @param {Object.<string, any>} obj.data 
-   * @param {LooperData} obj.looperData 
+   * @param {object} param0
+   * @param {string} param0.type
+   * @param {number} param0.startTime 
+   * @param {Object.<string, any>} param0.data 
+   * @param {LooperData} param0.looperData 
    */
   constructor({ type, startTime=0, data={}, looperData={} }) {
     /** @type {string} */
