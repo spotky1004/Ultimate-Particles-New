@@ -56,20 +56,20 @@ class ActionBase {
   }
 
   export() {
-    return [
-      (this.type ?? "Null").toString(),
-      this.startTime,
-      JSON.stringify(this.data, null, 2),
-      JSON.stringify({
+    return JSON.stringify({
+      type: (this.type ?? "Null").toString(),
+      startTime: this.startTime,
+      data: this.data,
+      looperData: {
         interval: this.rawInterval,
         loopCount: this.rawloopCount,
         innerLoop: this.rawInnerLoop
-      }, null, 2)
-    ];
+      }
+    }, null, 2);
   }
 
   toString() {
-    return this.export().join(",\n");
+    return this.export();
   }
 
   /** @param {PerformParams} param0 */
