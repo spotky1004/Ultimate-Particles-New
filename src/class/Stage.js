@@ -163,7 +163,7 @@ class Stage {
         }
         loopingAction.lastPerformed += loopingAction.interval;
         loopingAction.performCount++;
-        if (loopingAction.performCount >= loopingAction.action.loopCount) {
+        if (loopingAction.performCount >= actionLooperData.loopCount) {
           this.playingData.loopingActions.splice(i, 1);
           i--;
           break;
