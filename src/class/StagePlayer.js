@@ -83,7 +83,7 @@ class stagePlayer {
   }
 
   tick() {
-    if (!this.stage || !this.stage.playing) return;
+    if (!this.stage?.playing) return;
     const timeNow = new Date().getTime();
     const dt = timeNow - this.lastTick;
     this.lastTick = timeNow;
