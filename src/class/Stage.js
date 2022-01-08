@@ -7,7 +7,7 @@ import drawCanvas from "../drawCanvas.js";
 import fixNumber from "../util/fixNumber.js";
   
 /**
- * @typedef {ActionBase} AnyAction
+ * @typedef {import("./Actions/index.js").AnyAction} AnyAction
  */
 /**
  * @typedef StageOptions

@@ -4,16 +4,17 @@ export { default as ChangeStageAttribute } from "./ChangeStageAttribute.js";
 export { default as SetGlobalVariable } from "./SetGlobalVariable.js";
 export { default as AddStatus } from "./AddStatus.js";
 
-const ActionTypeEnum = {
-  CreateParticle: 0,
-  ParticleGroupEvent: 1,
-  ChangeStageAttribute: 2,
-  SetGlobalVariable: 3,
-  AddStatus: 4,
-}
-
 /**
- * @typedef {keyof ActionTypeEnum} ActionType
+ * @typedef Actions
+ * @property {import("./CreateParticle.js").default} CreateParticle
+ * @property {import("./ParticleGroupEvent.js").default} ParticleGroupEvent
+ * @property {import("./ChangeStageAttribute.js").default} ChangeStageAttribute
+ * @property {import("./SetGlobalVariable.js").default} SetGlobalVariable
+ * @property {import("./AddStatus.js").default} AddStatus
+ */
+/**
+ * @typedef {keyof Actions} ActionType
+ * @typedef {Actions[ActionType]} AnyAction
  */
 
 /**
