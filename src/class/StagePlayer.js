@@ -89,7 +89,7 @@ class stagePlayer {
     this.lastTick = timeNow;
     const result = this.stage.tick(dt, true, keyPressed);
     if (!result) {
-      if (this.stage.playing) {
+      if (this.stage?.playing) {
         this.stageStuck++;
         if (this.stageStuck >= 10) {
           alert("Terminated stage due to infinite loop");
@@ -104,14 +104,14 @@ class stagePlayer {
   }
 
   stop() {
-    if (!this.stage.playing) return;
+    if (!this.stage?.playing) return;
     this.stage.stop();
 
     return this;
   }
 
   continue() {
-    if (this.stage.playing) return;
+    if (this.stage?.playing) return;
     this.stage.continue();
 
     return this;
