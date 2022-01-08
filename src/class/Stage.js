@@ -41,7 +41,6 @@ class Stage {
      * @property {AnyAction} action
      * @property {number} lastPerformed
      * @property {number} performCount
-     * @property {import("./Action.js").ActionLooper} interval
      */
     /**
      * @typedef PlayingData
@@ -132,8 +131,7 @@ class Stage {
         this.playingData.loopingActions.push({
           action,
           lastPerformed: action.startTime,
-          performCount: 1,
-          interval: null,
+          performCount: 1
         });
       }
       this.playingData.actionIdx++;
@@ -146,9 +144,8 @@ class Stage {
 
       const loopingAction = this.playingData.loopingActions[i];
       const actionLooperData = loopingAction.action.getLooperData(loopingAction.performCount);
-      loopingAction.interval = actionLooperData.interval;
-      const bulkLoop = loopingAction.interval > 0 ? Math.floor( ( time - loopingAction.lastPerformed ) / loopingAction.interval ) : this.maximumTickLength;
-      const offsetOffset = (time - loopingAction.lastPerformed) % loopingAction.interval;
+      const bulkLoop = actionLooperData.interval > 0 ? Math.floor( ( time - loopingAction.lastPerformed ) / actionLooperData.interval ) : this.maximumTickLength;
+      const offsetOffset = (time - loopingAction.lastPerformed) % actionLooperData.interval;
       for (let j = 0; j < bulkLoop; j++) {
         loops++;
         if (loops > LOOP_LIMIT) return false;
@@ -158,10 +155,10 @@ class Stage {
           loops++;
           if (loops > LOOP_LIMIT) return false;
           
-          const offset = loopingAction.interval*(bulkLoop-j-1)+offsetOffset || 0;
+          const offset = actionLooperData.interval*(bulkLoop-j-1)+offsetOffset || 0;
           actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset, k ]);
         }
-        loopingAction.lastPerformed += loopingAction.interval;
+        loopingAction.lastPerformed += actionLooperData.interval;
         loopingAction.performCount++;
         if (loopingAction.performCount >= actionLooperData.loopCount) {
           this.playingData.loopingActions.splice(i, 1);
