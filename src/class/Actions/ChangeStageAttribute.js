@@ -2,9 +2,13 @@ import Value from "../Value.js";
 import ActionBase from "./ActionBase.js";
 
 /**
- * @typedef {object} ActionData
+ * @typedef ActionData
  * @property {keyof import("../Stage.js").StageAttribute} name
  * @property {number | string} value
+ */
+/**
+ * @typedef OptimizationData
+ * @property {Value<number | string>} value
  */
 
 class ChangeStageAttribute extends ActionBase {

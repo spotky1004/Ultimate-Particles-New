@@ -50,6 +50,9 @@ class ActionBase {
 
     /** @type {Value<_looperData>} */
     this._looperData = new Value(_looperData);
+
+    /** @type {Object.<string, any>} */
+    this.optimizationData = {};
   }
 
   getLooperData(loopCount=0) {

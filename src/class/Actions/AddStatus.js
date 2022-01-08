@@ -10,6 +10,9 @@ import ActionBase from "./ActionBase.js";
  * @property {string} name
  * @property {StatusItemData[StatusItemType]} data
  */
+/**
+ * @typedef {Object.<string, any>} OptimizationData
+ */
 
 /**
  * @template {StatusItemType} T
@@ -29,6 +32,8 @@ class AddStatus extends ActionBase {
 
     /** @type {_ActionData} */
     this.data = data;
+    /** @type {OptimizationData} */
+    this.optimizationData = {};
   }
 
   /**

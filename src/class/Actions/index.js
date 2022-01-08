@@ -24,3 +24,11 @@ const ActionTypeEnum = {
  * @property {import("./SetGlobalVariable.js").ActionData} SetGlobalVariable
  * @property {import("./AddStatus.js").ActionData} AddStatus
  */
+/**
+ * @typedef OptimizationDatas
+ * @property {import("./CreateParticle.js").OptimizationData} CreateParticle
+ * @property {import("./ParticleGroupEvent.js").OptimizationData} ParticleGroupEvent
+ * @property {import("./ChangeStageAttribute.js").OptimizationData} ChangeStageAttribute
+ * @property {import("./SetGlobalVariable.js").OptimizationData} SetGlobalVariable
+ * @property {import("./AddStatus.js").OptimizationData} AddStatus
+ */

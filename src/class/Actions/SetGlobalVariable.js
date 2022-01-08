@@ -6,6 +6,9 @@ import Value from "../Value.js";
  * @property {string} name
  * @property {number | string} value
  */
+/**
+ * @typedef {Object.<string, any>} OptimizationData
+ */
 
 class SetGlobalVariable extends ActionBase {
   /**
@@ -16,6 +19,8 @@ class SetGlobalVariable extends ActionBase {
 
     /** @type {ActionData} */
     this.data = data;
+    /** @type {OptimizationData} */
+    this.optimizationData = {};
   }
 
   /**

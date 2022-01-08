@@ -10,6 +10,9 @@ import ActionBase from "./ActionBase.js";
  * @property {string} name
  * @property {ParticleGroupEventDatas[ParticleGroupEventTypes]} data
  */
+/**
+ * @typedef {Object.<string, any>} OptimizationData
+ */
 
 /**
  * @template {ParticleGroupEventTypes} T
@@ -28,6 +31,8 @@ class ParticleGroupEvent extends ActionBase {
     
     /** @type {_ActionData} */
     this.data = data;
+    /** @type {OptimizationData} */
+    this.optimizationData = {};
   }
 
   /**
@@ -42,5 +47,3 @@ class ParticleGroupEvent extends ActionBase {
 window.ParticleGroupEvent = ParticleGroupEvent;
 
 export default ParticleGroupEvent;
-
-

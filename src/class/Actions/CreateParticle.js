@@ -4,6 +4,9 @@ import Particle from "../Particle.js";
 /**
  * @typedef {import("../Particle.js").ParticleOptions} ActionData
  */
+/**
+ * @typedef OptimizationData
+ */
 
 class CreateParticle extends ActionBase {
   /**

@@ -3,6 +3,9 @@ import ActionBase from "./ActionBase.js";
 /**
  * @typedef {Object.<string, any>} ActionData
  */
+/**
+ * @typedef {Object.<string, any>} OptimizationData
+ */
 
 class ActionTemplate extends ActionBase {
   /**
@@ -13,6 +16,8 @@ class ActionTemplate extends ActionBase {
 
     /** @type {ActionData} */
     this.data = data;
+    /** @type {OptimizationData} */
+    this.optimizationData = {};
   }
 
   /**
