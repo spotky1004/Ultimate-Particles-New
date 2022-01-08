@@ -32,11 +32,6 @@ class Stage {
    * @param {StageOptions} options 
    */
   constructor(options) {
-    if (!(options.actions[0] instanceof ActionBase)) {
-      options.actions = [...options.actions].map(actionData => {
-        return new Actions[actionData.type](actionData);
-      });
-    }
     this.actions = options.actions.sort((a, b) => a.time - b.time);
     this.maximumTickLength = options.maximumTickLength ?? Math.ceil(1000/60);
     /** @type {boolean} */
@@ -308,6 +303,7 @@ class Stage {
   
   export() {
     const data = {
+      maximumTickLength: this.maximumTickLength,
       actions: []
     };
 

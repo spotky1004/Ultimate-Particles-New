@@ -1,6 +1,3 @@
-import Stage from "../src/class/Stage.js";
-import * as Actions from "../src/class/Actions/index.js";
-
 /** @type {import("../src/class/Stage.js").StageOptions} */
 let stageData = {
   maximumTickLength: 17,
@@ -8,7 +5,7 @@ let stageData = {
 };
 
 /**
- * @template {keyof typeof Actions} T
+ * @template {import("../src/class/Actions/index.js").ActionType} T
  * @param {T} type 
  * @param {number} startTime 
  * @param {import("../src/class/Actions/index.js").ActionDatas[T]} data 
@@ -16,9 +13,7 @@ let stageData = {
  */
 function addAction(type, startTime, data, looperData) {
   const actionData = {type, startTime, data, looperData};
-  const Action = Actions[type];
-  const action = new Action(actionData);
-  stageData.actions.push(JSON.parse(action.toString()));
+  stageData.actions.push(actionData);
 }
 
 addAction(
@@ -214,8 +209,8 @@ addAction(
     innerLoop: "min(20, $i/20)",
     loopCount: Infinity,
   }
-)
+);
 
-let stage = new Stage(stageData);
-console.log(stage.toString());
-export default stage;
+const stageToExport = JSON.stringify(stageData, null, 2);
+console.log(stageToExport);
+export default stageToExport;

@@ -22,8 +22,8 @@ function loadJSON(link) {
 }
 
 async function loadStage(link) {
-  const levelData = await loadJSON(link);
-  return new Stage(levelData);
+  const stageJSON = await loadJSON(link);
+  return stageJSON;
 }
 
 export default loadStage;

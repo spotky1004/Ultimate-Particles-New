@@ -13,8 +13,8 @@ export { default as AddStatus } from "./AddStatus.js";
  * @property {import("./AddStatus.js").default} AddStatus
  */
 /**
- * @typedef {keyof Actions} ActionType
- * @typedef {Actions[ActionType]} AnyAction
+ * @typedef {keyof Actions} ActionTypes
+ * @typedef {Actions[ActionTypes]} AnyAction
  */
 
 /**
