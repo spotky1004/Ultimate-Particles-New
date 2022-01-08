@@ -48,4 +48,6 @@ addAction(
   }
 );
 
-export default JSON.stringify(stageData, null, 2);
+const stageToExport = JSON.stringify(stageData, null, 2);
+console.log(stageToExport);
+export default stageToExport;
