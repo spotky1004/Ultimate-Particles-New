@@ -60,19 +60,19 @@ class Particle {
     this.group = options.group ?? "default";
     /** @type {ParticleValues["position"]} */
     const position = options.position ?? { x: 50, y: 50 };
-    this._position = new Value(position, this.variables);
+    this._position = new Value(position, this.constants);
     /** @type {ParticleValues["size"]} */
     const size = options.size ?? { width: 2, height: 2 };
-    this._size = new Value(size, this.variables);
+    this._size = new Value(size, this.constants);
     /** @type {ParticleValues["color"]} */
     const color = options.color ?? "#000";
-    this._color = new Value(color, this.variables);
+    this._color = new Value(color, this.constants);
     /** @type {ParticleValues["speed"]} */
     const speed = options.speed ?? 0;
-    this._speed = new Value(speed, this.variables);
+    this._speed = new Value(speed, this.constants);
     /** @type {ParticleValues["deg"]} */
     const deg = options.deg ?? null;
-    this._deg = new Value(deg, this.variables);
+    this._deg = new Value(deg, this.constants);
 
     this.updateValues();
   }
