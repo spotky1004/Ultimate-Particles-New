@@ -214,7 +214,10 @@ class StringExpression {
     "lte": ([a, b]) => a <= b,
     "eq": ([a, b]) => a === b,
 
-    "select": ([idx, ...v]) => (Array.isArray(v) ? v : [])[Math.floor(idx)] ?? null,
+    "select": ([idx, ...v]) => {
+      v = Array.isArray(v) ? v : []
+      return v[Math.floor(idx%v.length)] ?? null
+    },
   }
 
   /**
