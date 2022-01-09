@@ -110,16 +110,24 @@ class ActionScheduler {
     for (let i = this.actionIndex; i < actions.length; i++) {
       loops++;
       if (loops > LOOP_LIMIT) return false;
-
+      
       const action = actions[i];
       if (action.startTime > time) break;
-      this.addActionToPerform({
-        action,
-        loop: 0,
-        innerLoop: 0,
-        timeOffset: 0
-      });
-      const loopCount = action.getLooperData(1).loopCount;
+      
+      const actionLooperData = action.getLooperData(1);
+      if (actionLooperData.shouldPerform == false) continue;
+      const innerLoopCount = Math.floor(actionLooperData.innerLoop);
+      for (let j = 0; j < innerLoopCount; j++) {
+        loops++;
+        if (loops > LOOP_LIMIT) return false;
+        this.addActionToPerform({
+          action,
+          loop: 0,
+          innerLoop: j,
+          timeOffset: 0
+        });
+      }
+      const loopCount = actionLooperData.loopCount;
       if (loopCount >= 2) {
         this.addLoopingAction({
           action,
@@ -137,13 +145,14 @@ class ActionScheduler {
 
       const loopingAction = this.loopingActions[i];
       const actionLooperData = loopingAction.action.getLooperData(loopingAction.performCount);
+      if (actionLooperData.shouldPerform == false) continue;
       const bulkLoop = actionLooperData.interval > 0 ? Math.floor( ( time - loopingAction.lastPerformed ) / actionLooperData.interval ) : stage.maximumTickLength;
       const offsetOffset = (time - loopingAction.lastPerformed) % actionLooperData.interval;
       for (let j = 0; j < bulkLoop; j++) {
         loops++;
         if (loops > LOOP_LIMIT) return false;
 
-        const innerLoopCount = actionLooperData.innerLoop;
+        const innerLoopCount = Math.floor(actionLooperData.innerLoop);
         for (let k = 0; k < innerLoopCount; k++) {
           loops++;
           if (loops > LOOP_LIMIT) return false;
@@ -172,6 +181,16 @@ class ActionScheduler {
       if (loops > LOOP_LIMIT) return false;
 
       const { action, loop, offset, innerLoop } = this.actionsToPerform[i];
+      const globalVariablesToIncrement = action.incrementGlobal;
+      if (
+        globalVariablesToIncrement &&
+        typeof stage.playingData.globalVariables.value[globalVariablesToIncrement] !== "undefined"
+      ) {
+        stage.playingData.globalVariables.changeValue({
+          key:globalVariablesToIncrement,
+          value: globalVariables[globalVariablesToIncrement] + 1
+        });
+      }
       /** @type {import("./Actions/ActionBase.js").PerformParams} */
       const performParams = {
         stage,

@@ -207,7 +207,7 @@ addAction(
   },
   {
     interval: 300,
-    innerLoop: "min(20, $i/20)",
+    innerLoop: "min(20, $i/20+1)",
     loopCount: Infinity,
   }
 );

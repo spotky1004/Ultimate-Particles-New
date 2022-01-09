@@ -5,6 +5,8 @@ import Value from "../Value.js";
  * @property {number | string} interval
  * @property {number} loopCount
  * @property {number} innerLoop
+ * @property {number | string} shouldPerform
+ * @property {string} incrementGlobal
  */
 /**
  * @typedef PerformParams
@@ -42,10 +44,16 @@ class ActionBase {
     this.rawloopCount = loopCount === null ? Infinity : loopCount;
     /** @type {number} */
     this.rawInnerLoop = looperData?.innerLoop;
+    /** @type {number | string} */
+    this.rawShouldPerform = looperData?.shouldPerform;
+    /** @type {string} */
+    this.incrementGlobal = looperData?.incrementGlobal;
     const _looperData = {
       interval: this.rawInterval ?? 0,
       loopCount: this.rawloopCount ?? 1,
-      innerLoop: this.rawInnerLoop ?? 1
+      innerLoop: this.rawInnerLoop ?? 1,
+      shouldPerform: this.rawShouldPerform ?? true,
+      incrementGlobal: this.incrementGlobal
     };
     /** @type {Value<_looperData>} */
     this._looperData = new Value(_looperData);
@@ -64,7 +72,9 @@ class ActionBase {
       looperData: {
         interval: this.rawInterval,
         loopCount: this.rawloopCount,
-        innerLoop: this.rawInnerLoop
+        innerLoop: this.rawInnerLoop,
+        shouldPerform: this.rawShouldPerform,
+        incrementGlobal: this.incrementGlobal
       },
       groupName: this.groupName
     };
