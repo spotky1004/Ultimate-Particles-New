@@ -31,7 +31,9 @@ class Stage {
    * @param {StageOptions} options 
    */
   constructor(options) {
-    this.actions = options.actions.sort((a, b) => a.time - b.time);
+    /** @type {AnyAction[]} */
+    this.actions = options.actions;
+    /** @type {number} */
     this.maximumTickLength = options.maximumTickLength ?? Math.ceil(1000/60);
     /** @type {boolean} */
     this.playing = false;

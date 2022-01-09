@@ -28,7 +28,7 @@ class ActionBase {
   /**
    * @param {ActionBaseParams} param0
    */
-  constructor({ type="ActionBase", startTime=0, data={}, looperData={}, groupName="" }) {
+  constructor({ type="ActionBase", startTime=0, data={}, looperData={}, groupName="default" }) {
     /** @type {string} */
     this.type = type;
     /** @type {number} */
@@ -50,7 +50,7 @@ class ActionBase {
     /** @type {Value<_looperData>} */
     this._looperData = new Value(_looperData);
 
-    this.groupName = groupName || undefined;
+    this.groupName = groupName;
 
     /** @type {Object.<string, any>} */
     this.optimizationData = {};

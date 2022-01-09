@@ -1,3 +1,5 @@
+import compare from "../util/compare.js";
+
 /**
  * @typedef {import("./Stage.js").default} Stage
  * @typedef {import("./Actions/index.js").Actions} AnyAction
@@ -8,6 +10,13 @@
  * @property {number} lastPerformed
  * @property {number} performCount
  */
+/**
+ * @typedef ActionToPerform
+ * @property {AnyAction} action 
+ * @property {number} loop 
+ * @property {number} timeOffset 
+ * @property {number} innerLoop 
+ */
 
 class ActionScheduler {
   /** @param {Stage} stage */
@@ -15,12 +24,25 @@ class ActionScheduler {
     /** @type {typeof stage} */
     this.parent = stage;
 
-    /** @type {typeof stage.actions} */
-    this.actions = stage.actions;
+    /** @type {AnyAction[]} */
+    this.actions = [...stage.actions].sort((a, b) => a.startTime - b.startTime);
+    /** @type {Object.<string, AnyAction[]>} */
+    this.actionGroups = {};
+    for (let i = 0; i < this.actions.length; i++) {
+      const action = this.actions[i];
+      const group = action.groupName;
+      if (typeof this.actionGroups[group] === "undefined") {
+        this.actionGroups[group] = [];
+      }
+      this.actionGroups[group].push(action);
+    }
+
     /** @type {number} */
     this.actionIndex = 0;
     /** @type {LoopingAction[]} */
     this.loopingActions = [];
+    /** @type {ActionToPerform[]} */
+    this.actionsToPerform = [];
   }
 
   /**
@@ -36,29 +58,51 @@ class ActionScheduler {
   }
 
   /**
+   * @param {ActionToPerform} param0
+   */
+  addActionToPerform({ action, loop=0, innerLoop=0, timeOffset=0 }) {
+    this.actionsToPerform.push({
+      action,
+      loop,
+      innerLoop,
+      timeOffset
+    });
+  }
+
+  /**
+   * @param {string} name 
+   */
+  activeGroup(name) {
+
+  }
+
+  /**
    * @param {number} time
    * @param {Object.<string, number | string>} globalVariables
    * @returns {boolean}
    */
   tick(time, globalVariables={}) {
+    const actions = this.actionGroups["default"];
     const stage = this.parent;
 
     // Init loop limit
     const LOOP_LIMIT = 10000;
     let loops = 0;
 
-    /**
-     * @type {[AnyAction, number, number, number][]} - [Action, loop, timeOffset, innerLoop]
-     */
-    let actionsToPerform = [];
+    this.actionsToPerform = [];
     // Prepare to perform action
-    for (let i = this.actionIndex; i < stage.actions.length; i++) {
+    for (let i = this.actionIndex; i < actions.length; i++) {
       loops++;
       if (loops > LOOP_LIMIT) return false;
 
-      const action = stage.actions[i];
+      const action = actions[i];
       if (action.startTime > time) break;
-      actionsToPerform.push([ action, 0, 0, 0 ]);
+      this.addActionToPerform({
+        action,
+        loop: 0,
+        innerLoop: 0,
+        timeOffset: 0
+      });
       const loopCount = action.getLooperData(1).loopCount;
       if (loopCount >= 2) this.addLoopingAction(action, action.startTime);
       this.actionIndex++;
@@ -83,7 +127,12 @@ class ActionScheduler {
           if (loops > LOOP_LIMIT) return false;
           
           const offset = actionLooperData.interval*(bulkLoop-j-1)+offsetOffset || 0;
-          actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset, k ]);
+          this.addActionToPerform({
+            action: loopingAction.action,
+            loop: loopingAction.performCount,
+            innerLoop: k,
+            timeOffset: offset
+          });
         }
         loopingAction.lastPerformed += actionLooperData.interval;
         loopingAction.performCount++;
@@ -96,11 +145,11 @@ class ActionScheduler {
     this.loopingActions = this.loopingActions.filter(loopingAction => loopingAction);
 
     // Perform action
-    for (let i = 0; i < actionsToPerform.length; i++) {
+    for (let i = 0; i < this.actionsToPerform.length; i++) {
       loops++;
       if (loops > LOOP_LIMIT) return false;
 
-      const [ action, loopCount, offset, innerLoop ] = actionsToPerform[i];
+      const { action, loopCount, offset, innerLoop } = this.actionsToPerform[i];
       action.perform({
         stage,
         loop: loopCount,
