@@ -93,7 +93,7 @@ class Stage {
     dt = Math.min(this.maximumTickLength, dt);
 
     // Init loop limit
-    const LOOP_LIMIT = 10000;
+    const LOOP_LIMIT = 80000;
     let loops = 0;
     let wasSuccessful = true;
     
@@ -140,13 +140,12 @@ class Stage {
     // Particle loop
     const outOfBoundsFactor = this.playingData.stageAttribute.outOfBoundsFactor;
     for (const groupName in this.playingData.particleGroups) {
-      loops++;
-      if (loops > LOOP_LIMIT) return false;
-      
       const particleGroup = this.playingData.particleGroups[groupName];
       const particles = particleGroup.particles;
       const particlesToRemove = [];
       outLoop: for (let i = 0; i < particles.length; i++) {
+        loops++;
+        if (loops > LOOP_LIMIT) return false;
         const particle = particles[i];
 
         // Check OutOfBounds
