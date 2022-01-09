@@ -6,20 +6,21 @@ let stageData = {
 
 /**
  * @template {import("../src/class/Actions/index.js").ActionTypes} T
- * @param {T} type 
- * @param {number} startTime 
- * @param {import("../src/class/Actions/index.js").ActionDatas[T]} data 
- * @param {import("../src/class/Actions/ActionBase.js").LooperData} looperData 
+ * @param {object} param0
+ * @param {T} param0.type 
+ * @param {number} param0.startTime 
+ * @param {import("../src/class/Actions/index.js").ActionDatas[T]} param0.data 
+ * @param {import("../src/class/Actions/ActionBase.js").LooperData} param0.looperData 
+ * @param {string} param0.group
  */
-function addAction(type, startTime, data, looperData) {
-  const actionData = {type, startTime, data, looperData};
-  stageData.actions.push(actionData);
+function addAction({ type, startTime, data, looperData, group }) {
+  stageData.actions.push(arguments[0]);
 }
 
-addAction(
-  "CreateParticle",
-  0,
-  {
+addAction({
+  type: "CreateParticle",
+  startTime: 0,
+  data: {
     group: "player",
     color: "#f00",
     position: {
@@ -32,11 +33,11 @@ addAction(
       width: 2
     }
   }
-);
-addAction(
-  "AddStatus",
-  0,
-  {
+});
+addAction({
+  type: "AddStatus",
+  startTime: 0,
+  data: {
     name: "Life",
     type: "Progress",
     data: {
@@ -46,7 +47,7 @@ addAction(
       value: "$life"
     }
   }
-);
+})
 
 const stageToExport = JSON.stringify(stageData, null, 2);
 console.log(stageToExport);
