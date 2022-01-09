@@ -30,8 +30,10 @@ class ActionBase {
   constructor({ type="ActionBase", startTime=0, data={}, looperData={} }) {
     /** @type {string} */
     this.type = type;
-    /** @type {number} */
-    this.startTime = Number(startTime);
+    /** @type {number | string} */
+    this.rawStartTime = startTime;
+    /** @type {Value<number | string>} */
+    this._startTime = new Value(this.rawStartTime);
     /** @type {Object.<string, any>} */
     this.data = data;
     /** @type {number} */
@@ -55,14 +57,10 @@ class ActionBase {
     this.optimizationData = {};
   }
 
-  getLooperData(loopCount=0) {
-    return this._looperData.getValue({ i: loopCount });
-  }
-
   export() {
     return {
       type: (this.type ?? "Null").toString(),
-      startTime: this.startTime,
+      startTime: this.rawStartTime,
       data: this.data,
       looperData: {
         interval: this.rawInterval,
@@ -87,6 +85,18 @@ class ActionBase {
         j: innerLoop
       },
     );
+  }
+
+  /** @returns {number} */
+  getStartTime(globalVariables={}) {
+    const startTime = Number(this._startTime.getValue(globalVariables));
+    const isStartTimeVaild = !(isNaN(startTime) && isFinite(startTime));
+    console.log(this._startTime, isStartTimeVaild);
+    return isStartTimeVaild ? startTime : 0;
+  }
+
+  getLooperData(loopCount=0) {
+    return this._looperData.getValue({ i: loopCount });
   }
 
   /** @param {PerformParams} param0 */

@@ -1,11 +1,10 @@
 import ActionBase from "./Actions/ActionBase.js";
 import * as Actions from "./Actions/index.js";
-import Status from "./Status.js";
 import Value from "./Value.js";
 import ParticleGroup from "./ParticleGroup.js";
 import drawCanvas from "../drawCanvas.js";
 import fixNumber from "../util/fixNumber.js";
-  
+
 /**
  * @typedef {import("./Actions/index.js").AnyAction} AnyAction
  */
@@ -124,13 +123,14 @@ class Stage {
       if (loops > LOOP_LIMIT) return false;
 
       const action = this.actions[i];
-      if (action.startTime > time) break;
+      const startTime = action.getStartTime(globalVariables);
+      if (startTime > time) break;
       actionsToPerform.push([ action, 0, 0, 0 ]);
       const loopCount = action.getLooperData(1).loopCount;
       if (loopCount >= 2) {
         this.playingData.loopingActions.push({
           action,
-          lastPerformed: action.startTime,
+          lastPerformed: startTime,
           performCount: 1
         });
       }
