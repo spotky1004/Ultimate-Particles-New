@@ -55,8 +55,8 @@ class Stage {
       stageAttribute: {
         bgColor: "#ffc966",
         outOfBoundsFactor: 2,
-        width: 100,
-        height: 100,
+        stageWidth: 100,
+        stageHeight: 100,
         stageX: 0,
         stageY: 0,
         playerHitboxFactor: 1,
@@ -74,6 +74,13 @@ class Stage {
     };
   }
 
+  fixPlayingData() {
+    this.playingData.stageAttribute.stageWidth = fixNumber(this.playingData.stageAttribute.stageWidth, 0, 100, 100);
+    this.playingData.stageAttribute.stageHeight = fixNumber(this.playingData.stageAttribute.stageHeight, 0, 100, 100);
+    this.playingData.stageAttribute.stageX = fixNumber(this.playingData.stageAttribute.stageX, -999999, 999999, 0);
+    this.playingData.stageAttribute.stageY = fixNumber(this.playingData.stageAttribute.stageY, -999999, 999999, 0);
+  }
+
   /**
    * @param {number} dt 
    * @param {boolean} updateCanvas 
@@ -84,12 +91,6 @@ class Stage {
     if (!this.playing) return;
     
     dt = Math.min(this.maximumTickLength, dt);
-
-    // Fix stageAttribute
-    this.playingData.stageAttribute.stageWidth = fixNumber(this.playingData.stageAttribute.stageWidth, 0, 100, 100);
-    this.playingData.stageAttribute.stageHeight = fixNumber(this.playingData.stageAttribute.stageHeight, 0, 100, 100);
-    this.playingData.stageAttribute.stageX = fixNumber(this.playingData.stageAttribute.stageX, -999999, 999999, 0);
-    this.playingData.stageAttribute.stageY = fixNumber(this.playingData.stageAttribute.stageY, -999999, 999999, 0);
 
     // Init loop limit
     const LOOP_LIMIT = 10000;
@@ -201,6 +202,8 @@ class Stage {
       }
     }
 
+    // Fix playingData
+    this.fixPlayingData();
     
     // Update status
     this.playingData.status.update(globalVariables);
