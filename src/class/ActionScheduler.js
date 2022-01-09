@@ -158,7 +158,7 @@ class ActionScheduler {
         }
         loopingAction.lastPerformed += actionLooperData.interval;
         loopingAction.performCount++;
-        if (loopingAction.performCount >= actionLooperData.loopCount) {
+        if (loopingAction.performCount+1 >= actionLooperData.loopCount) {
           this.loopingActions[i] = null;
           break;
         }
