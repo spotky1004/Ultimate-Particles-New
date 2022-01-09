@@ -1,7 +1,7 @@
-import ActionBase from "./Actions/ActionBase.js";
-import * as Actions from "./Actions/index.js";
 import Value from "./Value.js";
 import ParticleGroup from "./ParticleGroup.js";
+import ActionScheduler from "./ActionScheduler.js";
+import Status from "./Status.js";
 import drawCanvas from "../drawCanvas.js";
 import fixNumber from "../util/fixNumber.js";
 
@@ -36,18 +36,11 @@ class Stage {
     /** @type {boolean} */
     this.playing = false;
     /**
-     * @typedef LoopingAction
-     * @property {AnyAction} action
-     * @property {number} lastPerformed
-     * @property {number} performCount
-     */
-    /**
      * @typedef PlayingData
      * @property {number} time
      * @property {StageAttribute} stageAttribute
      * @property {Object.<string, ParticleGroup>} particleGroups
-     * @property {number} actionIdx
-     * @property {LoopingAction[]} loopingActions
+     * @property {ActionScheduler} actionScheduler
      * @property {Value<Object.<string, (number | string)>>} globalVariables
      * @property {Status} status
      */
@@ -72,13 +65,12 @@ class Stage {
         player: new ParticleGroup(),
         default: new ParticleGroup()
       },
-      actionIdx: 0,
-      loopingActions: [],
+      actionScheduler: new ActionScheduler(this),
       globalVariables: new Value({
         life: 10,
         maxLife: 10,
       }),
-      status: new Status()
+      status: new Status(),
     };
   }
 
@@ -102,7 +94,8 @@ class Stage {
     // Init loop limit
     const LOOP_LIMIT = 10000;
     let loops = 0;
-
+    let wasSuccessful = true;
+    
     // GlobalVariables
     this.playingData.time += dt;
     const time = this.playingData.time;
@@ -114,75 +107,9 @@ class Stage {
     globalVariables.stageHeight = this.playingData.stageAttribute.stageHeight;
     globalVariables.stageX = this.playingData.stageAttribute.stageX;
     globalVariables.stageY = this.playingData.stageAttribute.stageY;
-
-    /** @type {[AnyAction, number, number, number][]} */
-    let actionsToPerform = []; // [Action, loop, timeOffset, innerLoop]
-    // Prepare to perform action
-    for (let i = this.playingData.actionIdx; i < this.actions.length; i++) {
-      loops++;
-      if (loops > LOOP_LIMIT) return false;
-
-      const action = this.actions[i];
-      const startTime = action.getStartTime(globalVariables);
-      if (startTime > time) break;
-      actionsToPerform.push([ action, 0, 0, 0 ]);
-      const loopCount = action.getLooperData(1).loopCount;
-      if (loopCount >= 2) {
-        this.playingData.loopingActions.push({
-          action,
-          lastPerformed: startTime,
-          performCount: 1
-        });
-      }
-      this.playingData.actionIdx++;
-    }
-
-    // Action looper
-    for (let i = 0; i < this.playingData.loopingActions.length; i++) {
-      loops++;
-      if (loops > LOOP_LIMIT) return false;
-
-      const loopingAction = this.playingData.loopingActions[i];
-      const actionLooperData = loopingAction.action.getLooperData(loopingAction.performCount);
-      const bulkLoop = actionLooperData.interval > 0 ? Math.floor( ( time - loopingAction.lastPerformed ) / actionLooperData.interval ) : this.maximumTickLength;
-      const offsetOffset = (time - loopingAction.lastPerformed) % actionLooperData.interval;
-      for (let j = 0; j < bulkLoop; j++) {
-        loops++;
-        if (loops > LOOP_LIMIT) return false;
-
-        const innerLoopCount = actionLooperData.innerLoop;
-        for (let k = 0; k < innerLoopCount; k++) {
-          loops++;
-          if (loops > LOOP_LIMIT) return false;
-          
-          const offset = actionLooperData.interval*(bulkLoop-j-1)+offsetOffset || 0;
-          actionsToPerform.push([ loopingAction.action, loopingAction.performCount, offset, k ]);
-        }
-        loopingAction.lastPerformed += actionLooperData.interval;
-        loopingAction.performCount++;
-        if (loopingAction.performCount >= actionLooperData.loopCount) {
-          this.playingData.loopingActions.splice(i, 1);
-          i--;
-          break;
-        }
-      }
-    }
-
-    // Perform action
-    for (let i = 0; i < actionsToPerform.length; i++) {
-      loops++;
-      if (loops > LOOP_LIMIT) return false;
-
-      const [ action, loopCount, offset, innerLoop ] = actionsToPerform[i];
-      action.perform({
-        stage: this,
-        loop: loopCount,
-        innerLoop,
-        timeOffset: offset,
-        globalVariables
-      });
-    }
     
+    wasSuccessful &= this.playingData.actionScheduler.tick(time, globalVariables);
+
     // Player move
     const { stageWidth, stageHeight } = this.playingData.stageAttribute;
     const { stageX, stageY } = this.playingData.stageAttribute;
@@ -286,7 +213,7 @@ class Stage {
       return false;
     }
 
-    return true;
+    return wasSuccessful;
   }
 
   

@@ -91,7 +91,6 @@ class ActionBase {
   getStartTime(globalVariables={}) {
     const startTime = Number(this._startTime.getValue(globalVariables));
     const isStartTimeVaild = !(isNaN(startTime) && isFinite(startTime));
-    console.log(this._startTime, isStartTimeVaild);
     return isStartTimeVaild ? startTime : 0;
   }
 
