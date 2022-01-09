@@ -16,11 +16,13 @@ class Value {
     /** @type {"simple" | "array" | "object"} */
     this.type = null;
 
-    if (typeof value === "number" || value === null || typeof value === "undefined") {
+    const valueType = typeof value;
+
+    if (valueType === "number" || valueType === "boolean" || valueType === "undefined" || value === null) {
       this.type = "simple";
       this.isValueFixed = true;
       this.value = value;
-    } else if (typeof value === "string") {
+    } else if (valueType === "string") {
       this.type = "simple";
       const expression = new StringExpression(value);
       if (!expression.isVaild) {
@@ -52,7 +54,7 @@ class Value {
 
       this.isValueFixed = isValuesAllFixed;
       this.value = value;
-    } else if (typeof value === "object" && value !== null) {
+    } else if (valueType === "object" && value !== null) {
       this.type = "object";
 
       value = {...value};
@@ -65,7 +67,7 @@ class Value {
       this.isValueFixed = isValuesAllFixed;
       this.value = value;
     }
-  }
+  } 
 
   /**
    * @param {object} obj
