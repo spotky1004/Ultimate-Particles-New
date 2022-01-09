@@ -2,7 +2,7 @@ import compare from "../util/compare.js";
 
 /**
  * @typedef {import("./Stage.js").default} Stage
- * @typedef {import("./Actions/index.js").Actions} AnyAction
+ * @typedef {import("./Actions/index.js").AnyAction} AnyAction
  */
 /**
  * @typedef LoopingAction
@@ -46,15 +46,36 @@ class ActionScheduler {
   }
 
   /**
-   * @param {AnyAction} action
-   * @param {number} startTime
+   * @param {object} param0
+   * @param {AnyAction} param0.action
+   * @param {number} param0.startTime
+   * @param {number} param0.performCount
    */
-  addLoopingAction(action, startTime) {
+  addLoopingAction({ action, startTime, performCount }) {
     this.loopingActions.push({
       action,
       lastPerformed: startTime,
-      performCount: 1
+      performCount
     })
+  }
+
+  /**
+   * @param {string} name 
+   * @param {string} offset 
+   */
+  activeGroup(name, offset=0) {
+    const time = (this.parent.playingData.time ?? 0) - offset;
+    const group = this.actionGroups[name];
+    if (typeof group === "undefined") return;
+
+    for (let i = 0; i < group.length; i++) {
+      const action = group[i];
+      this.addLoopingAction({
+        action,
+        startTime: time,
+        performCount: 0
+      });
+    }
   }
 
   /**
@@ -70,20 +91,14 @@ class ActionScheduler {
   }
 
   /**
-   * @param {string} name 
-   */
-  activeGroup(name) {
-
-  }
-
-  /**
    * @param {number} time
    * @param {Object.<string, number | string>} globalVariables
    * @returns {boolean}
    */
-  tick(time, globalVariables={}) {
+  tick(globalVariables={}) {
     const actions = this.actionGroups["default"];
     const stage = this.parent;
+    const time = stage.playingData.time;
 
     // Init loop limit
     const LOOP_LIMIT = 10000;
@@ -104,7 +119,13 @@ class ActionScheduler {
         timeOffset: 0
       });
       const loopCount = action.getLooperData(1).loopCount;
-      if (loopCount >= 2) this.addLoopingAction(action, action.startTime);
+      if (loopCount >= 2) {
+        this.addLoopingAction({
+          action,
+          startTime: action.startTime,
+          performCount: 0
+        });
+      }
       this.actionIndex++;
     }
 
@@ -150,13 +171,16 @@ class ActionScheduler {
       if (loops > LOOP_LIMIT) return false;
 
       const { action, loopCount, offset, innerLoop } = this.actionsToPerform[i];
-      action.perform({
+      /** @type {import("./Actions/ActionBase.js").PerformParams} */
+      const performParams = {
         stage,
         loop: loopCount,
         innerLoop,
         timeOffset: offset,
         globalVariables
-      });
+      };
+
+      action.perform(performParams);
     }
 
     return true;

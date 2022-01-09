@@ -111,7 +111,7 @@ class Stage {
     globalVariables.stageX = this.playingData.stageAttribute.stageX;
     globalVariables.stageY = this.playingData.stageAttribute.stageY;
     
-    wasSuccessful &= this.playingData.actionScheduler.tick(time, globalVariables);
+    wasSuccessful &= this.playingData.actionScheduler.tick(globalVariables);
 
     // Player move
     const { stageWidth, stageHeight } = this.playingData.stageAttribute;
