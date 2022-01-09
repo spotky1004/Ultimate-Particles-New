@@ -5,7 +5,7 @@ let stageData = {
 };
 
 /**
- * @template {import("../src/class/Actions/index.js").ActionType} T
+ * @template {import("../src/class/Actions/index.js").ActionTypes} T
  * @param {T} type 
  * @param {number} startTime 
  * @param {import("../src/class/Actions/index.js").ActionDatas[T]} data 

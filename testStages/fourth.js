@@ -5,14 +5,15 @@ let stageData = {
 };
 
 /**
- * @template {import("../src/class/Actions/index.js").ActionType} T
+ * @template {import("../src/class/Actions/index.js").ActionTypes} T
  * @param {T} type 
  * @param {number} startTime 
  * @param {import("../src/class/Actions/index.js").ActionDatas[T]} data 
  * @param {import("../src/class/Actions/ActionBase.js").LooperData} looperData 
+ * @param {string} group
  */
-function addAction(type, startTime, data, looperData) {
-  const actionData = {type, startTime, data, looperData};
+function addAction(type, startTime, data, looperData, groupName) {
+  const actionData = {type, startTime, data, looperData, groupName};
   stageData.actions.push(actionData);
 }
 

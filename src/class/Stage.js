@@ -103,7 +103,7 @@ class Stage {
     this.playingData.time += dt;
     const time = this.playingData.time;
     
-    let globalVariables = this.playingData.globalVariables.getValue({t: time/1000, ...this.playingData.globalVariables});
+    let globalVariables = this.playingData.globalVariables.getValue({ t: time/1000, ...this.playingData.globalVariables });
     globalVariables.dt = dt/1000;
     globalVariables.stageTime = time/1000;
     globalVariables.stageWidth = this.playingData.stageAttribute.stageWidth;

@@ -64,6 +64,7 @@ class ActionScheduler {
    * @param {string} offset 
    */
   activeGroup(name, offset=0) {
+    console.log(name);
     const time = (this.parent.playingData.time ?? 0) - offset;
     const group = this.actionGroups[name];
     if (typeof group === "undefined") return;
@@ -170,11 +171,11 @@ class ActionScheduler {
       loops++;
       if (loops > LOOP_LIMIT) return false;
 
-      const { action, loopCount, offset, innerLoop } = this.actionsToPerform[i];
+      const { action, loop, offset, innerLoop } = this.actionsToPerform[i];
       /** @type {import("./Actions/ActionBase.js").PerformParams} */
       const performParams = {
         stage,
-        loop: loopCount,
+        loop,
         innerLoop,
         timeOffset: offset,
         globalVariables
