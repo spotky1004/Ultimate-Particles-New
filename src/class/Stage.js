@@ -1,5 +1,5 @@
 import Value from "./Value.js";
-import ParticleGroup from "./ParticleGroup.js";
+import ParticleGroups from "./ParticleGroups.js";
 import ActionScheduler from "./ActionScheduler.js";
 import Status from "./Status.js";
 import drawCanvas from "../drawCanvas.js";
@@ -41,7 +41,7 @@ class Stage {
      * @typedef PlayingData
      * @property {number} time
      * @property {StageAttribute} stageAttribute
-     * @property {Object.<string, ParticleGroup>} particleGroups
+     * @property {ParticleGroups} particleGroups
      * @property {ActionScheduler} actionScheduler
      * @property {Value<Object.<string, (number | string)>>} globalVariables
      * @property {Status} status
@@ -63,10 +63,7 @@ class Stage {
         stageY: 0,
         playerHitboxFactor: 1,
       },
-      particleGroups: {
-        player: new ParticleGroup(),
-        default: new ParticleGroup()
-      },
+      particleGroups: new ParticleGroups(["default", "player"]),
       actionScheduler: new ActionScheduler(this),
       globalVariables: new Value({
         life: 10,
@@ -129,7 +126,7 @@ class Stage {
       x: playerSpeedFactor * (playerDirections.right - playerDirections.left),
       y: playerSpeedFactor * (playerDirections.down - playerDirections.up)
     };
-    const playerParticles = this.playingData.particleGroups["player"].particles;
+    const playerParticles = this.playingData.particleGroups.groups["player"].particles;
     for (let i = 0; i < playerParticles.length; i++) {
       const particle = playerParticles[i];
       const speed = particle.values.speed;
@@ -141,8 +138,8 @@ class Stage {
 
     // Particle loop
     const outOfBoundsFactor = this.playingData.stageAttribute.outOfBoundsFactor;
-    for (const groupName in this.playingData.particleGroups) {
-      const particleGroup = this.playingData.particleGroups[groupName];
+    for (const groupName in this.playingData.particleGroups.groups) {
+      const particleGroup = this.playingData.particleGroups.groups[groupName];
       const particles = particleGroup.particles;
       const particlesToRemove = [];
       outLoop: for (let i = 0; i < particles.length; i++) {
@@ -245,13 +242,6 @@ class Stage {
     return JSON.stringify(this.export(), null, 2);
   }
 
-  /** @param {import("./Particle.js").default} particle */
-  createParticle(particle) {
-    const particleGroup = particle.values.group;
-    if (!this.playingData.particleGroups[particleGroup]) this.playingData.particleGroups[particleGroup] = new ParticleGroup();
-    this.playingData.particleGroups[particleGroup].particles.push(particle);
-  }
-
   /**
    * @param {string} name 
    * @param {import("./ParticleGroup.js").EventTypes} type 
@@ -259,7 +249,7 @@ class Stage {
    */
   emitGroupEvent(name, type, data) {
     if (this.playingData.particleGroups[name]) {
-      this.playingData.particleGroups[name].emitEvent(type, data);
+      this.playingData.particleGroups.groups[name].emitEvent(type, data);
     }
   }
 
@@ -267,8 +257,8 @@ class Stage {
    * @param {string} name 
    */
   deleteGroup(name) {
-    if (this.playingData.particleGroups[name]) {
-      delete this.playingData.particleGroups[name];
+    if (this.playingData.particleGroups.groups[name]) {
+      delete this.playingData.particleGroups.groups[name];
     }
   }
 }

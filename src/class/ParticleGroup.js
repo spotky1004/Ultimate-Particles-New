@@ -1,3 +1,5 @@
+import Particle from "./Particle.js";
+
 const EventTypeEnum = {
   DestroyAll: 0,
   DestroyRandom: 1,
@@ -14,8 +16,17 @@ const EventTypeEnum = {
 
 class ParticleGroup {
   constructor() {
-    /** @type {import("./Particle.js").default[]} */
+    /** @type {Particle[]} */
     this.particles = [];
+  }
+
+  /**
+   * @param {Particle} particle
+   */
+  addParticle(particle) {
+    if (particle instanceof Particle) {
+      this.particles.push(particle);
+    }
   }
 
   /**
