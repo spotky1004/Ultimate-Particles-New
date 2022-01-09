@@ -47,11 +47,13 @@ class stagePlayer {
         } else {
           stageJSON = data;
         }
+        stageJSON = JSON.parse(stageJSON);
       }
       if (stageJSON) {
-        let stage = JSON.parse(stageJSON);
+        let stage = stageJSON;
         if (!(stage.actions[0] instanceof ActionBase)) {
           stage.actions = [...stage.actions].map(actionData => {
+            console.log(actionData.type);
             return new Actions[actionData.type](actionData);
           });
         }
@@ -59,7 +61,7 @@ class stagePlayer {
         this.stage = stage;
       }
     } else {
-      throw new Error("Invaild stage");
+      return new Error("Invaild stage");
     }
     this.loadingStage = false;
 
