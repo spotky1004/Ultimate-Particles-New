@@ -185,7 +185,7 @@ addAction(
   "CreateParticle",
   0,
   {
-    variables: {
+    constants: {
       hue: "$mainHue+40",
       posX: "randr(0, 100)",
       posY: "$stageY - 50",

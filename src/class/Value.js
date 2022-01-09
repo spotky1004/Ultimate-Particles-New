@@ -110,14 +110,27 @@ class Value {
         }
         return value;
       } else if (this.type === "object") {
-        return Object.fromEntries(
-          Object.entries(this.value).map(
-            ([key, value]) => [key, value.getValue(variables)]
-          )
-        );
+        variables = Object.assign({}, variables);
+
+        let value = {};
+        for (const key in this.value) {
+          let _value = this.value[key].getValue(variables);
+          variables[key] = _value;
+          value[key] = _value;
+        }
+
+        return value;
+
+        // return Object.fromEntries(
+        //   Object.entries(this.value).map(
+        //     ([key, value]) => [key, value.getValue(variables)]
+        //   )
+        // );
       }
     }
   }
 }
 
 export default Value;
+
+window.Value = Value;

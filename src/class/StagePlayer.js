@@ -53,7 +53,6 @@ class stagePlayer {
         let stage = stageJSON;
         if (!(stage.actions[0] instanceof ActionBase)) {
           stage.actions = [...stage.actions].map(actionData => {
-            console.log(actionData.type);
             return new Actions[actionData.type](actionData);
           });
         }

@@ -16,6 +16,7 @@ import Value from "./Value.js";
 /**
  * @typedef ParticleOptions
  * @property {string | string[]} [group] - Particle group
+ * @property {Object.<string, number | string>} constants
  * @property {Object.<string, number | string>} variables
  * @property {Size<number | string>} [size] - Size of the particle.
  * @property {Vector2<number | string>} [position] - Position of the particle.
@@ -43,15 +44,15 @@ class Particle {
    * @param {ParticleOptions} options 
    */
   constructor(options, globalVariables) {
-    const variables = {
-      t: 0,
-      ...options.variables
-    };
-    /** @type {Object.<string, number | string>} */
-    this.variables = {};
-    for (const key in variables) {
-      this.variables[key] = new Value(variables[key]).getValue(Object.assign(this.variables, globalVariables));
-    }
+    /** @type {number} */
+    this.time = 0;
+
+    const { i, j } = globalVariables;
+    /** @type {typeof options["constants"]} */
+    this.constants = new Value({...options.constants, i, j} ?? {}).getValue(globalVariables);
+    /** @type {Value<typeof options["variables"]>} */
+    this._variables = new Value(this.variables ?? {});
+
     /** @type {ParticleValues} */
     this.values = {};
 
@@ -83,25 +84,40 @@ class Particle {
     return this.values.position.y;
   }
 
-  /** @param {number} position */
+  /**
+   * @param {number} position
+   */
   set x(position) {
     this._position.changeValue({ key: "x", value: position });
   }
-  /** @param {number} position */
+  /**
+   * @param {number} position
+   */
   set y(position) {
     this._position.changeValue({ key: "y", value: position });
   }
 
-  updateValues(variables) {
-    const _variables = Object.assign({}, variables, this.variables);
+  /**
+   * @param {Object.<string, number | string>} globalVariables
+   */
+  getVariables(globalVariables={}) {
+    /** @type {Object.<string, number | string>} */
+    let variables = Object.assign({ t: this.time }, globalVariables, this.constants);
+    variables = Object.assign(this._variables.getValue(variables), variables);
+    return variables;
+  }
+
+  /** @param {Object.<string, number | string>} globalVariables */
+  updateValues(globalVariables={}) {
+    const variables = this.getVariables(globalVariables);
 
     this.values = {
       group: this.group,
-      position: this._position.getValue(_variables),
-      size: this._size.getValue(_variables),
-      color: this._color.getValue(_variables),
-      speed: this._speed.getValue(_variables),
-      deg: this._deg.getValue(_variables),
+      position: this._position.getValue(variables),
+      size: this._size.getValue(variables),
+      color: this._color.getValue(variables),
+      speed: this._speed.getValue(variables),
+      deg: this._deg.getValue(variables),
     };
 
     return this;
@@ -109,21 +125,24 @@ class Particle {
 
   /**
    * @param {number} dt 
+   * @param {Object.<string, number | string>} globalVariables
    */
-  tick(dt, variables) {
-    const t = dt/1000;
-    this.variables.t += dt;
+  tick(dt, globalVariables={}) {
+    const _dt = dt/1000;
+    this.time += dt;
+
+    const variables = this.getVariables(globalVariables);
 
     // Update position
-    if (this._position.isValueFixed && this._deg.getValue(this.variables) !== null) {
-      const speed = this._speed.getValue(this.variables);
-      const position = this._position.getValue(this.variables);
+    if (this._position.isValueFixed && this._deg.getValue(variables) !== null) {
+      const speed = this._speed.getValue(variables);
+      const position = this._position.getValue(variables);
       const [ dx, dy ] = [
         Math.sin(this.values.deg/180*Math.PI),
         -Math.cos(this.values.deg/180*Math.PI)
       ];
-      this._position.changeValue({ key: "x", value: Number(position.x) + speed*dx*t });
-      this._position.changeValue({ key: "y", value: Number(position.y) + speed*dy*t });
+      this._position.changeValue({ key: "x", value: Number(position.x) + speed*dx*_dt });
+      this._position.changeValue({ key: "y", value: Number(position.y) + speed*dy*_dt });
     }
 
     this.updateValues(variables);
