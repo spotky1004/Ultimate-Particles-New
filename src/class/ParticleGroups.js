@@ -17,7 +17,7 @@ class ParticleGroups {
    * @param {Object.<string, number | string>} globalVariables
    */
   addParticle(particle, globalVariables) {
-    const groupName = particle.group;
+    const groupName = new Value(particle.group).getValue(globalVariables);
     if (typeof this.groups[groupName] === "undefined") {
       this.groups[groupName] = new ParticleGroup();
     }
