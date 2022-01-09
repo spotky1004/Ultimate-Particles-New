@@ -213,6 +213,8 @@ class StringExpression {
     "lt": ([a, b]) => a < b,
     "lte": ([a, b]) => a <= b,
     "eq": ([a, b]) => a === b,
+
+    "select": ([idx, ...v]) => (Array.isArray(v) ? v : [])[Math.floor(idx)] ?? null,
   }
 
   /**
