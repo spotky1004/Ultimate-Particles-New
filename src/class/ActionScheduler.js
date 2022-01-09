@@ -57,11 +57,10 @@ class ActionScheduler {
       if (loops > LOOP_LIMIT) return false;
 
       const action = stage.actions[i];
-      const startTime = action.getStartTime(globalVariables);
-      if (startTime > time) break;
+      if (action.startTime > time) break;
       actionsToPerform.push([ action, 0, 0, 0 ]);
       const loopCount = action.getLooperData(1).loopCount;
-      if (loopCount >= 2) this.addLoopingAction(action, startTime);
+      if (loopCount >= 2) this.addLoopingAction(action, action.startTime);
       this.actionIndex++;
     }
 
