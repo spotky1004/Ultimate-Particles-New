@@ -79,7 +79,7 @@ body {
   z-index: 1;
   overflow: hidden;
 
-  user-select: none;
+  pointer-events: none;
   opacity: 0.8;
 }
 .status__item {
@@ -135,11 +135,7 @@ body {
 
   transition: background-position cubic-bezier(.3,.81,.43,.97) 0.1s;
 }
-@media screen and (orientation: portrait) {
-  .status__item.progress, .status__item.text-progress {
-    min-height: 6%;
-  }
-}
+
 .status__item.progress::after {
   position: absolute;
   right: 5%;
@@ -162,4 +158,48 @@ body {
   -webkit-text-fill-color: transparent;
 
   transition: background-position cubic-bezier(.3,.81,.43,.97) 0.1s;
+}
+
+#drag-display {
+  position: absolute;
+
+  width: 5vmin;
+  height: 5vmin;
+  padding: 1vmin;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: #f88;
+  border-radius: 0 50% 50% 50%;
+  
+  z-index: 3;
+  opacity: 0.4;
+  overflow: hidden;
+  pointer-events: none;
+  transform-origin: center;
+}
+#drag-power-display {
+  color: #000;
+  font-size: 2em;
+
+  transition: transform 0.3s;
+}
+
+#full-screen-btn {
+  position: absolute;
+
+  padding: 0.5%;
+
+  right: 0;
+  top: 0;
+
+  color: #000;
+  font-size: 2em;
+  
+  background-color: rgb(231, 175, 22);
+  opacity: 0.5;
+
+  z-index: 5;
 }

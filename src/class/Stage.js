@@ -83,11 +83,13 @@ class Stage {
   /**
    * @param {number} dt 
    * @param {boolean} updateCanvas 
-   * @param {Object.<string, boolean>} keyPressed 
+   * @param {{ keyPressed: Object.<string, boolean>, screenDragPower: { x: number, y: number, power: number } }} inputs
    * @returns {boolean}
    */
-  tick(dt, updateCanvas=true, keyPressed={}) {
+  tick(dt, updateCanvas=true, inputs={}) {
     if (!this.playing) return;
+
+    const { keyPressed, screenDragPower } = inputs;
     
     dt = Math.min(this.maximumTickLength, dt);
 
@@ -122,7 +124,7 @@ class Stage {
     const isBothDirections = Boolean((playerDirections.up ^ playerDirections.down) && (playerDirections.left ^ playerDirections.right));
     const focusMode = Boolean(keyPressed.ShiftLeft || keyPressed.ShiftRight);
     const playerSpeedFactor = (focusMode ? 0.5 : 1) / (isBothDirections ? Math.SQRT2 : 1);
-    const playerVec = {
+    const playerVec = screenDragPower.power > 0 ? screenDragPower : {
       x: playerSpeedFactor * (playerDirections.right - playerDirections.left),
       y: playerSpeedFactor * (playerDirections.down - playerDirections.up)
     };

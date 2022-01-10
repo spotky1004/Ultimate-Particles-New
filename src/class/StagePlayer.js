@@ -2,20 +2,7 @@ import loadStage from "../loadStage.js";
 import Stage from "./Stage.js";
 import ActionBase from "./Actions/ActionBase.js";
 import * as Actions from "./Actions/index.js";
-
-/** @type {Object.<string, boolean>} */
-const keyPressed = {};
-document.addEventListener("keydown", function (e) {
-  keyPressed[e.code] = true;
-});
-document.addEventListener("keyup", function (e) {
-  keyPressed[e.code] = false;
-});
-document.addEventListener("blur", function (e) {
-  for (const code in keyPressed) {
-    keyPressed[code] = false;
-  }
-});
+import { keyPressed, screenDragPower } from "../events.js";
 
 class stagePlayer {
   constructor() {
@@ -88,7 +75,7 @@ class stagePlayer {
     const timeNow = new Date().getTime();
     const dt = timeNow - this.lastTick;
     this.lastTick = timeNow;
-    const result = this.stage.tick(dt, true, keyPressed);
+    const result = this.stage.tick(dt, true, { keyPressed, screenDragPower });
     if (!result) {
       if (this.stage.playing) {
         this.stageStuck++;
