@@ -112,8 +112,8 @@ const dragPowerDisplay = document.getElementById("drag-power-display");
 export function renderDrags() {
   if (screenDragStartPos.x !== null) {
     dragDisplay.style.display = "";
-    dragDisplay.style.left = screenDragStartPos.x + "px";
-    dragDisplay.style.top = screenDragStartPos.y + "px";
+    dragDisplay.style.left = (screenDragStartPos.x - dragDisplay.offsetWidth/2) + "px";
+    dragDisplay.style.top = (screenDragStartPos.y - dragDisplay.offsetHeight/2) + "px";
     dragDisplay.style.filter = `grayscale(${(1-screenDragPower.power)**2})`;
     const deg = (screenDragPower.arc*180/Math.PI)%360 + 45;
     dragDisplay.style.transform = `scale(${1+screenDragPower.power}) rotate(${deg}deg)`;
