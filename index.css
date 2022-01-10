@@ -11,11 +11,19 @@
   user-select: none;
 }
 
+html {
+  overflow: hidden;
+}
+
 body {
+  position: relative;
+
   width: 100vw;
   height: 100vh;
 
   background-color: #222;
+
+  overflow: hidden;
 }
 
 #wrapper {
@@ -26,8 +34,6 @@ body {
 #game-screen {
   position: relative;
   flex: 2;
-
-  overflow: hidden;
 }
 #screen-divider {
   flex: 0.01;
