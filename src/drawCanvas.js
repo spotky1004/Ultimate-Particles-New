@@ -1,3 +1,4 @@
+const gameScreen = document.getElementById("game-screen");
 const canvas = document.getElementById("draw-canvas");
 /** @type {CanvasRenderingContext2D} */
 const ctx = canvas.getContext("2d", { alpha: false });
@@ -9,7 +10,12 @@ const displayCtx = displayCanvas.getContext("2d");
  * @param {import("./class/Stage.js").default} stage 
  */
 function drawCanvas(stage) {
-  const canvasSize = Math.min(innerWidth, innerHeight) * 0.9;
+  const screenSize = {
+    height: gameScreen.offsetHeight,
+    width: gameScreen.offsetWidth
+  };
+  
+  const canvasSize = Math.max(10, Math.min(screenSize.width, screenSize.height) * 0.9);
   canvas.width = canvasSize * stage.playingData.stageAttribute.stageWidth/100;
   canvas.height = canvasSize * stage.playingData.stageAttribute.stageHeight/100;
   const s = canvasSize/100;
