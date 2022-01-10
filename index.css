@@ -149,7 +149,7 @@ body {
   content: attr(name) ": " attr(content);
 }
 .status__item.text-progress {
-  width: auto;
+  width: fit-content;
 
   background-clip: text;
   -webkit-background-clip: text;
