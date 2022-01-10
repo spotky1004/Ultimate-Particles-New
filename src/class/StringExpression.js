@@ -196,8 +196,10 @@ class StringExpression {
     "min": (s) => Math.min(...s),
     "max": (s) => Math.max(...s),
     
-    "hex": ([r, g, b]) => `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`,
+    "rgb": ([r, g, b]) => `rgb(${r}, ${g}, ${b})`,
+    "rgba": ([r, g, b, a]) => `rgb(${r}, ${g}, ${b}, ${a})`,
     "hsl": ([h, s, l]) => `hsl(${h%360}, ${s}%, ${l}%)`,
+    "hsla": ([h, s, l, a]) => `hsla(${h%360}, ${s}%, ${l}%, ${a})`,
 
     "fix": ([x, p]) => typeof x === "number" ? x.toFixed(p) : null,
 
