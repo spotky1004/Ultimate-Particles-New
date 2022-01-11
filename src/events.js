@@ -4,6 +4,7 @@ const gameScreen = document.getElementById("game-screen");
 export const keyPressed = {};
 /** @type {boolean} */
 let mouseDown = false;
+// keep immutability
 const screenDragStartPos = { x: null, y: null };
 const screenDragLength = { x: 0, y: 0 };
 export const screenDragPower = { x: 0, y: 0, arc: Math.PI/2, power: 0 };
@@ -15,23 +16,48 @@ document.addEventListener("keyup", function (e) {
 });
 // PC
 gameScreen.addEventListener("mousedown", function(e) {
+  resetDrag(e.clientX, e.clientY);
   mouseDown = true;
-  screenDragStartPos.x = e.clientX;
-  screenDragStartPos.y = e.clientY;
-  screenDragLength.x = 0;
-  screenDragLength.y = 0;
-  screenDragPower.x = 0;
-  screenDragPower.y = 0;
-  screenDragPower.power = 0;
 });
 document.addEventListener("mousemove", function(e) {
   if (!mouseDown) return;
+  updateDrag(e.clientX, e.clientY);
+});
+document.addEventListener("mouseup", function(e) {
+  resetDrag();
+});
+// Mobile
+gameScreen.addEventListener("touchstart", function(e) {
+  const touch = e.touches[e.touches.length - 1];
+  if (touch.identifier === 0) resetDrag(touch.clientX, touch.clientY);
+}, { passive: true });
+document.addEventListener("touchmove", function(e) {
+  const changedItems = e.changedTouches;
+  for (let i = 0; i < changedItems.length; i++) {
+    const changedItem = changedItems[i];
+    if (changedItem.identifier === 0) updateDrag(changedItem.clientX, changedItem.clientY);
+  }
+}, { passive: true });
+document.addEventListener("touchend", function(e) {
+  if (e.changedTouches[0].identifier === 0) resetDrag();
+});
+document.addEventListener("blur", function (e) {
+  resetDrag();
+  for (const code in keyPressed) {
+    keyPressed[code] = false;
+  }
+});
 
+/**
+ * @param {number} clientX 
+ * @param {number} clientY 
+ */
+function updateDrag(clientX, clientY) {
   const canvasSize = Math.max(10, Math.min(gameScreen.offsetWidth, gameScreen.offsetHeight) * 0.9);
   const maxVecAt = canvasSize/5;
-  
-  screenDragLength.x = e.clientX - screenDragStartPos.x;
-  screenDragLength.y = e.clientY - screenDragStartPos.y;
+
+  screenDragLength.x = clientX - screenDragStartPos.x;
+  screenDragLength.y = clientY - screenDragStartPos.y;
   const dragLength = Math.sqrt(screenDragLength.x**2 + screenDragLength.y**2);
   const dragPower = Math.min(1, dragLength/maxVecAt);
   const dragDeg = (Math.atan2(screenDragLength.y, screenDragLength.x)+Math.PI*2+Math.PI/2)%(Math.PI*2);
@@ -39,71 +65,18 @@ document.addEventListener("mousemove", function(e) {
   screenDragPower.y = -Math.cos(dragDeg) * dragPower;
   screenDragPower.arc = dragDeg;
   screenDragPower.power = dragPower;
-});
-document.addEventListener("mouseup", function(e) {
+}
+function resetDrag(clientX=null, clientY=null) {
   mouseDown = false;
-  screenDragStartPos.x = null;
-  screenDragStartPos.y = null;
+  screenDragStartPos.x = clientX;
+  screenDragStartPos.y = clientY;
   screenDragLength.x = 0;
   screenDragLength.y = 0;
   screenDragPower.x = 0;
   screenDragPower.y = 0;
   screenDragPower.power = 0;
   screenDragPower.arc = Math.PI/2;
-});
-// Mobile
-gameScreen.addEventListener("touchstart", function(e) {
-  const touch = e.touches[e.touches.length - 1];
-  if (touch.identifier === 0) {
-    screenDragStartPos.x = touch.clientX;
-    screenDragStartPos.y = touch.clientY;
-    screenDragLength.x = 0;
-    screenDragLength.y = 0;
-    screenDragPower.x = 0;
-    screenDragPower.y = 0;
-    screenDragPower.power = 0;
-  }
-}, { passive: true });
-document.addEventListener("touchmove", function(e) {
-  const canvasSize = Math.max(10, Math.min(gameScreen.offsetWidth, gameScreen.offsetHeight) * 0.9);
-  const maxVecAt = canvasSize/5;
-  
-  const changedItems = e.changedTouches;
-  for (let i = 0; i < changedItems.length; i++) {
-    const changedItem = changedItems[i];
-    if (changedItem.identifier === 0) {
-      screenDragLength.x = changedItem.clientX - screenDragStartPos.x;
-      screenDragLength.y = changedItem.clientY - screenDragStartPos.y;
-      const dragLength = Math.sqrt(screenDragLength.x**2 + screenDragLength.y**2);
-      const dragPower = Math.min(1, dragLength/maxVecAt);
-      const dragDeg = (Math.atan2(screenDragLength.y, screenDragLength.x)+Math.PI*2+Math.PI/2)%(Math.PI*2);
-      screenDragPower.x = Math.sin(dragDeg) * dragPower;
-      screenDragPower.y = -Math.cos(dragDeg) * dragPower;
-      screenDragPower.arc = dragDeg;
-      screenDragPower.power = dragPower;
-    }
-  }
-}, { passive: true });
-document.addEventListener("touchend", function(e) {
-  if (e.changedTouches[0].identifier === 0) {
-    screenDragStartPos.x = null;
-    screenDragStartPos.y = null;
-    screenDragLength.x = 0;
-    screenDragLength.y = 0;
-    screenDragPower.x = 0;
-    screenDragPower.y = 0;
-    screenDragPower.power = 0;
-    screenDragPower.arc = Math.PI/2;
-  }
-});
-document.addEventListener("blur", function (e) {
-  while (screenDragStartPos.length > 0) screenDragStartPos.pop();
-  while (screenDrag.length > 0) screenDrag.pop();
-  while (screenDragDatas.length > 0) screenDragDatas.pop();
-  for (const code in keyPressed) {
-    keyPressed[code] = false;
-  }
-});
+}
 
 /** @type {HTMLDivElement} */
 const dragDisplay = document.getElementById("drag-display");
