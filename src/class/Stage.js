@@ -178,6 +178,8 @@ class Stage {
           }
 
           if (isValueTure(particle.values.hasHitboxIf)) {
+            let { x: particleX, y: particleY } = particle.values.position;
+            const { width: particleWidth, height: particleHeight } = particle.values.size;
             for (let j = 0; j < playerParticles.length; j++) {
               const playerParticle = playerParticles[j];
   
@@ -188,8 +190,6 @@ class Stage {
               playerHeight *= playerHitboxFactor;
               playerX -= playerWidth/2;
               playerY -= playerHeight/2;
-              let { x: particleX, y: particleY } = particle.values.position;
-              const { width: particleWidth, height: particleHeight } = particle.values.size;
               particleX -= particleWidth/2;
               particleY -= particleHeight/2;
   
