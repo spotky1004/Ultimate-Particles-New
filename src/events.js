@@ -82,7 +82,7 @@ function resetDrag(clientX=null, clientY=null) {
 const dragDisplay = document.getElementById("drag-display");
 /** @type {HTMLDivElement} */
 const dragPowerDisplay = document.getElementById("drag-power-display");
-export function renderDrags() {
+export function renderDrag() {
   if (screenDragStartPos.x !== null) {
     dragDisplay.style.display = "";
     dragDisplay.style.left = (screenDragStartPos.x - dragDisplay.offsetWidth/2) + "px";
