@@ -1,4 +1,4 @@
-import compare from "../util/compare.js";
+import isValueTure from "../util/isValueTrue.js";
 
 /**
  * @typedef {import("./Stage.js").default} Stage
@@ -114,8 +114,8 @@ class ActionScheduler {
       const action = actions[i];
       if (action.startTime > time) break;
       
-      const actionLooperData = action.getLooperData(1);
-      if (actionLooperData.shouldPerform == false) continue;
+      const actionLooperData = action.getLooperData(0);
+      if (!isValueTure(actionLooperData.shouldPerform)) continue;
       const innerLoopCount = Math.floor(actionLooperData.innerLoop);
       for (let j = 0; j < innerLoopCount; j++) {
         loops++;
@@ -145,13 +145,13 @@ class ActionScheduler {
 
       const loopingAction = this.loopingActions[i];
       const actionLooperData = loopingAction.action.getLooperData(loopingAction.performCount);
-      if (actionLooperData.shouldPerform == false) continue;
       const bulkLoop = actionLooperData.interval > 0 ? Math.floor( ( time - loopingAction.lastPerformed ) / actionLooperData.interval ) : stage.maximumTickLength;
       const offsetOffset = (time - loopingAction.lastPerformed) % actionLooperData.interval;
       for (let j = 0; j < bulkLoop; j++) {
         loops++;
         if (loops > LOOP_LIMIT) return false;
-
+        
+        if (isValueTure(actionLooperData.shouldPerform)) continue;
         const innerLoopCount = Math.floor(actionLooperData.innerLoop);
         for (let k = 0; k < innerLoopCount; k++) {
           loops++;
