@@ -23,6 +23,8 @@ import Value from "./Value.js";
  * @property {string} [color] - Color of the particle.
  * @property {string | number} [speed]
  * @property {string | number} [deg]
+ * @property {string | number | boolean} [tracePlayerIf]
+ * @property {string | number | boolean} [hasHitboxIf]
  */
 /**
  * @typedef ParticleValues
@@ -32,6 +34,8 @@ import Value from "./Value.js";
  * @property {string} color
  * @property {number} speed
  * @property {number} deg
+ * @property {string | number | boolean} tracePlayerIf
+ * @property {string | number | boolean} hasHitboxIf
  */
 /**
  * @typedef DrawData
@@ -42,14 +46,17 @@ import Value from "./Value.js";
 class Particle {
   /**
    * @param {ParticleOptions} options 
+   * @param {Object.<string, number | string | boolean>} variables
    */
-  constructor(options, globalVariables) {
+  constructor(options, variables) {
     /** @type {number} */
     this.time = 0;
+    /** @type {number} */
+    this.seed = Math.floor(Math.random() * 1e6);
 
-    const { i, j } = globalVariables;
+    const { i, j } = variables;
     /** @type {typeof options["constants"]} */
-    this.constants = new Value({...options.constants, i, j} ?? {}).getValue(globalVariables);
+    this.constants = new Value({...options.constants, i, j} ?? {}).getValue(variables);
     /** @type {Value<typeof options["variables"]>} */
     this._variables = new Value(this.variables ?? {});
 
@@ -73,8 +80,15 @@ class Particle {
     /** @type {ParticleValues["deg"]} */
     const deg = options.deg ?? null;
     this._deg = new Value(deg, this.constants);
+    /** @type {ParticleValues["tracePlayerIf"]} */
+    const tracePlayerIf = options.tracePlayerIf ?? false;
+    this._tracePlayerIf = new Value(tracePlayerIf, this.constants);
+    /** @type {ParticleValues["hasHitboxIf"]} */
+    const hasHitboxIf = options.hasHitboxIf ?? true;
+    this._hasHitboxIf = new Value(hasHitboxIf, this.constants);
 
-    this.updateValues();
+    const _variables = this.getVariables(variables);
+    this.updateValues(_variables);
   }
 
   get x() {
@@ -108,9 +122,7 @@ class Particle {
   }
 
   /** @param {Object.<string, number | string>} globalVariables */
-  updateValues(globalVariables={}) {
-    const variables = this.getVariables(globalVariables);
-
+  updateValues(variables={}) {
     this.values = {
       group: this.group,
       position: this._position.getValue(variables),
@@ -118,6 +130,8 @@ class Particle {
       color: this._color.getValue(variables),
       speed: this._speed.getValue(variables),
       deg: this._deg.getValue(variables),
+      tracePlayerIf: this._tracePlayerIf.getValue(variables),
+      hasHitboxIf: this._hasHitboxIf.getValue(variables),
     };
 
     return this;
@@ -133,16 +147,18 @@ class Particle {
 
     const variables = this.getVariables(globalVariables);
 
-    // Update position
-    if (this._position.isValueFixed && this._deg.getValue(variables) !== null) {
-      const speed = this._speed.getValue(variables);
-      const position = this._position.getValue(variables);
-      const [ dx, dy ] = [
-        Math.sin(this.values.deg/180*Math.PI),
-        -Math.cos(this.values.deg/180*Math.PI)
-      ];
-      this._position.changeValue({ key: "x", value: Number(position.x) + speed*dx*_dt });
-      this._position.changeValue({ key: "y", value: Number(position.y) + speed*dy*_dt });
+    // For fixed position
+    if (this._position.isValueFixed) {
+      if (this._deg.getValue(variables) !== null) {
+        const speed = this._speed.getValue(variables);
+        const position = this._position.getValue(variables);
+        const [ dx, dy ] = [
+          Math.sin(this.values.deg/180*Math.PI),
+          -Math.cos(this.values.deg/180*Math.PI)
+        ];
+        this._position.changeValue({ key: "x", value: Number(position.x) + speed*dx*_dt });
+        this._position.changeValue({ key: "y", value: Number(position.y) + speed*dy*_dt });
+      }
     }
 
     this.updateValues(variables);

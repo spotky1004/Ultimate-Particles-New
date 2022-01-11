@@ -226,7 +226,7 @@ class StringExpression {
    * @param {array} part 
    * @param {number![]} tmps 
    * @param {Object.<string, number>} variables
-   * @returns {number | string}
+   * @returns {number | string | boolean}
    */
   static calculatePart(part, tmps, variables) {
     let operator = part[0];

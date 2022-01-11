@@ -1,4 +1,5 @@
 import Value from "./Value.js";
+import isValueTure from "../util/isValueTrue.js";
 import ParticleGroups from "./ParticleGroups.js";
 import ActionScheduler from "./ActionScheduler.js";
 import Status from "./Status.js";
@@ -167,32 +168,43 @@ class Stage {
 
         // Player collision
         if (groupName !== "player") {
-          for (let j = 0; j < playerParticles.length; j++) {
-            const playerParticle = playerParticles[j];
+          if (isValueTure(particle.values.tracePlayerIf)) {
+            const toTraceIdx = particle.seed%playerParticles.length;
+            const toTrace = playerParticles[toTraceIdx];
+            const { x: particleX, y: particleY } = particle.values.position;
+            const { x: toTraceX, y: toTraceY } = toTrace.values.position;
+            const deg = (Math.atan2(toTraceY-particleY, toTraceX-particleX)*180/Math.PI+360+90)%360;
+            particle._deg.changeValue({ value: deg });
+          }
 
-            let { x: playerX, y: playerY } = playerParticle.values.position;
-            let { width: playerWidth, height: playerHeight } = playerParticle.values.size;
-            const playerHitboxFactor = this.playingData.stageAttribute.playerHitboxFactor;
-            playerWidth *= playerHitboxFactor;
-            playerHeight *= playerHitboxFactor;
-            playerX -= playerWidth/2;
-            playerY -= playerHeight/2;
-            let { x: particleX, y: particleY } = particle.values.position;
-            const { width: particleWidth, height: particleHeight } = particle.values.size;
-            particleX -= particleWidth/2;
-            particleY -= particleHeight/2;
-
-            // Player collision
-            if (
-              playerX < particleX + particleWidth &&
-              playerX + playerWidth > particleX &&
-              playerY < particleY + particleHeight &&
-              playerHeight + playerY > particleY
-            ) {
-              this.playingData.globalVariables.changeValue({ key: "life", value: Math.max(0, globalVariables.life - 1) });
-              globalVariables.life = this.playingData.globalVariables.value.life.getValue(globalVariables);
-              particlesToRemove.push(particle);
-              continue outLoop;
+          if (isValueTure(particle.values.hasHitboxIf)) {
+            for (let j = 0; j < playerParticles.length; j++) {
+              const playerParticle = playerParticles[j];
+  
+              let { x: playerX, y: playerY } = playerParticle.values.position;
+              let { width: playerWidth, height: playerHeight } = playerParticle.values.size;
+              const playerHitboxFactor = this.playingData.stageAttribute.playerHitboxFactor;
+              playerWidth *= playerHitboxFactor;
+              playerHeight *= playerHitboxFactor;
+              playerX -= playerWidth/2;
+              playerY -= playerHeight/2;
+              let { x: particleX, y: particleY } = particle.values.position;
+              const { width: particleWidth, height: particleHeight } = particle.values.size;
+              particleX -= particleWidth/2;
+              particleY -= particleHeight/2;
+  
+              // Player collision
+              if (
+                playerX < particleX + particleWidth &&
+                playerX + playerWidth > particleX &&
+                playerY < particleY + particleHeight &&
+                playerHeight + playerY > particleY
+              ) {
+                this.playingData.globalVariables.changeValue({ key: "life", value: Math.max(0, globalVariables.life - 1) });
+                globalVariables.life = this.playingData.globalVariables.value.life.getValue(globalVariables);
+                particlesToRemove.push(particle);
+                continue outLoop;
+              }
             }
           }
         }
