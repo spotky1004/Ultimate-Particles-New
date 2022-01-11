@@ -39,7 +39,7 @@ class Stage {
     /** @type {boolean} */
     this.playing = false;
     /**
-     * @typedef PlayingData
+     * @typedef StageState
      * @property {number} time
      * @property {StageAttribute} stageAttribute
      * @property {ParticleGroups} particleGroups
@@ -47,13 +47,13 @@ class Stage {
      * @property {Value<Object.<string, (number | string)>>} globalVariables
      * @property {Status} status
      */
-    /** @type {PlayingData} */
-    this.playingData = {};
+    /** @type {StageState} */
+    this.state = {};
   }
 
   play() {
     this.playing = true;
-    this.playingData = {
+    this.state = {
       time: 0,
       stageAttribute: {
         bgColor: "#ffc966",
@@ -74,11 +74,11 @@ class Stage {
     };
   }
 
-  fixPlayingData() {
-    this.playingData.stageAttribute.stageWidth = fixNumber(this.playingData.stageAttribute.stageWidth, 0, 100, 100);
-    this.playingData.stageAttribute.stageHeight = fixNumber(this.playingData.stageAttribute.stageHeight, 0, 100, 100);
-    this.playingData.stageAttribute.stageX = fixNumber(this.playingData.stageAttribute.stageX, -999999, 999999, 0);
-    this.playingData.stageAttribute.stageY = fixNumber(this.playingData.stageAttribute.stageY, -999999, 999999, 0);
+  fixState() {
+    this.state.stageAttribute.stageWidth = fixNumber(this.state.stageAttribute.stageWidth, 0, 100, 100);
+    this.state.stageAttribute.stageHeight = fixNumber(this.state.stageAttribute.stageHeight, 0, 100, 100);
+    this.state.stageAttribute.stageX = fixNumber(this.state.stageAttribute.stageX, -999999, 999999, 0);
+    this.state.stageAttribute.stageY = fixNumber(this.state.stageAttribute.stageY, -999999, 999999, 0);
   }
 
   /**
@@ -100,22 +100,22 @@ class Stage {
     let wasSuccessful = true;
     
     // GlobalVariables
-    this.playingData.time += dt;
-    const time = this.playingData.time;
+    this.state.time += dt;
+    const time = this.state.time;
     
-    let globalVariables = this.playingData.globalVariables.getValue({ t: time/1000, ...this.playingData.globalVariables });
+    let globalVariables = this.state.globalVariables.getValue({ t: time/1000, ...this.state.globalVariables });
     globalVariables.dt = dt/1000;
     globalVariables.stageTime = time/1000;
-    globalVariables.stageWidth = this.playingData.stageAttribute.stageWidth;
-    globalVariables.stageHeight = this.playingData.stageAttribute.stageHeight;
-    globalVariables.stageX = this.playingData.stageAttribute.stageX;
-    globalVariables.stageY = this.playingData.stageAttribute.stageY;
+    globalVariables.stageWidth = this.state.stageAttribute.stageWidth;
+    globalVariables.stageHeight = this.state.stageAttribute.stageHeight;
+    globalVariables.stageX = this.state.stageAttribute.stageX;
+    globalVariables.stageY = this.state.stageAttribute.stageY;
     
-    wasSuccessful &= this.playingData.actionScheduler.tick(globalVariables);
+    wasSuccessful &= this.state.actionScheduler.tick(globalVariables);
 
     // Player move
-    const { stageWidth, stageHeight } = this.playingData.stageAttribute;
-    const { stageX, stageY } = this.playingData.stageAttribute;
+    const { stageWidth, stageHeight } = this.state.stageAttribute;
+    const { stageX, stageY } = this.state.stageAttribute;
     const playerDirections = {
       up: Boolean(keyPressed.KeyW || keyPressed.ArrowUp),
       down: Boolean(keyPressed.KeyS || keyPressed.ArrowDown),
@@ -129,7 +129,7 @@ class Stage {
       x: playerSpeedFactor * (playerDirections.right - playerDirections.left),
       y: playerSpeedFactor * (playerDirections.down - playerDirections.up)
     };
-    const playerParticles = this.playingData.particleGroups.groups["player"].particles;
+    const playerParticles = this.state.particleGroups.groups["player"].particles;
     for (let i = 0; i < playerParticles.length; i++) {
       const particle = playerParticles[i];
       const speed = particle.values.speed;
@@ -140,9 +140,9 @@ class Stage {
     }
 
     // Particle loop
-    const outOfBoundsFactor = this.playingData.stageAttribute.outOfBoundsFactor;
-    for (const groupName in this.playingData.particleGroups.groups) {
-      const particleGroup = this.playingData.particleGroups.groups[groupName];
+    const outOfBoundsFactor = this.state.stageAttribute.outOfBoundsFactor;
+    for (const groupName in this.state.particleGroups.groups) {
+      const particleGroup = this.state.particleGroups.groups[groupName];
       const particles = particleGroup.particles;
       const particlesToRemove = [];
       outLoop: for (let i = 0; i < particles.length; i++) {
@@ -185,7 +185,7 @@ class Stage {
   
               let { x: playerX, y: playerY } = playerParticle.values.position;
               let { width: playerWidth, height: playerHeight } = playerParticle.values.size;
-              const playerHitboxFactor = this.playingData.stageAttribute.playerHitboxFactor;
+              const playerHitboxFactor = this.state.stageAttribute.playerHitboxFactor;
               playerWidth *= playerHitboxFactor;
               playerHeight *= playerHitboxFactor;
               playerX -= playerWidth/2;
@@ -200,8 +200,8 @@ class Stage {
                 playerY < particleY + particleHeight &&
                 playerHeight + playerY > particleY
               ) {
-                this.playingData.globalVariables.changeValue({ key: "life", value: Math.max(0, globalVariables.life - 1) });
-                globalVariables.life = this.playingData.globalVariables.value.life.getValue(globalVariables);
+                this.state.globalVariables.changeValue({ key: "life", value: Math.max(0, globalVariables.life - 1) });
+                globalVariables.life = this.state.globalVariables.value.life.getValue(globalVariables);
                 particlesToRemove.push(particle);
                 continue outLoop;
               }
@@ -214,11 +214,11 @@ class Stage {
       }
     }
 
-    // Fix playingData
-    this.fixPlayingData();
+    // Fix state
+    this.fixState();
     
     // Update status
-    this.playingData.status.update(globalVariables);
+    this.state.status.update(globalVariables);
     
     if (updateCanvas) drawCanvas(this);
     
@@ -262,8 +262,8 @@ class Stage {
    * @param {import("./ParticleGroup.js").EventDatas} data 
    */
   emitGroupEvent(name, type, data) {
-    if (this.playingData.particleGroups[name]) {
-      this.playingData.particleGroups.groups[name].emitEvent(type, data);
+    if (this.state.particleGroups[name]) {
+      this.state.particleGroups.groups[name].emitEvent(type, data);
     }
   }
 
@@ -271,8 +271,8 @@ class Stage {
    * @param {string} name 
    */
   deleteGroup(name) {
-    if (this.playingData.particleGroups.groups[name]) {
-      delete this.playingData.particleGroups.groups[name];
+    if (this.state.particleGroups.groups[name]) {
+      delete this.state.particleGroups.groups[name];
     }
   }
 }

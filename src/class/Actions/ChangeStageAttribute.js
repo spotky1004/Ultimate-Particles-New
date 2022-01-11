@@ -31,7 +31,7 @@ class ChangeStageAttribute extends ActionBase {
    */
   perform({ stage, loop=0, innerLoop=0, timeOffset=0, globalVariables={} }) {
     const variables = this.getVariables(arguments[0]);
-    stage.playingData.stageAttribute[this.data.name] = this.optimizationData.value.getValue(variables);
+    stage.state.stageAttribute[this.data.name] = this.optimizationData.value.getValue(variables);
   }
 }
 

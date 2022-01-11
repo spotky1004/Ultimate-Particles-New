@@ -64,7 +64,7 @@ class ActionScheduler {
    * @param {string} offset 
    */
   activateGroup(name, offset=0) {
-    const time = (this.parent.playingData.time ?? 0) - offset;
+    const time = (this.parent.state.time ?? 0) - offset;
     const group = this.actionGroups[name];
     if (typeof group === "undefined") return;
 
@@ -105,7 +105,7 @@ class ActionScheduler {
   tick(globalVariables={}) {
     const actions = this.actionGroups["default"];
     const stage = this.parent;
-    const time = stage.playingData.time;
+    const time = stage.state.time;
 
     // Init loop limit
     const LOOP_LIMIT = 10000;
@@ -191,9 +191,9 @@ class ActionScheduler {
       const globalVariablesToIncrement = action.incrementGlobal;
       if (
         globalVariablesToIncrement &&
-        typeof stage.playingData.globalVariables.value[globalVariablesToIncrement] !== "undefined"
+        typeof stage.state.globalVariables.value[globalVariablesToIncrement] !== "undefined"
       ) {
-        stage.playingData.globalVariables.changeValue({
+        stage.state.globalVariables.changeValue({
           key:globalVariablesToIncrement,
           value: globalVariables[globalVariablesToIncrement] + 1
         });

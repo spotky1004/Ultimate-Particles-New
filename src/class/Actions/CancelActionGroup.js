@@ -27,8 +27,8 @@ class ActiveActionGroup extends ActionBase {
   perform({ stage, loop=0, innerLoop=0, timeOffset=0, globalVariables={} }) {
     const variables = this.getVariables(arguments[0]);
 
-    const time = stage.playingData.time;
-    stage.playingData.actionScheduler.cancelGroup(this.data.name);
+    const time = stage.state.time;
+    stage.state.actionScheduler.cancelGroup(this.data.name);
   }
 }
 

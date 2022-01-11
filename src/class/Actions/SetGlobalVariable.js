@@ -29,7 +29,7 @@ class SetGlobalVariable extends ActionBase {
   perform({ stage, loop=0, innerLoop=0, timeOffset=0, globalVariables={} }) {
     const variables = this.getVariables(arguments[0]);
     const value = new Value(this.data.value).getValue(variables);
-    stage.playingData.globalVariables.changeValue({
+    stage.state.globalVariables.changeValue({
       key: this.data.name,
       value: value,
       variables: variables

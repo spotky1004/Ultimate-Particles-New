@@ -41,7 +41,7 @@ class AddStatus extends ActionBase {
    */
   perform({ stage, loop=0, innerLoop=0, timeOffset=0, globalVariables={} }) {
     const variables = this.getVariables(arguments[0]);
-    stage.playingData.status.addItem(this.data.name, this.data.type, this.data.data);
+    stage.state.status.addItem(this.data.name, this.data.type, this.data.data);
   }
 }
 

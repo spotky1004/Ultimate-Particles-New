@@ -16,15 +16,15 @@ function drawCanvas(stage) {
   };
   
   const canvasSize = Math.max(10, Math.min(screenSize.width, screenSize.height) * 0.9);
-  canvas.width = canvasSize * stage.playingData.stageAttribute.stageWidth/100;
-  canvas.height = canvasSize * stage.playingData.stageAttribute.stageHeight/100;
+  canvas.width = canvasSize * stage.state.stageAttribute.stageWidth/100;
+  canvas.height = canvasSize * stage.state.stageAttribute.stageHeight/100;
   const s = canvasSize/100;
 
-  ctx.fillStyle = stage.playingData.stageAttribute.bgColor || "#ffc966";
+  ctx.fillStyle = stage.state.stageAttribute.bgColor || "#ffc966";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const { stageX, stageY } = stage.playingData.stageAttribute;
-  const particleGroups = stage.playingData.particleGroups.groups;
+  const { stageX, stageY } = stage.state.stageAttribute;
+  const particleGroups = stage.state.particleGroups.groups;
   const groupNames = Object.keys(particleGroups);
   for (let i = groupNames.length-1; i >= 0; i--) {
     const particleGroup = particleGroups[groupNames[i]].particles;
@@ -45,8 +45,8 @@ function drawCanvas(stage) {
     }
   }
 
-  displayCanvas.width = canvasSize * stage.playingData.stageAttribute.stageWidth/100;
-  displayCanvas.height = canvasSize * stage.playingData.stageAttribute.stageHeight/100;
+  displayCanvas.width = canvasSize * stage.state.stageAttribute.stageWidth/100;
+  displayCanvas.height = canvasSize * stage.state.stageAttribute.stageHeight/100;
   displayCtx.drawImage(canvas, 0, 0);
 }
 

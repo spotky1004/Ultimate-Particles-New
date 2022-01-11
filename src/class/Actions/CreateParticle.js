@@ -24,7 +24,7 @@ class CreateParticle extends ActionBase {
    */
   perform({ stage, loop=0, innerLoop=0, timeOffset=0, globalVariables={} }) {
     const variables = this.getVariables(arguments[0]);
-    stage.playingData.particleGroups.addParticle(new Particle({ ...this.data, t: timeOffset, i: loop, j: innerLoop }, variables), globalVariables);
+    stage.state.particleGroups.addParticle(new Particle({ ...this.data, t: timeOffset, i: loop, j: innerLoop }, variables), globalVariables);
   }
 }
 
