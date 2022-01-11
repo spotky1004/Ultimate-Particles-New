@@ -64,7 +64,6 @@ class ActionScheduler {
    * @param {string} offset 
    */
   activateGroup(name, offset=0) {
-    console.log(name);
     const time = (this.parent.playingData.time ?? 0) - offset;
     const group = this.actionGroups[name];
     if (typeof group === "undefined") return;
@@ -77,6 +76,13 @@ class ActionScheduler {
         performCount: 0
       });
     }
+  }
+
+  /**
+   * @param {string} name 
+   */
+  cancelGroup(name) {
+    this.loopingActions = this.loopingActions.filter(loopingAction => loopingAction.action.groupName !== name);
   }
 
   /**

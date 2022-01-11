@@ -4,6 +4,7 @@ export { default as ChangeStageAttribute } from "./ChangeStageAttribute.js";
 export { default as SetGlobalVariable } from "./SetGlobalVariable.js";
 export { default as AddStatus } from "./AddStatus.js";
 export { default as ActivateActionGroup } from "./ActivateActionGroup.js";
+export { default as CancelActionGroup } from "./CancelActionGroup.js";
 
 /**
  * @typedef Actions
@@ -13,6 +14,7 @@ export { default as ActivateActionGroup } from "./ActivateActionGroup.js";
  * @property {import("./SetGlobalVariable.js").default} SetGlobalVariable
  * @property {import("./AddStatus.js").default} AddStatus
  * @property {import("./ActivateActionGroup.js").default} ActivateActionGroup
+ * @property {import("./CancelActionGroup.js").default} CancelActionGroup
  */
 /**
  * @typedef {keyof Actions} ActionTypes
@@ -27,6 +29,7 @@ export { default as ActivateActionGroup } from "./ActivateActionGroup.js";
  * @property {import("./SetGlobalVariable.js").ActionData} SetGlobalVariable
  * @property {import("./AddStatus.js").ActionData} AddStatus
  * @property {import("./ActivateActionGroup.js").ActionData} ActivateActionGroup
+ * @property {import("./CancelActionGroup.js").ActionData} CancelActionGroup
  */
 /**
  * @typedef OptimizationDatas
@@ -36,4 +39,5 @@ export { default as ActivateActionGroup } from "./ActivateActionGroup.js";
  * @property {import("./SetGlobalVariable.js").OptimizationData} SetGlobalVariable
  * @property {import("./AddStatus.js").OptimizationData} AddStatus
  * @property {import("./ActivateActionGroup.js").OptimizationData} ActivateActionGroup
+ * @property {import("./CancelActionGroup.js").OptimizationData} CancelActionGroup
  */
