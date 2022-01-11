@@ -6,9 +6,9 @@ import StringExpression from "./StringExpression.js";
 class Value {
   /**
    * @param {T} value 
-   * @param {Object.<string, string | number>} variables
+   * @param {Object.<string, string | number>} constants
    */
-  constructor(value, variables) {
+  constructor(value, constants) {
     /** @type {boolean} */
     this.isValueFixed = false;
     /** @type {number | string | StringExpression! | Value[] | Object.<string, Value>} */
@@ -22,21 +22,21 @@ class Value {
       this.type = "simple";
       this.isValueFixed = true;
       this.value = value;
-    } else if (valueType === "string") {
+    } else if (valueType === "string" || value instanceof StringExpression) {
       this.type = "simple";
-      const expression = new StringExpression(value);
+      const expression = valueType === "string" ? new StringExpression(value) : value;
       if (!expression.isVaild) {
         this.isValueFixed = true;
         this.value = value;
       } else {
         if (
-          variables &&
+          constants &&
           expression.expression.length === 1 &&
           expression.expression[0][0][0] === "$" &&
-          typeof variables[expression.expression[0][0].slice(1)] !== "undefined"
+          typeof constants[expression.expression[0][0].slice(1)] !== "undefined"
         ) {
           this.isValueFixed = true;
-          this.value = expression.eval(variables);
+          this.value = expression.eval(constants);
         } else {
           this.isValueFixed = false;
           this.value = expression;
@@ -48,7 +48,7 @@ class Value {
       value = [...value];
       let isValuesAllFixed = true;
       for (let i = 0; i < value.length; i++) {
-        value[i] = new Value(value[i], variables);
+        value[i] = new Value(value[i], constants);
         if (!value[i].isValueFixed) isValuesAllFixed = false;
       }
 
@@ -60,7 +60,7 @@ class Value {
       value = {...value};
       let isValuesAllFixed = true;
       for (const key in value) {
-        value[key] = new Value(value[key], variables);
+        value[key] = new Value(value[key], constants);
         if (!value[key].isValueFixed) isValuesAllFixed = false;
       }
 
