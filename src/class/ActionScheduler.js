@@ -115,11 +115,12 @@ class ActionScheduler {
       if (action.startTime > time) break;
       
       const actionLooperData = action.getLooperData(0);
-      if (!isValueTure(actionLooperData.shouldPerform)) continue;
       const innerLoopCount = Math.floor(actionLooperData.innerLoop);
       for (let j = 0; j < innerLoopCount; j++) {
         loops++;
         if (loops > LOOP_LIMIT) return false;
+
+        if (!isValueTure(actionLooperData.shouldPerform)) continue;
         this.addActionToPerform({
           action,
           loop: 0,
@@ -151,7 +152,7 @@ class ActionScheduler {
         loops++;
         if (loops > LOOP_LIMIT) return false;
         
-        if (isValueTure(actionLooperData.shouldPerform)) continue;
+        if (!isValueTure(actionLooperData.shouldPerform)) continue;
         const innerLoopCount = Math.floor(actionLooperData.innerLoop);
         for (let k = 0; k < innerLoopCount; k++) {
           loops++;
