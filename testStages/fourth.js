@@ -35,23 +35,6 @@ addAction(
   }
 );
 addAction(
-  "CreateParticle",
-  0,
-  {
-    group: "player",
-    color: "#0f0",
-    position: {
-      x: 100,
-      y: 50
-    },
-    speed: 40,
-    size: {
-      height: 2,
-      width: 2
-    }
-  }
-);
-addAction(
   "AddStatus",
   0,
   {
