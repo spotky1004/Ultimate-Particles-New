@@ -28,7 +28,7 @@ class ActiveActionGroup extends ActionBase {
     const variables = this.getVariables(arguments[0]);
 
     const time = stage.playingData.time;
-    stage.playingData.actionScheduler.activeGroup(this.data.name, time - timeOffset);
+    stage.playingData.actionScheduler.activateGroup(this.data.name, time - timeOffset);
   }
 }
 

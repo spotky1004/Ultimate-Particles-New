@@ -63,7 +63,7 @@ class ActionScheduler {
    * @param {string} name 
    * @param {string} offset 
    */
-  activeGroup(name, offset=0) {
+  activateGroup(name, offset=0) {
     console.log(name);
     const time = (this.parent.playingData.time ?? 0) - offset;
     const group = this.actionGroups[name];
