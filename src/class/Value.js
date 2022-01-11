@@ -8,7 +8,7 @@ class Value {
    * @param {T} value 
    * @param {Object.<string, string | number>} constants
    */
-  constructor(value, constants) {
+  constructor(value, constants={}) {
     /** @type {boolean} */
     this.isValueFixed = false;
     /** @type {number | string | StringExpression! | Value[] | Object.<string, Value>} */
@@ -108,7 +108,7 @@ class Value {
       } else if (this.type === "array") {
         let value = new Array(value.length).fill(null);
         for (let i = 0; i < this.value.length; i++) {
-          value = this.value.getValue(variables);
+          value[i] = this.value.getValue(variables);
         }
         return value;
       } else if (this.type === "object") {
@@ -122,12 +122,29 @@ class Value {
         }
 
         return value;
+      }
+    }
+  }
 
-        // return Object.fromEntries(
-        //   Object.entries(this.value).map(
-        //     ([key, value]) => [key, value.getValue(variables)]
-        //   )
-        // );
+  getRawValue() {
+    if (this.isValueFixed && this.type === "simple") {
+      return this.value;
+    } else {
+      if (this.type === "simple") {
+        return this.value;
+      } else if (this.type === "array") {
+        let value = new Array(value.length).fill(null);
+        for (let i = 0; i < this.value.length; i++) {
+          value[i] = this.value[i].getRawValue();
+        }
+        return value;
+      } else if (this.type === "object") {
+        let value = {};
+        for (const key in this.value) {
+          value[key] = this.value[key].getRawValue();
+        }
+
+        return value;
       }
     }
   }
