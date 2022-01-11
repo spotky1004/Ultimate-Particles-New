@@ -7,7 +7,8 @@ import Value from "../Value.js";
  * @property {number | string} value
  */
 /**
- * @typedef {Object.<string, any>} OptimizationData
+ * @typedef OptimizationData
+ * @property {Value<number | string>} value
  */
 
 class SetGlobalVariable extends ActionBase {
@@ -20,7 +21,9 @@ class SetGlobalVariable extends ActionBase {
     /** @type {ActionData} */
     this.data = data;
     /** @type {OptimizationData} */
-    this.optimizationData = {};
+    this.optimizationData = {
+      value: new Value(this.data.value)
+    };
   }
 
   /**
@@ -28,7 +31,7 @@ class SetGlobalVariable extends ActionBase {
    */
   perform({ stage, loop=0, innerLoop=0, timeOffset=0, globalVariables={} }) {
     const variables = this.getVariables(arguments[0]);
-    const value = new Value(this.data.value).getValue(variables);
+    const value = this.optimizationData.value.getValue(variables);
     stage.state.globalVariables.changeValue({
       key: this.data.name,
       value: value,

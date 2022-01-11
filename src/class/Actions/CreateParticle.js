@@ -1,11 +1,13 @@
 import ActionBase from "./ActionBase.js";
 import Particle from "../Particle.js";
+import Value from "../Value.js";
 
 /**
  * @typedef {import("../Particle.js").ParticleOptions} ActionData
  */
 /**
  * @typedef OptimizationData
+ * @property {import("../Particle.js").ParticleOptions} data
  */
 
 class CreateParticle extends ActionBase {
@@ -17,6 +19,10 @@ class CreateParticle extends ActionBase {
 
     /** @type {ActionData} */
     this.data = data;
+    /** @type {OptimizationData} */
+    this.optimizationData = {
+      data: new Value(data).getRawValue()
+    }
   }
 
   /**
