@@ -177,8 +177,13 @@ class Stage {
                 playerY < particleY + particleHeight &&
                 playerHeight + playerY > particleY
               ) {
-                this.state.globalVariables.changeValue({ key: "life", value: Math.max(0, globalVariables.life - 1) });
-                globalVariables.life = this.state.globalVariables.value.life.getValue(globalVariables);
+                const actionGroupToActive = particle.values.activeGroupOnHit;
+                if (actionGroupToActive === "") {
+                  this.state.globalVariables.changeValue({ key: "life", value: Math.max(0, globalVariables.life - 1) });
+                  globalVariables.life = this.state.globalVariables.value.life.getValue(globalVariables);
+                } else {
+                  this.state.actionScheduler.activateGroup(actionGroupToActive);
+                }
                 particlesToRemove.push(particle);
                 continue outLoop;
               }

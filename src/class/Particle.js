@@ -25,6 +25,7 @@ import Value from "./Value.js";
  * @property {string | number} [deg]
  * @property {string | number | boolean} [tracePlayerIf]
  * @property {string | number | boolean} [hasHitboxIf]
+ * @property {string} [activeGroupOnHit]
  */
 /**
  * @typedef ParticleValues
@@ -36,6 +37,7 @@ import Value from "./Value.js";
  * @property {number} deg
  * @property {string | number | boolean} tracePlayerIf
  * @property {string | number | boolean} hasHitboxIf
+ * @property {string} activeGroupOnHit
  */
 /**
  * @typedef DrawData
@@ -48,7 +50,7 @@ class Particle {
    * @param {ParticleOptions} options 
    * @param {Object.<string, number | string | boolean>} variables
    */
-  constructor(options, variables) {
+  constructor(options={}, variables={}) {
     /** @type {number} */
     this.time = 0;
     /** @type {number} */
@@ -86,6 +88,9 @@ class Particle {
     /** @type {ParticleValues["hasHitboxIf"]} */
     const hasHitboxIf = options.hasHitboxIf ?? true;
     this._hasHitboxIf = new Value(hasHitboxIf, this.constants);
+    /** @type {ParticleValues["hasHitboxIf"]} */
+    const activeGroupOnHit = options.activeGroupOnHit ?? "";
+    this._activeGroupOnHit = new Value(activeGroupOnHit);
 
     const _variables = this.getVariables(variables);
     this.updateValues(_variables);
@@ -132,6 +137,7 @@ class Particle {
       deg: this._deg.getValue(variables),
       tracePlayerIf: this._tracePlayerIf.getValue(variables),
       hasHitboxIf: this._hasHitboxIf.getValue(variables),
+      activeGroupOnHit: this._activeGroupOnHit.getValue(variables),
     };
 
     return this;

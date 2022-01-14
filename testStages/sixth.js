@@ -11,7 +11,7 @@ let stageData = {
  * @param {number} param0.startTime 
  * @param {import("../src/class/Actions/index.js").ActionDatas[T]} param0.data 
  * @param {import("../src/class/Actions/ActionBase.js").LooperData} param0.looperData 
- * @param {string} param0.group
+ * @param {string} param0.groupName
  */
 function addAction({ type, startTime, data, looperData, groupName }) {
   stageData.actions.push(arguments[0]);
@@ -131,6 +131,7 @@ addAction({
 // Phase
 addAction({
   groupName: "pattern1",
+  startTime: 0,
   type: "CreateParticle",
   data: {
     constants: {
@@ -152,10 +153,34 @@ addAction({
     },
     color: 'select($state, "#46c5e8", "#64e846", "#e88f46", "#e84646")',
     speed: "select($state, 25, 40, 55, 150)",
-    tracePlayerIf: "lt($state, 3)"
+    tracePlayerIf: "lt($state, 3)",
+    activeGroupOnHit: "particleOnHit"
   },
   looperData: {
     innerLoop: "floor($phase/10+1)"
+  }
+});
+
+addAction({
+  groupName: "particleOnHit",
+  startTime: 0,
+  type: "SetGlobalVariable",
+  data: {
+    name: "life",
+    value: "$life - 1"
+  }
+});
+addAction({
+  groupName: "particleOnHit",
+  startTime: 0,
+  type: "ChangeStageAttribute",
+  data: {
+    name: "screenX",
+    value: "randr(-5*0.8^$i, 5*0.8^$i)"
+  },
+  looperData: {
+    interval: 20,
+    loopCount: 100,
   }
 });
 

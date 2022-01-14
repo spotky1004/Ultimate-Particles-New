@@ -11,7 +11,7 @@ let stageData = {
  * @param {number} param0.startTime 
  * @param {import("../src/class/Actions/index.js").ActionDatas[T]} param0.data 
  * @param {import("../src/class/Actions/ActionBase.js").LooperData} param0.looperData 
- * @param {string} param0.group
+ * @param {string} param0.groupName
  */
 function addAction({ type, startTime, data, looperData, group }) {
   stageData.actions.push(arguments[0]);
