@@ -44,7 +44,7 @@ addAction({
       x: 0,
       y: 0
     },
-    speed: "80+$phase/2",
+    speed: "60+$phase/2",
     size: {
       height: 4,
       width: 4
