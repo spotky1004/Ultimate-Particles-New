@@ -177,7 +177,7 @@ addAction(
     constants: {
       hue: "$mainHue+40",
       posX: "randr(-100, 100)",
-      posY: "$stageY - 100",
+      posY: "$stageY - 150",
       speed: "randr(0, 12)",
       deg: "170+randr(0, 20)",
       size: "randr(2, 3)"
