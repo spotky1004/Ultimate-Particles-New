@@ -1,4 +1,4 @@
-import testStage from "../testStages/fourth.js";
+import testStage from "../testStages/sixth.js";
 import StagePlayer from "./class/StagePlayer.js";
 import { renderDrag } from "./events.js";
 
