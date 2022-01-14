@@ -58,7 +58,7 @@ class Particle {
     /** @type {typeof options["constants"]} */
     this.constants = new Value({...options.constants, i, j} ?? {}).getValue(variables);
     /** @type {Value<typeof options["variables"]>} */
-    this._variables = new Value(this.variables ?? {});
+    this._variables = new Value(options.variables ?? {});
 
     /** @type {ParticleValues} */
     this.values = {};
