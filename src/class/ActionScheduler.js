@@ -135,7 +135,6 @@ class ActionScheduler {
         });
       }
       const loopCount = actionLooperData.loopCount;
-      console.log(action.type, actionLooperData, loopCount);
       if (loopCount >= 2) {
         this.addLoopingAction({
           action,
