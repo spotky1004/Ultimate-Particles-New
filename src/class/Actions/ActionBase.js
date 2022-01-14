@@ -97,8 +97,8 @@ class ActionBase {
     );
   }
 
-  getLooperData(loopCount=0) {
-    return this._looperData.getValue({ i: loopCount });
+  getLooperData(globalVariables={}) {
+    return this._looperData.getValue(globalVariables);
   }
 
   /** @param {PerformParams} param0 */

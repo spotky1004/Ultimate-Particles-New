@@ -120,7 +120,7 @@ class ActionScheduler {
       const action = actions[i];
       if (action.startTime > time) break;
       
-      const actionLooperData = action.getLooperData(0);
+      const actionLooperData = action.getLooperData({ i: 0, ...globalVariables });
       const innerLoopCount = Math.floor(actionLooperData.innerLoop);
       for (let j = 0; j < innerLoopCount; j++) {
         loops++;
@@ -135,6 +135,7 @@ class ActionScheduler {
         });
       }
       const loopCount = actionLooperData.loopCount;
+      console.log(action.type, actionLooperData, loopCount);
       if (loopCount >= 2) {
         this.addLoopingAction({
           action,
@@ -151,7 +152,7 @@ class ActionScheduler {
       if (loops > LOOP_LIMIT) return false;
 
       const loopingAction = this.loopingActions[i];
-      const actionLooperData = loopingAction.action.getLooperData(loopingAction.performCount);
+      const actionLooperData = loopingAction.action.getLooperData({ i: loopingAction.performCount, ...globalVariables });
       const bulkLoop = actionLooperData.interval > 0 ? Math.floor( ( time - loopingAction.lastPerformed ) / actionLooperData.interval ) : stage.maximumTickLength;
       const offsetOffset = (time - loopingAction.lastPerformed) % actionLooperData.interval;
       for (let j = 0; j < bulkLoop; j++) {
