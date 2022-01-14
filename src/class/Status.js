@@ -19,6 +19,7 @@ class Status {
    * @param {import("./StatusItem.js").StatusItemData[import("./StatusItem.js").StatusItemType]} data 
    */
   addItem(name, type, data) {
+    if (this.items.length > 25) return;
     const item = new StatusItem(name, type, data);
     this.items.push(item);
     this.ele.appendChild(item.ele);
