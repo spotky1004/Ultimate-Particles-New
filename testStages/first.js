@@ -34,6 +34,14 @@ function addAction(type, startTime, data, looperData) {
 //   }
 // );
 addAction(
+  "ChangeStageAttribute",
+  0,
+  {
+    name: "bgColor",
+    value: "#000"
+  }
+)
+addAction(
   "AddStatus",
   0,
   {
@@ -51,20 +59,53 @@ addAction(
   "CreateParticle",
   250,
   {
-    group: "test",
     position: {
-      x: "sin($t/20*(1+$i/10))*0.99^$i*50 + 50",
-      y: "-1*cos($t/20*(1+$i/10))*0.99^$i*50 + 50"
+      x: "sin($t/20*(1+$i/10))*0.99^$i*100",
+      y: "-1*cos($t/20*(1+$i/10))*0.99^$i*100"
     },
     size: {
-      width: "max(3*0.99^$i, 0.2)",
-      height: "max(3*0.99^$i, 0.2)"
+      width: "max(6*0.99^$i, 0.4)",
+      height: "max(6*0.99^$i, 0.4)"
     },
     color: "hsl($i*20, 50, 50)"
   },
   {
     loopCount: 2000,
     interval: 1
+  }
+);
+
+addAction(
+  "ChangeStageAttribute",
+  0,
+  {
+    name: "outOfBoundsFactor",
+    value: "1000"
+  },
+  {
+    loopCount: Infinity,
+  }
+);
+addAction(
+  "ChangeStageAttribute",
+  0,
+  {
+    name: "stageHeightScale",
+    value: "1 - sin($stageTime*25)/3"
+  },
+  {
+    loopCount: Infinity,
+  }
+);
+addAction(
+  "ChangeStageAttribute",
+  0,
+  {
+    name: "stageWidthScale",
+    value: "1 - sin($stageTime*25)/3"
+  },
+  {
+    loopCount: Infinity,
   }
 );
 

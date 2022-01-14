@@ -24,13 +24,13 @@ addAction(
     group: "player",
     color: "#f00",
     position: {
-      x: 50,
-      y: 50
+      x: 0,
+      y: 0
     },
-    speed: 40,
+    speed: 80,
     size: {
-      height: 2,
-      width: 2
+      height: 4,
+      width: 4
     }
   }
 );
@@ -77,7 +77,7 @@ addAction(
   0,
   {
     name: "climbSpeed",
-    value: "min(32, 3+$stageTime/2)"
+    value: "min(64, 3+$stageTime/2)"
   },
   {
     loopCount: Infinity
@@ -93,7 +93,7 @@ addAction(
       barStartCol: "#9e0606",
       barEndCol: "#2ff7e3",
       value: "$climbSpeed",
-      max: "32"
+      max: "64"
     }
   }
 );
@@ -102,7 +102,7 @@ addAction(
   0,
   {
     name: "climbSpeed",
-    value: "min(32, 3+$stageTime/2.3)"
+    value: "min(64, 3+$stageTime/1.15)"
   },
   {
     loopCount: Infinity
@@ -160,19 +160,8 @@ addAction(
   "ChangeStageAttribute",
   0,
   {
-    name: "stageWidth",
+    name: "screenWidth",
     value: "95+2.5*(sin($stageTime*250)^2)"
-  },
-  {
-    loopCount: Infinity,
-  }
-);
-addAction(
-  "ChangeStageAttribute",
-  0,
-  {
-    name: "stageX",
-    value: "-1.25*(sin($stageTime*250)^2)"
   },
   {
     loopCount: Infinity,
@@ -187,11 +176,11 @@ addAction(
   {
     constants: {
       hue: "$mainHue+40",
-      posX: "randr(0, 100)",
-      posY: "$stageY - 50",
-      speed: "randr(0, 6)",
+      posX: "randr(-100, 100)",
+      posY: "$stageY - 100",
+      speed: "randr(0, 12)",
       deg: "170+randr(0, 20)",
-      size: "randr(1, 1.5)"
+      size: "randr(2, 3)"
     },
     color: "hsl($hue, 100, 50)",
     position: {

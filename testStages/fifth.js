@@ -48,6 +48,51 @@ addAction({
     }
   }
 });
+// addAction({
+//   type: "ChangeStageAttribute",
+//   startTime: 0,
+//   data: {
+//     name: "screenWidth",
+//     value: "max(50, 100-$stageTime*10)"
+//   },
+//   looperData: {
+//     loopCount: Infinity,
+//   }
+// });
+// addAction({
+//   type: "ChangeStageAttribute",
+//   startTime: 0,
+//   data: {
+//     name: "screenHeight",
+//     value: "max(50, 100-$stageTime*10)"
+//   },
+//   looperData: {
+//     loopCount: Infinity,
+//   }
+// });
+// addAction({
+//   type: "ChangeStageAttribute",
+//   startTime: 0,
+//   data: {
+//     name: "stageY",
+//     value: "-($stageTime^1.6)*3"
+//   },
+//   looperData: {
+//     loopCount: Infinity,
+//   }
+// });
+// addAction({
+//   type: "AddStatus",
+//   startTime: 0,
+//   data: {
+//     type: "Text",
+//     name: "stageY",
+//     data: {
+//       color: "#f88",
+//       content: "fix($stageY, 2)"
+//     }
+//   }
+// });
 
 const stageToExport = JSON.stringify(stageData, null, 2);
 console.log(stageToExport);

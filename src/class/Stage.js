@@ -1,10 +1,10 @@
 import Value from "./Value.js";
 import isValueTure from "../util/isValueTrue.js";
+import StageAttribute from "./StageAttribute.js";
 import ParticleGroups from "./ParticleGroups.js";
 import ActionScheduler from "./ActionScheduler.js";
 import Status from "./Status.js";
 import drawCanvas from "../drawCanvas.js";
-import fixNumber from "../util/fixNumber.js";
 
 /**
  * @typedef {import("./Actions/index.js").AnyAction} AnyAction
@@ -14,17 +14,6 @@ import fixNumber from "../util/fixNumber.js";
  * @property {Particle[]} particlePalette
  * @property {number} [maximumTickLength]
  * @property {AnyAction[]} actions
- */
-
-/**
- * @typedef StageAttribute
- * @property {string} bgColor
- * @property {number} outOfBoundsFactor
- * @property {number} playerHitboxFactor
- * @property {number} stageWidth
- * @property {number} stageHeight
- * @property {number} stageX
- * @property {number} stageY
  */
 
 class Stage {
@@ -55,15 +44,7 @@ class Stage {
     this.playing = true;
     this.state = {
       time: 0,
-      stageAttribute: {
-        bgColor: "#ffc966",
-        outOfBoundsFactor: 2,
-        stageWidth: 100,
-        stageHeight: 100,
-        stageX: 0,
-        stageY: 0,
-        playerHitboxFactor: 1,
-      },
+      stageAttribute: new StageAttribute(),
       particleGroups: new ParticleGroups(["default", "player"]),
       actionScheduler: new ActionScheduler(this),
       globalVariables: new Value({
@@ -72,13 +53,6 @@ class Stage {
       }),
       status: new Status(),
     };
-  }
-
-  fixState() {
-    this.state.stageAttribute.stageWidth = fixNumber(this.state.stageAttribute.stageWidth, 0, 100, 100);
-    this.state.stageAttribute.stageHeight = fixNumber(this.state.stageAttribute.stageHeight, 0, 100, 100);
-    this.state.stageAttribute.stageX = fixNumber(this.state.stageAttribute.stageX, -999999, 999999, 0);
-    this.state.stageAttribute.stageY = fixNumber(this.state.stageAttribute.stageY, -999999, 999999, 0);
   }
 
   /**
@@ -111,11 +85,14 @@ class Stage {
     globalVariables.stageX = this.state.stageAttribute.stageX;
     globalVariables.stageY = this.state.stageAttribute.stageY;
     
+    // Run ActionScheduler
     wasSuccessful &= this.state.actionScheduler.tick(globalVariables);
 
+    // Fix state
+    this.state.stageAttribute.fixValues();
+
     // Player move
-    const { stageWidth, stageHeight } = this.state.stageAttribute;
-    const { stageX, stageY } = this.state.stageAttribute;
+    const stageRange = this.state.stageAttribute.stageRange;
     const playerDirections = {
       up: Boolean(keyPressed.KeyW || keyPressed.ArrowUp),
       down: Boolean(keyPressed.KeyS || keyPressed.ArrowDown),
@@ -134,13 +111,13 @@ class Stage {
       const particle = playerParticles[i];
       const speed = particle.values.speed;
       const size = particle.values.size;
-      particle.x = Math.min(stageWidth-size.width/2+stageX, Math.max(0+size.width/2+stageX, particle.x + speed*playerVec.x*dt/1000));
-      particle.y = Math.min(stageHeight-size.height/2+stageY, Math.max(0+size.height/2+stageY, particle.y + speed*playerVec.y*dt/1000));
+      particle.x = Math.min(stageRange.x[1]-size.width/2, Math.max(stageRange.x[0]+size.width/2, particle.x + speed*playerVec.x*dt/1000));
+      particle.y = Math.min(stageRange.y[1]-size.height/2, Math.max(stageRange.y[0]+size.height/2, particle.y + speed*playerVec.y*dt/1000));
       particle.updateValues(globalVariables);
     }
 
     // Particle loop
-    const outOfBoundsFactor = this.state.stageAttribute.outOfBoundsFactor;
+    const outOfBoundsRange = this.state.stageAttribute.outOfBoundsRange;
     for (const groupName in this.state.particleGroups.groups) {
       const particleGroup = this.state.particleGroups.groups[groupName];
       const particles = particleGroup.particles;
@@ -153,10 +130,10 @@ class Stage {
         // Check OutOfBounds
         if (groupName !== "player") {
           if (
-            (particle.values.position.x - stageX) > stageWidth * outOfBoundsFactor ||
-            (particle.values.position.x - stageX) < stageWidth * -(outOfBoundsFactor-1) ||
-            (particle.values.position.y - stageY) > stageHeight * outOfBoundsFactor ||
-            (particle.values.position.y - stageY) < stageHeight * -(outOfBoundsFactor-1)
+            particle.values.position.x < outOfBoundsRange.x[0] ||
+            particle.values.position.x > outOfBoundsRange.x[1] ||
+            particle.values.position.y < outOfBoundsRange.y[0] ||
+            particle.values.position.y > outOfBoundsRange.y[1]
           ) {
             particlesToRemove.push(particle);
             continue;
@@ -213,9 +190,6 @@ class Stage {
         particleGroup.removeParticle(particlesToRemove[i]);
       }
     }
-
-    // Fix state
-    this.fixState();
     
     // Update status
     this.state.status.update(globalVariables);

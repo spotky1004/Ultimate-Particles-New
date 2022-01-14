@@ -10,43 +10,39 @@ const displayCtx = displayCanvas.getContext("2d");
  * @param {import("./class/Stage.js").default} stage 
  */
 function drawCanvas(stage) {
-  const screenSize = {
+  const viewSize = {
     height: gameScreen.offsetHeight,
     width: gameScreen.offsetWidth
   };
+  const stageAttribute = stage.state.stageAttribute;
   
-  const canvasSize = Math.max(10, Math.min(screenSize.width, screenSize.height) * 0.9);
-  canvas.width = canvasSize * stage.state.stageAttribute.stageWidth/100;
-  canvas.height = canvasSize * stage.state.stageAttribute.stageHeight/100;
+  const canvasSize = Math.min(viewSize.width, viewSize.height) * 0.9;
+  canvas.width = Math.max(1, canvasSize * stageAttribute.screenSize.width/100);
+  canvas.height = Math.max(90, canvasSize * stageAttribute.screenSize.height/100);
   const s = canvasSize/100;
 
-  ctx.fillStyle = stage.state.stageAttribute.bgColor || "#ffc966";
+  ctx.fillStyle = stageAttribute.bgColor || "#ffc966";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  const { stageX, stageY } = stage.state.stageAttribute;
   const particleGroups = stage.state.particleGroups.groups;
   const groupNames = Object.keys(particleGroups);
   for (let i = groupNames.length-1; i >= 0; i--) {
     const particleGroup = particleGroups[groupNames[i]].particles;
     for (let i = 0; i < particleGroup.length; i++) {
-      const particle = particleGroup[i].values;
-      let { width: w, height: h } = particle.size;
-      let { x, y } = particle.position;
-      x -= stageX;
-      y -= stageY;
-
-      ctx.fillStyle = particle.color || "#000";
+      const drawingData = stageAttribute.getParticleDrawData(particleGroup[i]);
+      ctx.fillStyle = drawingData.color || "#000";
       ctx.fillRect(
-        s * (x - h/2),
-        s * (y - w/2),
-        s * w,
-        s * h
+        s * drawingData.position.x,
+        s * drawingData.position.y,
+        s * drawingData.size.width,
+        s * drawingData.size.height
       );
     }
   }
 
-  displayCanvas.width = canvasSize * stage.state.stageAttribute.stageWidth/100;
-  displayCanvas.height = canvasSize * stage.state.stageAttribute.stageHeight/100;
+  displayCanvas.width = canvas.width;
+  displayCanvas.height = canvas.height;
+  displayCanvas.style.transform = `translate(${canvasSize * stageAttribute.screenX/100}px, ${canvasSize * stageAttribute.screenY/100}px)`;
   displayCtx.drawImage(canvas, 0, 0);
 }
 

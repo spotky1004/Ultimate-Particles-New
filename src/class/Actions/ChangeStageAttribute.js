@@ -3,7 +3,7 @@ import ActionBase from "./ActionBase.js";
 
 /**
  * @typedef ActionData
- * @property {keyof import("../Stage.js").default["state"]["stageAttribute"]} name
+ * @property {keyof import("../StageAttribute.js").DefaultValues} name
  * @property {number | string} value
  */
 /**
