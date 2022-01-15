@@ -1,3 +1,5 @@
+import Stage from "./class/Stage.js";
+
 function loadJSON(link) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest;
