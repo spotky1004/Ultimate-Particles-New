@@ -288,4 +288,4 @@ export default StringExpression;
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
 // let v = StringExpression.parseExpression("160+20*rand()");
 // console.log(v);
-if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
+// if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
