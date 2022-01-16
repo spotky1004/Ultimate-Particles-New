@@ -10,10 +10,15 @@ import drawCanvas from "../drawCanvas.js";
  * @typedef {import("./Actions/index.js").AnyAction} AnyAction
  */
 /**
+ * @typedef StageMetadata
+ * @property {string} author
+ * @property {string} createDate
+ */
+/**
  * @typedef StageOptions
- * @property {Particle[]} particlePalette
  * @property {number} [maximumTickLength]
  * @property {AnyAction[]} actions
+ * @property {StageMetadata} metadata
  */
 
 class Stage {
@@ -25,6 +30,12 @@ class Stage {
     this.actions = options.actions;
     /** @type {number} */
     this.maximumTickLength = options.maximumTickLength ?? Math.ceil(1000/60);
+    const metadata = options.metadata ?? {};
+    /** @type {StageMetadata} */
+    this.metadata = {
+      author: metadata.author ?? "",
+      createDate: metadata.createDate ?? new Date().toGMTString(),
+    };
     /** @type {boolean} */
     this.playing = false;
     /**
