@@ -183,6 +183,7 @@ class StringExpression {
     "tan": ([x]) => Math.tan(x*Math.PI/180),
     "atan": ([x]) => Math.atan(x*Math.PI/180),
     "tanh": ([x]) => Math.tanh(x*Math.PI/180),
+    "atan2": ([y, x]) => Math.atan2(y, x)*Math.PI/180,
 
     "log": ([x, base]) => Math.log(x) / Math.log(base || Math.E),
     "log10": ([x]) => Math.log10(x),
@@ -220,6 +221,7 @@ class StringExpression {
       v = Array.isArray(v) ? v : []
       return v[Math.floor(idx%v.length)] ?? null
     },
+    "watch": ([x, y]) => (Math.atan2(y, x)*180/Math.PI+360+90)%360,
   }
 
   /**
