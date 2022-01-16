@@ -31,7 +31,7 @@ class Stage {
      * @typedef StageState
      * @property {number} time
      * @property {StageAttribute} stageAttribute
-     * @property {ParticleGroups} particleGroups
+     * @property {ParticleGroups<["default", "player"]>} particleGroups
      * @property {ActionScheduler} actionScheduler
      * @property {Value<Object.<string, (number | string)>>} globalVariables
      * @property {Status} status
@@ -80,10 +80,14 @@ class Stage {
     let globalVariables = this.state.globalVariables.getValue({ t: time/1000, ...this.state.globalVariables });
     globalVariables.dt = dt/1000;
     globalVariables.stageTime = time/1000;
-    globalVariables.stageWidth = this.state.stageAttribute.stageWidth;
-    globalVariables.stageHeight = this.state.stageAttribute.stageHeight;
     globalVariables.stageX = this.state.stageAttribute.stageX;
     globalVariables.stageY = this.state.stageAttribute.stageY;
+    const playerParticles = this.state.particleGroups.groups["player"].particles;
+    const playerToStore = playerParticles[Math.floor(Math.random() * playerParticles.length)];
+    if (playerToStore) {
+      globalVariables.playerX = playerToStore.values.position.x;
+      globalVariables.playerY = playerToStore.values.position.y;
+    }
     
     // Run ActionScheduler
     wasSuccessful &= this.state.actionScheduler.tick(globalVariables);
@@ -106,7 +110,6 @@ class Stage {
       x: playerSpeedFactor * (playerDirections.right - playerDirections.left),
       y: playerSpeedFactor * (playerDirections.down - playerDirections.up)
     };
-    const playerParticles = this.state.particleGroups.groups["player"].particles;
     for (let i = 0; i < playerParticles.length; i++) {
       const particle = playerParticles[i];
       const speed = particle.values.speed;
