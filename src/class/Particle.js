@@ -65,7 +65,7 @@ class Particle {
     /** @type {ParticleValues} */
     this.values = {};
     /** @type {Object<string, any>} */
-    this.variables = {...this.constants, thisX: null, thisY: null};
+    this.variables = {...this.constants, thisX: null, thisY: null };
 
     const variableNames = Object.keys(options.variables ?? {});
     const fixedConstants = Object.fromEntries(Object.entries(this.constants).filter(([key]) => !variableNames.includes(key)));
@@ -73,7 +73,7 @@ class Particle {
     /** @type {ParticleValues["group"]} */
     this.group = options.group ?? "default";
     /** @type {ParticleValues["position"]} */
-    const position = options.position ?? { x: 50, y: 50 };
+    const position = options.position ?? { x: 0, y: 0 };
     this._position = new Value(position, fixedConstants);
     /** @type {ParticleValues["size"]} */
     const size = options.size ?? { width: 2, height: 2 };
@@ -96,6 +96,12 @@ class Particle {
     /** @type {ParticleValues["hasHitboxIf"]} */
     const activeGroupOnHit = options.activeGroupOnHit ?? "";
     this._activeGroupOnHit = new Value(activeGroupOnHit);
+
+    if (this._position.isValueFixed) {
+      const thisPosition = this._position.getValue();
+      this.variables.thisX = thisPosition.x;
+      this.variables.thisY = thisPosition.y;
+    }
     
     this.updateVariables(0, variables);
     this.updateValues();
@@ -129,8 +135,8 @@ class Particle {
     Object.assign(this.variables, globalVariables);
     this.variables.dt = dt;
     this.variables.t = this.time;
-    this.variables.thisX = this.values?.position?.x;
-    this.variables.thisY = this.values?.position?.y;
+    this.variables.thisX = this.values?.position?.x ?? this.variables.thisX;
+    this.variables.thisY = this.values?.position?.y ?? this.variables.thisY;
     Object.assign(this.variables, this._variables.getValue(this.variables));
   }
 
