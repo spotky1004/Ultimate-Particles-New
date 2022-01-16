@@ -176,13 +176,13 @@ class StringExpression {
 
     "sin": ([x]) => Math.sin(x*Math.PI/180),
     "asin": ([x]) => Math.asin(x),
-    "sinh": ([x]) => Math.sinh(x*Math.PI/180),
+    "sinh": ([x]) => Math.sinh(x),
     "cos": ([x]) => Math.cos(x*Math.PI/180),
     "acos": ([x]) => Math.acos(x),
-    "cosh": ([x]) => Math.cosh(x*Math.PI/180),
+    "cosh": ([x]) => Math.cosh(x),
     "tan": ([x]) => Math.tan(x*Math.PI/180),
     "atan": ([x]) => Math.atan(x),
-    "tanh": ([x]) => Math.tanh(x*Math.PI/180),
+    "tanh": ([x]) => Math.tanh(x),
     "atan2": ([y, x]) => Math.atan2(y, x)/Math.PI*180,
 
     "log": ([x, base]) => Math.log(x) / Math.log(base || Math.E),
