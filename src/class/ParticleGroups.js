@@ -1,10 +1,13 @@
 import ParticleGroup from "./ParticleGroup.js";
 import Value from "./Value.js";
 
+/**
+ * @template {string[]} T
+ */
 class ParticleGroups {
-  /** @param {string[]} initialGroups */
+  /** @param {T} initialGroups */
   constructor(initialGroups) {
-    /** @type {Object.<string, ParticleGroup>} */
+    /** @type {Record.<T[number], ParticleGroup> & Object.<string, ParticleGroup>} */
     this.groups = {};
     for (let i = 0; i < initialGroups.length; i++) {
       const groupName = initialGroups[i];
