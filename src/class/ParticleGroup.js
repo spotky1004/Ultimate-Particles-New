@@ -3,6 +3,7 @@ import Particle from "./Particle.js";
 const EventTypeEnum = {
   DestroyAll: 0,
   DestroyRandom: 1,
+  SetZIndex: 2,
 };
 
 /**
@@ -12,12 +13,15 @@ const EventTypeEnum = {
  * @typedef EventDatas
  * @property {{ }} DestroyAll
  * @property {{ chance: number }} DestroyRandom
+ * @property {{ zIndex: number }} SetZIndex
  */
 
 class ParticleGroup {
   constructor() {
     /** @type {Particle[]} */
     this.particles = [];
+    /** @type {number} */
+    this.zIndex = 0;
   }
 
   /**
@@ -38,8 +42,13 @@ class ParticleGroup {
     switch (type) {
       case "DestroyAll":
         this.destroyAll(data);
+        break;
       case "DestroyRandom":
         this.destroyRandom(data);
+        break;
+      case "SetZIndex":
+        this.setZIndex(data);
+        break;
     }
   }
 
@@ -51,8 +60,8 @@ class ParticleGroup {
   }
 
   /**
-   * @param {object} obj
-   * @param {number} obj.chance 
+   * @param {object} param0
+   * @param {number} param0.chance 
    */
   destroyRandom({ chance }) {
     let particles = [];
@@ -60,6 +69,14 @@ class ParticleGroup {
       if (Math.random() > chance) particles.push(this.particles[i]);
     }
     this.particles = particles;
+  }
+
+  /**
+   * @param {object} param0 
+   * @param {number} param0.zIndex
+   */
+  setZIndex({ zIndex }) {
+    this.zIndex = zIndex ?? 1;
   }
 
   /**

@@ -15,6 +15,10 @@ class ParticleGroups {
     }
   }
 
+  tick() {
+    this.groups = Object.fromEntries(Object.entries(this.groups).sort(([, groupA], [, groupB]) => groupB.zIndex - groupA.zIndex));
+  }
+
   /**
    * @param {import("./Particle.js").default} particle
    * @param {Object.<string, number | string>} globalVariables
