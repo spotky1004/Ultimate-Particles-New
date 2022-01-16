@@ -25,8 +25,14 @@ class StringExpression {
       !expression.match(/^([A-z0-9()$+\-*/%^,\.]|\s|\"([^"]|\")+\"|\'([^']|\')+\')+$/) ||
       expression.match(/^(\s|[A-z0-9])+$/)
     ) return false;
+
+    // replace strings
+    const replacedStrings = expression.match(/"(\\\\|\\"|[^"])*"/g) ?? [];
+    let stringIdx = 0;
+    expression = expression.replace(/"(\\\\|\\"|[^"])*"/g, () => {return `"${stringIdx++}"`});
     
     expression = "(" + expression.replace(/\s/g, "") + ")";
+
 
     // Find Minus
     while (true) {
@@ -138,6 +144,9 @@ class StringExpression {
         idxConnected.push(parsedExpression.length-1);
       }
     }
+
+    // Restore replaced strings
+    parsedExpression = parsedExpression.map(part => part.map(v => (v+"").startsWith('"') ? replacedStrings[v.slice(1, -1)] : v));
 
     return parsedExpression;
   }
