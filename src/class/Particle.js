@@ -60,7 +60,7 @@ class Particle {
     /** @type {typeof options["constants"]} */
     this.constants = new Value({...options.constants, i, j} ?? {}).getValue(variables);
     /** @type {Value<typeof options["variables"]>} */
-    this._variables = new Value(options.variables ?? {});
+    this._variables = new Value(Object.assign({ thisX: null, thisY: null }, options.variables ?? {}));
 
     /** @type {ParticleValues} */
     this.values = {};
@@ -120,6 +120,9 @@ class Particle {
    * @param {Object.<string, number | string>} globalVariables
    */
   getVariables(globalVariables={}) {
+    this._variables.changeValue({ key: "thisX", value: this.values?.position?.x });
+    this._variables.changeValue({ key: "thisY", value: this.values?.position?.y });
+
     /** @type {Object.<string, number | string>} */
     let variables = Object.assign({ t: this.time }, globalVariables, this.constants);
     variables = Object.assign(this._variables.getValue(variables), variables);
