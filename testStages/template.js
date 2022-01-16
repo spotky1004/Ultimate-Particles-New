@@ -13,7 +13,7 @@ let stageData = {
  * @param {import("../src/class/Actions/ActionBase.js").LooperData} param0.looperData 
  * @param {string} param0.groupName
  */
-function addAction({ type, startTime, data, looperData, group }) {
+function addAction({ type, startTime, data, looperData, groupName }) {
   stageData.actions.push(arguments[0]);
 }
 
