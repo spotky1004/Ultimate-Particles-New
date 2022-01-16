@@ -67,29 +67,32 @@ class Particle {
     /** @type {Object<string, any>} */
     this.variables = {...this.constants, thisX: null, thisY: null};
 
+    const variableNames = Object.keys(options.variables ?? {});
+    const fixedConstants = Object.fromEntries(Object.entries(this.constants).filter(([key]) => !variableNames.includes(key)));
+
     /** @type {ParticleValues["group"]} */
     this.group = options.group ?? "default";
     /** @type {ParticleValues["position"]} */
     const position = options.position ?? { x: 50, y: 50 };
-    this._position = new Value(position, this.constants);
+    this._position = new Value(position, fixedConstants);
     /** @type {ParticleValues["size"]} */
     const size = options.size ?? { width: 2, height: 2 };
-    this._size = new Value(size, this.constants);
+    this._size = new Value(size, fixedConstants);
     /** @type {ParticleValues["color"]} */
     const color = options.color ?? "#000";
-    this._color = new Value(color, this.constants);
+    this._color = new Value(color, fixedConstants);
     /** @type {ParticleValues["speed"]} */
     const speed = options.speed ?? 0;
-    this._speed = new Value(speed, this.constants);
+    this._speed = new Value(speed, fixedConstants);
     /** @type {ParticleValues["deg"]} */
     const deg = options.deg ?? null;
-    this._deg = new Value(deg, this.constants);
+    this._deg = new Value(deg, fixedConstants);
     /** @type {ParticleValues["tracePlayerIf"]} */
     const tracePlayerIf = options.tracePlayerIf ?? false;
-    this._tracePlayerIf = new Value(tracePlayerIf, this.constants);
+    this._tracePlayerIf = new Value(tracePlayerIf, fixedConstants);
     /** @type {ParticleValues["hasHitboxIf"]} */
     const hasHitboxIf = options.hasHitboxIf ?? true;
-    this._hasHitboxIf = new Value(hasHitboxIf, this.constants);
+    this._hasHitboxIf = new Value(hasHitboxIf, fixedConstants);
     /** @type {ParticleValues["hasHitboxIf"]} */
     const activeGroupOnHit = options.activeGroupOnHit ?? "";
     this._activeGroupOnHit = new Value(activeGroupOnHit);
