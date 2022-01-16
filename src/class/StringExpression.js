@@ -64,17 +64,29 @@ class StringExpression {
       }
       searchingFunctions = [...new Set(searchingFunctions)];
     }
+
     
     // Fix mathFunction
+    const replacedArguments = [];
+    let replaceArgumentsIdx = 0;
     while (expression.includes("<")) {
       loops++;
       if (loops > LOOP_LIMIT) return false;
+
       expression = expression.replace(/<([^<>]*)>/g, (_, g1) => {
-        return "[" + g1.replace(/((?:\[[^[\]]+\]|[^,])+)/g, "($1)") + "]"
+        replacedArguments.push(g1.replace(/((?:\[[^[\]]+\]|[^,])+)/g, "($1)"));
+        return `[ReplacedArg#${replaceArgumentsIdx++}]`
       });
     }
-    expression = expression.replace(/\[/g, "(");
-    expression = expression.replace(/\]/g, ")");
+    while (true) {
+      loops++;
+      if (loops > LOOP_LIMIT) return false;
+
+      const isReplacedArgumentExist = expression.match(/\[ReplacedArg#(\d+)\]/g);
+      if (isReplacedArgumentExist === null) break;
+
+      expression = expression.replace(/\[ReplacedArg#(\d+)\]/g, (_, g1) => "("+replacedArguments[g1]+")");
+    }
 
     // TODO: Fix double bracket
     // while (expression.match(/\(\([^()]+\)\)/)) {
@@ -276,4 +288,4 @@ export default StringExpression;
 // let v = StringExpression.parseExpression("vec3(1+1, 1+2, 1+(3+2))");
 // let v = StringExpression.parseExpression("160+20*rand()");
 // console.log(v);
-// if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
+if (!(typeof window === "undefined")) window.StringExpression = StringExpression;
