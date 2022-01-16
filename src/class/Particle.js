@@ -60,10 +60,12 @@ class Particle {
     /** @type {typeof options["constants"]} */
     this.constants = new Value({...options.constants, i, j} ?? {}).getValue(variables);
     /** @type {Value<typeof options["variables"]>} */
-    this._variables = new Value(Object.assign({ thisX: null, thisY: null }, options.variables ?? {}));
+    this._variables = new Value(options.variables ?? {});
 
     /** @type {ParticleValues} */
     this.values = {};
+    /** @type {Object<string, any>} */
+    this.variables = {...this.constants, thisX: null, thisY: null};
 
     /** @type {ParticleValues["group"]} */
     this.group = options.group ?? "default";
@@ -91,9 +93,9 @@ class Particle {
     /** @type {ParticleValues["hasHitboxIf"]} */
     const activeGroupOnHit = options.activeGroupOnHit ?? "";
     this._activeGroupOnHit = new Value(activeGroupOnHit);
-
-    const _variables = this.getVariables(variables);
-    this.updateValues(_variables);
+    
+    this.updateVariables(0, variables);
+    this.updateValues();
   }
 
   get x() {
@@ -117,20 +119,21 @@ class Particle {
   }
 
   /**
+   * @param {number} dt
    * @param {Object.<string, number | string>} globalVariables
    */
-  getVariables(globalVariables={}) {
-    this._variables.changeValue({ key: "thisX", value: this.values?.position?.x });
-    this._variables.changeValue({ key: "thisY", value: this.values?.position?.y });
-
-    /** @type {Object.<string, number | string>} */
-    let variables = Object.assign({ t: this.time }, globalVariables, this.constants);
-    variables = Object.assign(this._variables.getValue(variables), variables);
-    return variables;
+  updateVariables(dt=0, globalVariables={}) {
+    Object.assign(this.variables, globalVariables);
+    this.variables.dt = dt;
+    this.variables.t = this.time;
+    this.variables.thisX = this.values?.position?.x;
+    this.variables.thisY = this.values?.position?.y;
+    Object.assign(this.variables, this._variables.getValue(this.variables));
   }
 
-  /** @param {Object.<string, number | string>} globalVariables */
-  updateValues(variables={}) {
+  updateValues() {
+    const variables = this.variables;
+
     this.values = {
       group: this.group,
       position: this._position.getValue(variables),
@@ -150,27 +153,29 @@ class Particle {
    * @param {number} dt 
    * @param {Object.<string, number | string>} globalVariables
    */
-  tick(dt, globalVariables={}) {
+  tick(dt=0, globalVariables={}) {
     const _dt = dt/1000;
     this.time += dt;
 
-    const variables = this.getVariables(globalVariables);
+    this.updateVariables(dt, globalVariables);
+    const variables = this.variables;
 
     // For fixed position
     if (this._position.isValueFixed) {
-      if (this._deg.getValue(variables) !== null) {
+      const deg = this._deg.getValue(variables);
+      if (deg !== null) {
         const speed = this._speed.getValue(variables);
         const position = this._position.getValue(variables);
         const [ dx, dy ] = [
-          Math.sin(this.values.deg/180*Math.PI),
-          -Math.cos(this.values.deg/180*Math.PI)
+          Math.sin(deg/180*Math.PI),
+          -Math.cos(deg/180*Math.PI)
         ];
         this._position.changeValue({ key: "x", value: Number(position.x) + speed*dx*_dt });
         this._position.changeValue({ key: "y", value: Number(position.y) + speed*dy*_dt });
       }
     }
 
-    this.updateValues(variables);
+    this.updateValues();
 
     return this;
   }
