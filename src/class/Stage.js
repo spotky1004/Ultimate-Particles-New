@@ -95,6 +95,8 @@ class Stage {
     // Fix state
     this.state.stageAttribute.fixValues();
 
+    this.state.particleGroups.tick();
+
     // Player move
     const stageRange = this.state.stageAttribute.stageRange;
     const playerDirections = {
