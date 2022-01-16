@@ -30,7 +30,7 @@ class StatusItem {
    * @param {string} name 
    * @param {StatusItemData[T]} data 
    */
-  constructor(name, type, data) {
+  constructor(name, type, data={}) {
     /** @type {T} */
     this.type = type;
     this.name = name;
