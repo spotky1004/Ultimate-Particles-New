@@ -12,6 +12,7 @@ import drawCanvas from "../drawCanvas.js";
 /**
  * @typedef StageMetadata
  * @property {string} author
+ * @property {string} description
  * @property {string} createDate
  */
 /**
@@ -34,6 +35,7 @@ class Stage {
     /** @type {StageMetadata} */
     this.metadata = {
       author: metadata.author ?? "",
+      description: metadata.description ?? "",
       createDate: metadata.createDate ?? new Date().toGMTString(),
     };
     /** @type {boolean} */
@@ -238,6 +240,7 @@ class Stage {
   export() {
     const data = {
       maximumTickLength: this.maximumTickLength,
+      metadata: this.metadata,
       actions: []
     };
 
