@@ -25,9 +25,8 @@ class ParticleGroups {
    * @param {import("./ParticleGroup.js").EventDatas} data 
    */
   emitGroupEvent(name, type, data) {
-    if (this.groups[name]) {
-      this.groups[name].emitEvent(type, data);
-    }
+    if (typeof this.groups[name] === "undefined") this.groups[name] = new ParticleGroup();;
+    this.groups[name].emitEvent(type, data);
   }
 
   /**
