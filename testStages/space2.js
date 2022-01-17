@@ -358,7 +358,7 @@ addAction({
   data: {
     type: "SetZIndex",
     data: {
-      zIndex: 2,
+      zIndex: 3,
     },
     name: "dust",
   },
@@ -370,7 +370,7 @@ addAction({
   type: "SetGlobalVariable",
   data: {
     name: "life",
-    value: "$life - 2"
+    value: "$life - 1"
   }
 });
 addAction({
