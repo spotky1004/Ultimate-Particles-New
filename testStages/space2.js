@@ -59,12 +59,8 @@ addAction({
   startTime: 0,
   data: {
     name: "blackHoleMass",
-    value: "20",
-  },
-  looperData: {
-    interval: 1000,
-    loopCount: Infinity,
-  },
+    value: 20,
+  }
 });
 addAction({
   type: "SetGlobalVariable",
