@@ -364,6 +364,43 @@ addAction({
   },
 });
 
+// particleOnHit
+addAction({
+  groupName: "particleOnHit",
+  type: "SetGlobalVariable",
+  data: {
+    name: "life",
+    value: "$life - 2"
+  }
+});
+addAction({
+  groupName: "particleOnHit",
+  startTime: 0,
+  type: "ChangeStageAttribute",
+  data: {
+    name: "screenX",
+    value: "randr(-5*0.8^$i, 5*0.8^$i)"
+  },
+  looperData: {
+    interval: 20,
+    loopCount: 100,
+  }
+});
+addAction({
+  groupName: "particleOnHit",
+  startTime: 0,
+  type: "ChangeStageAttribute",
+  data: {
+    name: "screenY",
+    value: "randr(-5*0.8^$i, 5*0.8^$i)"
+  },
+  looperData: {
+    interval: 20,
+    loopCount: 100,
+  }
+});
+
+
 const stageToExport = JSON.stringify(stageData, null, 2);
 console.log(stageToExport);
 export default stageToExport;
