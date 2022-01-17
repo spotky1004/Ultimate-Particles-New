@@ -3,7 +3,7 @@ let stageData = {
   maximumTickLength: 17,
   metadata: {
     author: "bu-gye-jeong",
-    createDate: new Date().toGMTString(),
+    createDate: "Mon, 17 Jan 2022 00:06:12 GMT",
   },
   actions: [],
 };
