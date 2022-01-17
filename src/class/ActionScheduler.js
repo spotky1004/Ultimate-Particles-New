@@ -167,12 +167,12 @@ class ActionScheduler {
           const offset = actionLooperData.interval*(bulkLoop-j-1)+offsetOffset || 0;
           this.addActionToPerform({
             action: loopingAction.action,
-            loop: loopingAction.performCount,
+            loop: loopingAction.performCount+1,
             innerLoop: k,
             timeOffset: offset
           });
         }
-        loopingAction.lastPerformed += actionLooperData.interval;
+        loopingAction.lastPerformed += !isNaN(actionLooperData.interval) ? actionLooperData.interval : 0;
         loopingAction.performCount++;
         if (loopingAction.performCount+1 >= actionLooperData.loopCount) {
           this.loopingActions[i] = null;

@@ -58,7 +58,7 @@ class Particle {
 
     const { i, j } = variables;
     /** @type {typeof options["constants"]} */
-    this.constants = new Value({...options.constants, i, j} ?? {}).getValue(variables);
+    this.constants = new Value({ ...options.constants, i, j } ?? {}).getValue(variables);
     /** @type {Value<typeof options["variables"]>} */
     this._variables = new Value(options.variables ?? {});
 
@@ -69,7 +69,7 @@ class Particle {
 
     const variableNames = Object.keys(options.variables ?? {});
     const fixedConstants = Object.fromEntries(Object.entries(this.constants).filter(([key]) => !variableNames.includes(key)));
-
+    
     /** @type {ParticleValues["group"]} */
     this.group = options.group ?? "default";
     /** @type {ParticleValues["position"]} */
@@ -154,6 +154,8 @@ class Particle {
       hasHitboxIf: this._hasHitboxIf.getValue(variables),
       activeGroupOnHit: this._activeGroupOnHit.getValue(variables),
     };
+
+    if (isNaN(this.values.speed)) this.values.speed = 0;
 
     return this;
   }

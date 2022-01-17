@@ -40,7 +40,7 @@ class ParticleGroupEvent extends ActionBase {
    */
   perform({ stage, loop=0, innerLoop=0, timeOffset=0, globalVariables={} }) {
     const variables = this.getVariables(arguments[0]);
-    stage.emitGroupEvent(this.data.type, this.data.type, this.data.data);
+    stage.state.particleGroups.emitGroupEvent(this.data.name, this.data.type, this.data.data);
   }
 }
 

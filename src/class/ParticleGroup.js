@@ -76,7 +76,7 @@ class ParticleGroup {
    * @param {number} param0.zIndex
    */
   setZIndex({ zIndex }) {
-    this.zIndex = zIndex ?? 1;
+    this.zIndex = zIndex ?? 0;
   }
 
   /**

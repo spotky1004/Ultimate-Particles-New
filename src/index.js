@@ -1,4 +1,4 @@
-import testStage from "../testStages/space.js";
+import testStage from "../testStages/space2.js";
 import StagePlayer from "./class/StagePlayer.js";
 import { renderDrag } from "./events.js";
 

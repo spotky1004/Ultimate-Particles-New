@@ -3,6 +3,7 @@ let stageData = {
   maximumTickLength: 17,
   metadata: {
     author: "",
+    description: "",
     createDate: new Date().toGMTString()
   },
   actions: []

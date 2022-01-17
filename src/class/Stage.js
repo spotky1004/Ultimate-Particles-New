@@ -12,6 +12,7 @@ import drawCanvas from "../drawCanvas.js";
 /**
  * @typedef StageMetadata
  * @property {string} author
+ * @property {string} description
  * @property {string} createDate
  */
 /**
@@ -34,6 +35,7 @@ class Stage {
     /** @type {StageMetadata} */
     this.metadata = {
       author: metadata.author ?? "",
+      description: metadata.description ?? "",
       createDate: metadata.createDate ?? new Date().toGMTString(),
     };
     /** @type {boolean} */
@@ -98,6 +100,9 @@ class Stage {
     if (playerToStore) {
       globalVariables.playerX = playerToStore.values.position.x;
       globalVariables.playerY = playerToStore.values.position.y;
+    } else {
+      globalVariables.playerX = 0;
+      globalVariables.playerY = 0;
     }
     
     // Run ActionScheduler
@@ -127,9 +132,10 @@ class Stage {
       const particle = playerParticles[i];
       const speed = particle.values.speed;
       const size = particle.values.size;
+      // console.log({...particle.values}, {...globalVariables});
       particle.x = Math.min(stageRange.x[1]-size.width/2, Math.max(stageRange.x[0]+size.width/2, particle.x + speed*playerVec.x*dt/1000));
       particle.y = Math.min(stageRange.y[1]-size.height/2, Math.max(stageRange.y[0]+size.height/2, particle.y + speed*playerVec.y*dt/1000));
-      particle.updateValues(globalVariables);
+      particle.updateValues(0, globalVariables);
     }
 
     // Particle loop
@@ -238,6 +244,7 @@ class Stage {
   export() {
     const data = {
       maximumTickLength: this.maximumTickLength,
+      metadata: this.metadata,
       actions: []
     };
 
@@ -249,17 +256,6 @@ class Stage {
   }
   toString() {
     return JSON.stringify(this.export(), null, 2);
-  }
-
-  /**
-   * @param {string} name 
-   * @param {import("./ParticleGroup.js").EventTypes} type 
-   * @param {import("./ParticleGroup.js").EventDatas} data 
-   */
-  emitGroupEvent(name, type, data) {
-    if (this.state.particleGroups[name]) {
-      this.state.particleGroups.groups[name].emitEvent(type, data);
-    }
   }
 
   /**
