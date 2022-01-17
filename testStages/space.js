@@ -58,7 +58,7 @@ addAction({
   startTime: 0,
   data: {
     name: "blackHoleMass",
-    value: "10 * log10($phase + 2)",
+    value: "min(8, 6 * log($phase + 2, 20))",
   },
   looperData: {
     interval: 1000,
@@ -249,7 +249,7 @@ addAction({
       moveDeg: "randr(0, 360)",
       prevDeg: "randr(0, 360)",
       moveSpeed: 50,
-      mass: 5,
+      mass: "randr(3, 10)",
       color: "hsla(randr(0, 360),50,50,20)",
     },
     variables: {
@@ -268,8 +268,8 @@ addAction({
     },
     deg: "$moveDeg",
     size: {
-      width: 3,
-      height: 3,
+      width: "sqrt($mass)*2",
+      height: "sqrt($mass)*2",
     },
     color: "$color",
     speed: "$moveSpeed",
