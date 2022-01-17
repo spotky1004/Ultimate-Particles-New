@@ -242,7 +242,7 @@ class StringExpression {
       v = Array.isArray(v) ? v : []
       return v[Math.floor(idx%v.length)] ?? null
     },
-    "watch": ([x, y]) => (Math.atan2(y, x)*180/Math.PI+360+90)%360,
+    "watch": ([x1, y1, x2, y2]) => (Math.atan2(y2-y1, x2-x1)*180/Math.PI+720+90)%360,
   }
 
   /**
