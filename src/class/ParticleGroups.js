@@ -20,6 +20,17 @@ class ParticleGroups {
   }
 
   /**
+   * @param {string} name 
+   * @param {import("./ParticleGroup.js").EventTypes} type 
+   * @param {import("./ParticleGroup.js").EventDatas} data 
+   */
+  emitGroupEvent(name, type, data) {
+    if (this.groups[name]) {
+      this.groups[name].emitEvent(type, data);
+    }
+  }
+
+  /**
    * @param {import("./Particle.js").default} particle
    * @param {Object.<string, number | string>} globalVariables
    */

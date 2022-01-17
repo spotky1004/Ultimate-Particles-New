@@ -253,17 +253,6 @@ class Stage {
 
   /**
    * @param {string} name 
-   * @param {import("./ParticleGroup.js").EventTypes} type 
-   * @param {import("./ParticleGroup.js").EventDatas} data 
-   */
-  emitGroupEvent(name, type, data) {
-    if (this.state.particleGroups[name]) {
-      this.state.particleGroups.groups[name].emitEvent(type, data);
-    }
-  }
-
-  /**
-   * @param {string} name 
    */
   deleteGroup(name) {
     if (this.state.particleGroups.groups[name]) {
