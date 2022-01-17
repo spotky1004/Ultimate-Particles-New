@@ -167,7 +167,7 @@ class ActionScheduler {
           const offset = actionLooperData.interval*(bulkLoop-j-1)+offsetOffset || 0;
           this.addActionToPerform({
             action: loopingAction.action,
-            loop: loopingAction.performCount,
+            loop: loopingAction.performCount+1,
             innerLoop: k,
             timeOffset: offset
           });
