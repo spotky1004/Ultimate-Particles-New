@@ -1,8 +1,10 @@
-// stage by bu-gye-jeong
-
 /** @type {import("../src/class/Stage.js").StageOptions} */
 let stageData = {
   maximumTickLength: 17,
+  metadata: {
+    author: "bu-gye-jeong",
+    createDate: new Date().toGMTString(),
+  },
   actions: [],
 };
 
