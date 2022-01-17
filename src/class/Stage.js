@@ -100,6 +100,9 @@ class Stage {
     if (playerToStore) {
       globalVariables.playerX = playerToStore.values.position.x;
       globalVariables.playerY = playerToStore.values.position.y;
+    } else {
+      globalVariables.playerX = 0;
+      globalVariables.playerY = 0;
     }
     
     // Run ActionScheduler
@@ -129,9 +132,10 @@ class Stage {
       const particle = playerParticles[i];
       const speed = particle.values.speed;
       const size = particle.values.size;
+      // console.log({...particle.values}, {...globalVariables});
       particle.x = Math.min(stageRange.x[1]-size.width/2, Math.max(stageRange.x[0]+size.width/2, particle.x + speed*playerVec.x*dt/1000));
       particle.y = Math.min(stageRange.y[1]-size.height/2, Math.max(stageRange.y[0]+size.height/2, particle.y + speed*playerVec.y*dt/1000));
-      particle.updateValues(globalVariables);
+      particle.updateValues(0, globalVariables);
     }
 
     // Particle loop
