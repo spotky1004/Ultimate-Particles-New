@@ -172,7 +172,7 @@ class ActionScheduler {
             timeOffset: offset
           });
         }
-        loopingAction.lastPerformed += actionLooperData.interval;
+        loopingAction.lastPerformed += !isNaN(actionLooperData.interval) ? actionLooperData.interval : 0;
         loopingAction.performCount++;
         if (loopingAction.performCount+1 >= actionLooperData.loopCount) {
           this.loopingActions[i] = null;
