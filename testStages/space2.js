@@ -71,18 +71,35 @@ addAction({
   },
 });
 
+// stage scale
+addAction({
+  type: "SetGlobalVariable",
+  data: {
+    name: "stageScale",
+    value: "0.5+0.25*(1-$life/$maxLife)^2"
+  },
+  looperData: {
+    loopCount: Infinity,
+  }
+})
 addAction({
   type: "ChangeStageAttribute",
   data: {
     name: "stageWidthScale",
-    value: 0.5
+    value: "$stageScale"
+  },
+  looperData: {
+    loopCount: Infinity,
   }
 });
 addAction({
   type: "ChangeStageAttribute",
   data: {
     name: "stageHeightScale",
-    value: 0.5
+    value: "$stageScale"
+  },
+  looperData: {
+    loopCount: Infinity,
   }
 });
 
@@ -105,7 +122,6 @@ addAction({
     },
   },
 });
-
 // player orbit
 addAction({
   type: "SetGlobalVariable",
@@ -169,7 +185,9 @@ addAction({
       width: "randr(4, 10)",
       height: "randr(4, 10)",
     },
+    hasHitboxIf: "lt($phase, 120)",
     color: "hsla(0, $posDist+$phase/2, 100-$posDist*2, 1)",
+    activeGroupOnHit: "particleOnHit"
   },
   looperData: {
     interval: 0,
@@ -207,7 +225,7 @@ addAction({
   type: "SetGlobalVariable",
   data: {
     name: "life",
-    value: "min($maxLife, $life + $dt / 2)",
+    value: "min($maxLife, $life + $dt / 3.5)",
   },
   looperData: {
     interval: 20,
@@ -295,7 +313,21 @@ addAction({
     value: "min($maxPhase, $phase+1)",
   }
 });
-
+// remove orbit (phase > 60)
+addAction({
+  groupName: "onPhase",
+  type: "ParticleGroupEvent",
+  data: {
+    type: "DestroyRandom",
+    data: {
+      chance: 0.2,
+    },
+    name: "orbit"
+  },
+  looperData: {
+    shouldPerform: "gte($phase, 60)"
+  }
+});
 // dust
 addAction({
   groupName: "onPhase",
@@ -305,8 +337,8 @@ addAction({
     group: "dust",
     constants: {
       spawnDeg: "randr(0, 360)",
-      spawnX: "sin($spawnDeg)*280",
-      spawnY: "cos($spawnDeg)*-280",
+      spawnX: "sin($spawnDeg)*140/$stageScale",
+      spawnY: "cos($spawnDeg)*-140/$stageScale",
       moveDeg: "randr(0, 360)",
       prevDeg: "randr(0, 360)",
       moveSpeed: 50,
@@ -350,6 +382,40 @@ addAction({
     name: "dust",
   },
 });
+// backhole dust (phase > 30)
+addAction({
+  groupName: "onPhase",
+  type: "CreateParticle",
+  data: {
+    group: "dust",
+    constants: {
+      watchX: "$playerX",
+      watchY: "$playerY",
+      degSpeed: "$i-1",
+      color: "hsla(randr(0, 360), 80, 80, 0.8)",
+    },
+    variables: {
+      degOffset: "$degSpeed*($t/100)"
+    },
+    deg: "watch(0, 0, $watchX, $watchY) + $degOffset",
+    color: "$color",
+    speed: "5*($t/200)",
+    size: {
+      height: 3,
+      width: 3
+    },
+    position: {
+      x: 0,
+      y: 0,
+    },
+    activeGroupOnHit: "particleOnHit"
+  },
+  looperData: {
+    interval: 0,
+    loopCount: 3,
+    shouldPerform: "gte($phase, 30)"
+  }
+})
 
 // particleOnHit
 addAction({
@@ -366,7 +432,7 @@ addAction({
   type: "ChangeStageAttribute",
   data: {
     name: "screenX",
-    value: "randr(-5*0.8^$i, 5*0.8^$i)"
+    value: "randr(-2*0.9^$i, 2*0.9^$i)"
   },
   looperData: {
     interval: 20,
@@ -379,7 +445,7 @@ addAction({
   type: "ChangeStageAttribute",
   data: {
     name: "screenY",
-    value: "randr(-5*0.8^$i, 5*0.8^$i)"
+    value: "randr(-2*0.9^$i, 2*0.9^$i)"
   },
   looperData: {
     interval: 20,
