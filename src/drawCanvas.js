@@ -71,9 +71,7 @@ function drawCanvas(stage) {
   const effectCanvas = canvasLayer.effect.canvas;
   const effectCtx = canvasLayer.effect.ctx;
   effectCtx.clearRect(0, 0, canvasWidth, canvasHeight);
-  effectCtx.globalAlpha = 0;
-  effectCtx.drawImage(canvasLayer.prevEffect.canvas, 0, 0);
-  effectCtx.globalAlpha = 1;
+  effectCtx.filter = ``;
   effectCtx.drawImage(particleCanvas, 0, 0);
 
   canvasLayer.prevEffect.ctx.globalAlpha = 0.2;
