@@ -139,7 +139,7 @@ class ActionScheduler {
         this.addLoopingAction({
           action,
           startTime: action.startTime,
-          performCount: 0
+          performCount: 1
         });
       }
       this.actionIndex++;
@@ -167,14 +167,14 @@ class ActionScheduler {
           const offset = actionLooperData.interval*(bulkLoop-j-1)+offsetOffset || 0;
           this.addActionToPerform({
             action: loopingAction.action,
-            loop: loopingAction.performCount+1,
+            loop: loopingAction.performCount,
             innerLoop: k,
             timeOffset: offset
           });
         }
         loopingAction.lastPerformed += !isNaN(actionLooperData.interval) ? actionLooperData.interval : 0;
         loopingAction.performCount++;
-        if (loopingAction.performCount+1 >= actionLooperData.loopCount) {
+        if (loopingAction.performCount >= actionLooperData.loopCount) {
           this.loopingActions[i] = null;
           break;
         }
