@@ -39,6 +39,7 @@ class ParticleGroup {
    * @param {EventDatas[T]} data 
    */
   emitEvent(type, data) {
+    data = data ?? {};
     switch (type) {
       case "DestroyAll":
         this.destroyAll(data);
@@ -52,9 +53,6 @@ class ParticleGroup {
     }
   }
 
-  /**
-   * @param {object} obj
-   */
   destroyAll({ }) {
     this.particles = [];
   }
