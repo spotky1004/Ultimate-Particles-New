@@ -203,15 +203,6 @@ addAction({
   },
 });
 addAction({
-  groupName: "particleOnHit",
-  startTime: 0,
-  type: "SetGlobalVariable",
-  data: {
-    name: "life",
-    value: "$life - 1",
-  },
-});
-addAction({
   startTime: 0,
   type: "SetGlobalVariable",
   data: {
