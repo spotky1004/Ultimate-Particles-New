@@ -7,7 +7,7 @@ import Value from "./Value.js";
 class ParticleGroups {
   /** @param {T} initialGroups */
   constructor(initialGroups) {
-    /** @type {Record.<T[number], ParticleGroup> & Object.<string, ParticleGroup>} */
+    /** @type {Record<T[number], ParticleGroup> & Object.<string, ParticleGroup>} */
     this.groups = {};
     for (let i = 0; i < initialGroups.length; i++) {
       const groupName = initialGroups[i];
