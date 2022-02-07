@@ -3,59 +3,78 @@
  * @typedef {{width: number, height: number}} Size
  */
 /**
- * @typedef CanvasDrawOption
+ * @typedef CanvasDrawBlock
  * @property {Vector2} position
  * @property {Size} size
  * @property {string} color
  */
+/**
+ * @typedef CanvasDrawOption
+ * @property {number} zIndex
+ * @property {undefined} filter
+ * @property {CanvasDrawBlock[]} toDraw
+ */
 
 class Canvas {
   /**
-   * @typedef CanvasOptions
-   * @property {boolean} keepContent
+   * @param {HTMLElement} parentElement 
    */
-  /**
-   * @param {CanvasOptions} options 
-   */
-  constructor(options={}) {
+  constructor(parentElement) {
+    /** @type {typeof parentElement} */
+    this.parentElement = parentElement;
+
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d');
 
-    this.keepContent = options.keepContent ?? false;
+    this.tempCanvas = document.createElement('canvas');
+    this.tempCtx = this.canvas.getContext('2d');
   }
 
   /**
-   * @param {Size} screenSize 
    * @param {CanvasDrawOption[]} drawOptions 
    */
-  draw(screenSize, drawOptions) {
+  draw(drawOptions) {
+    const screenSize = {
+      width : this.parentElement?.offsetWidth,
+      height: his.parentElement?.offsetHeight
+    };
+    const WIDTH = Math.max(10, screenSize.width);
+    const HEIGHT = Math.max(10, screenSize.height);
+    drawOptions = [...drawOptions].sort((a, b) => a.zIndex - b.zIndex);
+
     if (
-      screenSize.width !== this.canvas.width ||
-      screenSize.height !== this.canvas.height
+      WIDTH !== this.canvas.width ||
+      HEIGHT !== this.canvas.height
     ) {
       /** @type {ImageData} */
-      let content = undefined;
-      if (false) content = this.ctx.getImageData();
-      this.canvas.width = screenSize.width;
-      this.canvas.height = screenSize.height;
-      if (false) this.ctx.putImageData(content);
+      let content = this.ctx.getImageData();
+      this.canvas.width = WIDTH;
+      this.canvas.height = HEIGHT;
+      this.ctx.putImageData(content);
+
+      this.tempCanvas.width = WIDTH;
+      this.tempCanvas.height = HEIGHT;
+    } else {
+      this.ctx.clearRect(0, 0, HEIGHT, WIDTH);
     }
 
-    
-    const { width, height } = this.canvas;
     for (let i = 0; i < drawOptions.length; i++) {
       const drawOption = drawOptions[i];
-      this.ctx.save();
-
-      this.ctx.color = drawOption.color ?? "#000";
-      this.ctx.rect(
-        drawOption.position.x * width / 100,
-        drawOption.position.y * height / 100,
-        drawOption.size.width * width / 100,
-        drawOption.size.height * height / 100
-      );
-
-      this.ctx.restore();
+      this.tempCtx.clearRect(0, 0, WIDTH, HEIGHT);
+      const toDraws = drawOption.toDraw;
+      for (let i = 0; i < toDraws.length; i++) {
+        const toDraw = toDraws[i];
+        this.tempCtx.save();
+        this.tempCtx.color = toDraw.color ?? "#000";
+        this.tempCtx.rect(
+          toDraw.position.x * WIDTH / 100,
+          toDraw.position.y * HEIGHT / 100,
+          toDraw.size.width * WIDTH / 100,
+          toDraw.size.height * HEIGHT / 100
+        );
+        this.tempCtx.restore();
+      }
+      this.ctx.drawImage(this.tempCanvas);
     }
   }
 }
