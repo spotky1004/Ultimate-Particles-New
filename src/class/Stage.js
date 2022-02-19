@@ -4,7 +4,6 @@ import StageAttribute from "./StageAttribute.js";
 import ParticleGroups from "./ParticleGroups.js";
 import ActionScheduler from "./ActionScheduler.js";
 import Status from "./Status.js";
-import drawCanvas from "../drawCanvas.js";
 
 /**
  * @typedef {import("./Actions/index.js").AnyAction} AnyAction
@@ -221,8 +220,6 @@ class Stage {
     // Update status
     this.state.status.update(globalVariables);
     
-    if (updateCanvas) drawCanvas(this);
-    
     // Life check
     if (globalVariables.life <= 0) {
       this.stop();
@@ -230,6 +227,42 @@ class Stage {
     }
 
     return wasSuccessful;
+  }
+
+  /**
+   * @returns {import("./Canvas.js").CanvasDrawOption[]}
+   */
+  getDrawData() {
+    const stageAttribute = this.state.stageAttribute;
+
+    /** @type {import("./Canvas.js").CanvasDrawOption[]} */
+    const toDraws = [];
+    toDraws.push({
+      zIndex: -100,
+      toDraw: [
+        {
+          color: stageAttribute.bgColor,
+          size: { width: 100, height: 100 },
+          position: { x: 0, y: 0 }
+        }
+      ]
+    });
+    let particlesGroups = this.state.particleGroups.groups;
+    const getParticleDrawData = stageAttribute.getParticleDrawData.bind(stageAttribute);
+    for (const groupName in particlesGroups) {
+      const particleGroup = particlesGroups[groupName];
+      /** @type {import("./Canvas.js").CanvasDrawOption} */
+      const toDraw = {
+        zIndex: particleGroup.zIndex,
+        toDraw: []
+      };
+      const particles = particleGroup.particles;
+      for (let i = 0; i < particles.length; i++) {
+        toDraw.toDraw.push(getParticleDrawData(particles[i]));
+      }
+      toDraws.push(toDraw);
+    }
+    return toDraws;
   }
 
   

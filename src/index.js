@@ -1,14 +1,18 @@
+import Game from "./class/Game.js";
 import testStage from "../testStages/space2.js";
-import StagePlayer from "./class/StagePlayer.js";
 import { renderDrag } from "./events.js";
 
-const stagePlayer = await new StagePlayer().load(testStage);
-stagePlayer.play();
+const game = new Game({
+  canvas: document.getElementById("canvas"),
+  canvasWrapper: document.getElementById("canvas-wrapper")
+});
+await game.stagePlayer.load(testStage);
+game.stagePlayer.play();
 
-window.stagePlayer = stagePlayer;
+window.game = game;
 
 function tick() {
-  stagePlayer.tick();
+  game.tick();
 
   renderDrag();
 
