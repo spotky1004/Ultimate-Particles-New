@@ -28,14 +28,6 @@ class Canvas {
 
     this.tempCanvas = document.createElement("canvas");
     this.tempCtx = this.tempCanvas.getContext("2d");
-
-    // this.canvas.style.position = "absolute";
-    // this.canvas.style.top = "0px";
-    // this.canvas.style.left = "0px";
-    // this.canvas.style.zIndex = 100;
-    // this.canvas.style.opacity = 0.5;
-    // this.canvas.style.pointerEvents = "none";
-    // document.getElementsByTagName("body")[0].appendChild(this.canvas);
   }
 
   /**
