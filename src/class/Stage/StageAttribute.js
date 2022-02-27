@@ -1,4 +1,4 @@
-import fixNumber from "../util/fixNumber.js";
+import fixNumber from "../../util/fixNumber.js";
 
 const defaultValues = {
   bgColor: "#ffc966",

@@ -1,4 +1,4 @@
-import Value from "../Value.js";
+import Value from "../../Value.js";
 
 /**
  * @typedef LooperData

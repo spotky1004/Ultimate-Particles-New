@@ -1,4 +1,4 @@
-import Value from "./Value.js";
+import Value from "../Value.js";
 
 const StatusItemTypeEnum = {
   Text: 0,

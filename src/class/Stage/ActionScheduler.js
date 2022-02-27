@@ -1,4 +1,4 @@
-import isValueTure from "../util/isValueTrue.js";
+import isValueTure from "../../util/isValueTrue.js";
 
 /**
  * @typedef {import("./Stage.js").default} Stage

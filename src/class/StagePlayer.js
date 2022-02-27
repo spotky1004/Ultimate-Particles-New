@@ -1,7 +1,9 @@
 import loadStage from "../loadStage.js";
-import Stage from "./Stage.js";
-import ActionBase from "./Actions/ActionBase.js";
-import * as Actions from "./Actions/index.js";
+import {
+  Stage,
+  ActionBase,
+  Actions,
+} from "./Stage/index.js";
 import { keyPressed, screenDragPower } from "../events.js";
 
 class stagePlayer {

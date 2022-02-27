@@ -1,6 +1,6 @@
 import ActionBase from "./ActionBase.js";
 import Particle from "../Particle.js";
-import Value from "../Value.js";
+import Value from "../../Value.js";
 
 /**
  * @typedef {import("../Particle.js").ParticleOptions} ActionData
