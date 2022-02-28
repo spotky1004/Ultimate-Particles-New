@@ -1,3 +1,5 @@
+// export to ../class/StagePlayer.js
+
 const gameScreen = document.getElementById("game-screen");
 
 /** @type {Object.<string, boolean>} */
