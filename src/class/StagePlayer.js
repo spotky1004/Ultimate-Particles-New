@@ -6,7 +6,7 @@ import {
 } from "./Stage/index.js";
 import { keyPressed, screenDragPower } from "../events.js";
 
-class stagePlayer {
+class StagePlayer {
   constructor() {
     /** @type {Stage!} */
     this.stage = null;
@@ -108,4 +108,4 @@ class stagePlayer {
   }
 }
 
-export default stagePlayer;
+export default StagePlayer;
