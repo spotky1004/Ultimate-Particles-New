@@ -34,6 +34,10 @@ class Game {
   }
 
   updateCanvas() {
+    if (
+      this.stagePlayer.stage === null ||
+      !this.stagePlayer.stage.playing
+    ) return;
     const stageAttribute = this.stagePlayer.stage.state.stageAttribute;
     const { offsetWidth: WIDTH, offsetHeight: HEIGHT } = this.canvasWrapper;
     const canvasSize = Math.min(WIDTH, HEIGHT);

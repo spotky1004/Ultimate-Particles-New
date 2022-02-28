@@ -4,7 +4,7 @@ import {
   ActionBase,
   Actions,
 } from "./Stage/index.js";
-import { keyPressed, screenDragPower } from "../events.js";
+import { keyPressed, screenDragPower, renderDrag } from "../game/events/stage.js";
 
 class StagePlayer {
   constructor() {
@@ -73,6 +73,7 @@ class StagePlayer {
   }
 
   tick() {
+    renderDrag();
     if (!this.stage?.playing) return;
     const timeNow = new Date().getTime();
     const dt = timeNow - this.lastTick;
