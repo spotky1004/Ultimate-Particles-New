@@ -7,10 +7,11 @@ class TemplateList {
   /**
    * @param {HTMLTemplateElement} templateElement 
    * @param {T} valueNames
+   * @param {HTMLElement?} listElement
    */
-  constructor(templateElement, valueNames) {
-    /** @type {HTMLDivElement} */
-    this.listElement = document.createElement("div");
+  constructor(templateElement, valueNames, listElement) {
+    /** @type {HTMLElement} */
+    this.listElement = listElement ?? document.createElement("div");
     /** @type {HTMLTemplateElement} */
     this.template = templateElement;
     /** @type {T} */
