@@ -42,7 +42,7 @@ body {
   flex: 0.01;
   background-color: #fff;
 }
-#editor-screen {
+#editor {
   flex: 3;
 }
 @media screen and (orientation: portrait) {
@@ -50,7 +50,7 @@ body {
     flex-direction: column;
   }
 
-  #editor-screen {
+  #editor {
     flex: 3.5;
   }
 }
