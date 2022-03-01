@@ -38,6 +38,10 @@ class TemplateList {
     this.render(idxToChange);
   }
 
+  get values() {
+    return this._values;
+  }
+
   /**
    * @param {number[]} idxToChange
    */
