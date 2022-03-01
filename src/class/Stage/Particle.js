@@ -1,4 +1,4 @@
-import Value from "../Value.js";
+import Value from "../Util/Value.js";
 
 /**
  * @typedef Vector2

@@ -1,10 +1,10 @@
-import loadStage from "../loadStage.js";
+import loadStage from "../../loadStage.js";
 import {
   Stage,
   ActionBase,
   Actions,
-} from "./Stage/index.js";
-import { keyPressed, screenDragPower, renderDrag } from "../game/events/stage.js";
+} from "../Stage/index.js";
+import { keyPressed, screenDragPower, renderDrag } from "../../game/events/stage.js";
 
 class StagePlayer {
   constructor() {

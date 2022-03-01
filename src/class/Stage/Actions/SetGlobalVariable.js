@@ -1,5 +1,5 @@
 import ActionBase from "./ActionBase.js";
-import Value from "../../Value.js";
+import Value from "../../Util/Value.js";
 
 /**
  * @typedef {object} ActionData

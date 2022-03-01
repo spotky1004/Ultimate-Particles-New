@@ -1,5 +1,5 @@
 import ParticleGroup from "./ParticleGroup.js";
-import Value from "../Value.js";
+import Value from "../Util/Value.js";
 
 /**
  * @template {string[]} T

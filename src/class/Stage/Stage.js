@@ -1,4 +1,4 @@
-import Value from "../Value.js";
+import Value from "../Util/Value.js";
 import isValueTure from "../../util/isValueTrue.js";
 import StageAttribute from "./StageAttribute.js";
 import ParticleGroups from "./ParticleGroups.js";
