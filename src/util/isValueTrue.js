@@ -1,7 +1,7 @@
 /**
  * @param {*} value 
  */
-export function isValueTure(value) {
+export default function isValueTure(value) {
   if (
     typeof value === "undefined" ||
     value === 0 ||
