@@ -1,7 +1,7 @@
 /**
  * @param {*} value 
  */
-function isValueTure(value) {
+export function isValueTure(value) {
   if (
     typeof value === "undefined" ||
     value === 0 ||
@@ -12,5 +12,3 @@ function isValueTure(value) {
   ) return false;
   return true;
 }
-
-export default isValueTure;

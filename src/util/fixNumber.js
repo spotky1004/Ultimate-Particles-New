@@ -5,7 +5,7 @@
  * @param {number} defaultValue
  * @returns {number}
  */
-function fixNumber(value, min, max, defaultValue) {
+export function fixNumber(value, min, max, defaultValue) {
   if (typeof value === "string") value = Number(value);
   if (
     typeof value === "number" &&
@@ -15,5 +15,3 @@ function fixNumber(value, min, max, defaultValue) {
   }
   return defaultValue;
 }
-
-export default fixNumber;
