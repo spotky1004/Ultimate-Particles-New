@@ -5,7 +5,7 @@
  */
 
 /**
- * @template {*} T
+ * @template T
  */
 class ComponentBase {
   /**
@@ -16,12 +16,21 @@ class ComponentBase {
   constructor(options={}) {
     /** @type {HTMLElement!} */
     this.element = null;
+    /** @type {{}!} */
+    this.elements = null;
     /** @type {string} */
     this.name = options.name;
     /** @type {T} */
     this.defaultValue = options.defaultValue ?? null;
     /** @type {T} */
     this._value = this.defaultValue;
+  }
+
+  init() {
+    this.value = this.defaultValue;
+  }
+  initElements() {
+    this.elements = {};
   }
 
   /**
@@ -32,15 +41,8 @@ class ComponentBase {
     this.render();
   }
 
-  /**
-   * @returns {T}
-   */
   get value() {
-    return this.value;
-  }
-
-  resetValue() {
-    this.value = this.defaultValue;
+    return this._value;
   }
 
   render() {
