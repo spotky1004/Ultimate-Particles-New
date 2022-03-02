@@ -59,9 +59,4 @@ class ComponentTemplate extends ComponentBase {
   }
 }
 
-window.ComponentTemplate = ComponentTemplate;
-let t = new ComponentTemplate({ name: "Test", defaultValue: "none" });
-document.getElementById("editor").appendChild(t.element);
-window.t = t;
-
 export default ComponentTemplate;
