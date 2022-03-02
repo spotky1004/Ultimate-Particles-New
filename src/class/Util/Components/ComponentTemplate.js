@@ -42,7 +42,6 @@ class ComponentTemplate extends ComponentBase {
     this.element = componentFrag.cloneNode(true).childNodes[0];
     /** @type {Elements} */
     this.elements = null;
-    this.initElements();
     this.init();
   }
 

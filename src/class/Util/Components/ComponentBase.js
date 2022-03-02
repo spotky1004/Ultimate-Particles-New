@@ -27,6 +27,7 @@ class ComponentBase {
   }
 
   init() {
+    this.initElements();
     this.value = this.defaultValue;
   }
   initElements() {
