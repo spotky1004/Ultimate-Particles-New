@@ -28,10 +28,13 @@ class ComponentBase {
 
   init() {
     this.initElements();
-    this.value = this.defaultValue;
+    this.reset();
   }
   initElements() {
     this.elements = {};
+  }
+  reset() {
+    this.value = this.defaultValue;
   }
 
   /**
