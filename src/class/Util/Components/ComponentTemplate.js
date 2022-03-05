@@ -1,4 +1,5 @@
 import ComponentBase from "./ComponentBase.js";
+import Element from "../Element.js";
 
 /**
  * @typedef ExtraOptions
@@ -14,20 +15,23 @@ import ComponentBase from "./ComponentBase.js";
  * @property {HTMLSpanElement} value
  */
 
-const componentFrag = new DocumentFragment();
-(() => {
-  const wrapperElement = document.createElement("div");
-  wrapperElement.classList.add("component__template");
-  componentFrag.appendChild(wrapperElement);
-
-  const nameElement = document.createElement("span");
-  nameElement.classList.add("component__template__name");
-  wrapperElement.appendChild(nameElement);
-
-  const valueElement = document.createElement("span");
-  valueElement.classList.add("component__template__value");
-  wrapperElement.appendChild(valueElement);
-})();
+const templateElement = new Element(/** @type {const} */ ({
+  type: "div",
+  cacheAs: "wrapper",
+  classNames: "component__template",
+  childs: [
+    {
+      type: "span",
+      cacheAs: "name",
+      classNames: "component__template__name",
+    },
+    {
+      type: "span",
+      cacheAs: "value",
+      classNames: "component__template__value"
+    }
+  ]
+}));
 
 /**
  * @extends {ComponentBase<Options["defaultValue"]>}
@@ -38,24 +42,19 @@ class ComponentTemplate extends ComponentBase {
    */
   constructor(options) {
     super(options);
-    /** @type {HTMLDivElement} */
-    this.element = componentFrag.cloneNode(true).childNodes[0];
-    /** @type {Elements} */
-    this.elements = null;
-    this.init();
-  }
-
-  initElements() {
-    this.elements = {};
-    this.elements.wrapper = this.element;
-    this.elements.name = this.element.getElementsByClassName("component__template__name")[0];
-    this.elements.value = this.element.getElementsByClassName("component__template__value")[0];
+    const { element, cache } = templateElement.clone();
+    /** @type {typeof element} */
+    this.element = element;
+    /** @type {typeof cache} */
+    this.cache = cache;
   }
 
   render() {
-    this.elements.name.innerText = this.name;
-    this.elements.value.innerText = this.value;
+    this.cache.name.innerText = this.name;
+    this.cache.value.innerText = this.value;
   }
+
+  
 }
 
 export default ComponentTemplate;
