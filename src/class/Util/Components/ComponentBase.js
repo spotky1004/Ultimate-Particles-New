@@ -24,16 +24,10 @@ class ComponentBase {
     this.defaultValue = options.defaultValue ?? null;
     /** @type {T} */
     this._value = this.defaultValue;
+    this.init();
   }
 
   init() {
-    this.initElements();
-    this.reset();
-  }
-  initElements() {
-    this.elements = {};
-  }
-  reset() {
     this.value = this.defaultValue;
   }
 
