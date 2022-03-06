@@ -9,6 +9,4 @@ const schema = new ActionSchema("Activate Action Group", {
   })
 });
 
-console.log(schema);
-
 export default schema;
