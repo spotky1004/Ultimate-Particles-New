@@ -66,6 +66,13 @@ class Select extends ComponentBase {
     this.render();
   }
 
+  export() {
+    return {
+      idx: this.value,
+      value: this.options[this.value],
+    }
+  }
+
   render() {
     updateProperty(this.cache.name, "innerText", this.name);
     updateProperty(this.cache.value, "innerText", this.value)

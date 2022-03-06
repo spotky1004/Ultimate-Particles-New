@@ -52,6 +52,12 @@ class Input extends ComponentBase {
     });
   }
 
+  export() {
+    return {
+      value: this.value
+    }
+  }
+
   render() {
     updateProperty(this.cache.name, "innerText", this.name);
     updateProperty(this.cache.value, "placeholder", this.hint);

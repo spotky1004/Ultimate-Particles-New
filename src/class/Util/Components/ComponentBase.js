@@ -46,6 +46,10 @@ class ComponentBase {
     return this._value;
   }
 
+  export() {
+    return {};
+  }
+
   render() {
     
   }
