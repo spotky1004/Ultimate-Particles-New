@@ -28,7 +28,7 @@ const templateElement = new ElementBuilder(/** @type {const} */ ({
 }));
 
 /**
- * @extends {ComponentBase<Options["defaultValue"]>}
+ * @extends {ComponentBase<Options["defaultValue"], Options>}
  */
 class ComponentTemplate extends ComponentBase {
   /**

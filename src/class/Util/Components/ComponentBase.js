@@ -6,6 +6,7 @@
 
 /**
  * @template T
+ * @template U
  */
 class ComponentBase {
   /**
@@ -14,6 +15,9 @@ class ComponentBase {
    * @param {T} options.defaultValue
    */
   constructor(options={}) {
+    /** @type {U} */
+    this.options = options;
+    
     /** @type {HTMLElement!} */
     this.element = null;
     /** @type {{}!} */

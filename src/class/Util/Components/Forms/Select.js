@@ -30,7 +30,7 @@ const templateElement = new ElementBuilder(/** @type {const} */ ({
 }));
 
 /**
- * @extends {ComponentBase<Options["defaultValue"]>}
+ * @extends {ComponentBase<Options["defaultValue"], Options>}
  */
 class Select extends ComponentBase {
   /**
