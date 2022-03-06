@@ -29,6 +29,7 @@ class Element {
    * @param {Object.<string, HTMLElement>} cache
    */
   static createElement(parent, options, cache={}) {
+    console.log(options);
     if (typeof parent === "undefined") parent = document.createElement(options.type);
     if (typeof options.cacheAs !== "undefined") {
       cache[options.cacheAs] = parent;
@@ -37,9 +38,7 @@ class Element {
       for (let i = 0; i < options.childs.length; i++) {
         const childOptions = options.childs[i];
         let child = document.createElement(childOptions.type);
-        if (typeof childOptions.childs !== "undefined") {
-          void Element.createElement(child, childOptions, cache);
-        }
+        void Element.createElement(child, childOptions, cache);
         parent.appendChild(child);
       }
     }
