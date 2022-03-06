@@ -17,7 +17,7 @@ class ComponentBase {
     /** @type {HTMLElement!} */
     this.element = null;
     /** @type {{}!} */
-    this.elements = null;
+    this.cache = null;
     /** @type {string} */
     this.name = options.name;
     /** @type {T} */
