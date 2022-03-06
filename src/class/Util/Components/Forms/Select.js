@@ -92,29 +92,4 @@ class Select extends ComponentBase {
   }
 }
 
-let t = new Select({
-  name: "Option Component / ",
-  options: [
-    "Option 0",
-    "Option 1",
-    "Option 2",
-    "Option 3",
-    "Option 4",
-    "Option 5",
-    "Option 6",
-    "Option x", "Option x", "Option x", "Option x", "Option x",
-    "Option x", "Option x", "Option x", "Option x", "Option x",
-    "Option x", "Option x", "Option x", "Option x", "Option x",
-    "Option x", "Option x", "Option x", "Option x", "Option x",
-    "Option x", "Option x", "Option x", "Option x", "Option x",
-    "Option x", "Option x", "Option x", "Option x", "Option x",
-    "Option x", "Option x", "Option x", "Option x", "Option x",
-    "Option x", "Option x", "Option x", "Option x", "Option x",
-  ]
-});
-document.getElementById("editor").appendChild(t.element);
-setInterval(() => {
-  t.options = [...t.options].slice(0, -1);
-}, 500);
-
 export default Select;
