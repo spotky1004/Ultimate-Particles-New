@@ -16,7 +16,7 @@ class ComponentBase {
    */
   constructor(options={}) {
     /** @type {U} */
-    this.options = options;
+    this.rawOptions = options;
     
     /** @type {HTMLElement!} */
     this.element = null;
