@@ -24,7 +24,6 @@ class ComponentBase {
     this.defaultValue = options.defaultValue ?? null;
     /** @type {T} */
     this._value = this.defaultValue;
-    this.init();
   }
 
   init() {

@@ -47,14 +47,13 @@ class ComponentTemplate extends ComponentBase {
     this.element = element;
     /** @type {typeof cache} */
     this.cache = cache;
+    this.init();
   }
 
   render() {
     this.cache.name.innerText = this.name;
     this.cache.value.innerText = this.value;
   }
-
-  
 }
 
 export default ComponentTemplate;
