@@ -32,7 +32,6 @@ class Element {
    * @param {Object.<string, HTMLElement>} cache
    */
   static createElement(parent, options, cache={}) {
-    console.log(options);
     if (typeof parent === "undefined") parent = document.createElement(options.type);
     if (typeof options.cacheAs !== "undefined") {
       cache[options.cacheAs] = parent;
