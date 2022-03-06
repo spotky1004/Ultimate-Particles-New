@@ -16,10 +16,11 @@ class Element {
   constructor(options) {
     /** @type {T} */
     this.options = options;
+    const { parent: element, cache } = Element.createElement(undefined, options);
     /** @type {HTMLElementTagNameMap[T["type"]]} */
-    this.element = Element.createElement(undefined, options);
+    this.element = element;
     /** @type {Record<import("../../util-types/DeepPickValue.js").DeepPickValue<T, "cacheAs">, HTMLElement>} */
-    this.cache = {};
+    this.cache = cache;
   }
 
   /**
@@ -42,7 +43,7 @@ class Element {
         parent.appendChild(child);
       }
     }
-    return parent;
+    return { parent, cache };
   }
 
   clone() {
