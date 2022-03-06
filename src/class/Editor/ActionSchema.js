@@ -1,24 +1,16 @@
+/**
+ * @template [T=Object.<string, import("../Util/Components/Forms/index.js").AnyForm}]
+ */
 class ActionSchema {
   /**
-   * @typedef {import("../Util/Components/Forms/index.js").AnyForm} AnyForm
-   */
-
-  /**
    * @param {string} name 
+   * @param {T} forms
    */ 
-  constructor(name) {
+  constructor(name, forms) {
     /** @type {string} */
     this.name = name ?? "";
-    /** @type {AnyForm["rawOptions"][]} */
-    this.formOptions = [];
-  }
-
-  /**
-   * @param {AnyForm} form 
-   */
-  addForm(form) {
-    this.formOptions.push(form.rawOptions);
-    return this;
+    /** @type {{ [K in keyof T]-? : T[K]["rawOptions"] }} */
+    this.formOptions = Object.fromEntries(Object.entries(forms).map(([key, form]) => [key, form?.rawOptions]));
   }
 }
 
