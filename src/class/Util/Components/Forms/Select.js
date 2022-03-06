@@ -1,5 +1,6 @@
 import ComponentBase from "../ComponentBase.js";
 import ElementBuilder from "../../ElementBuilder.js";
+import updateProperty from "../../../../util/updateProperty.js";
 
 /**
  * @typedef ExtraOptions
@@ -66,8 +67,8 @@ class Select extends ComponentBase {
   }
 
   render() {
-    if (this.cache.name.innerText !== this.name) this.cache.name.innerText = this.name;
-    if (this.cache.value.innerText !== this.value) this.cache.value.innerText = this.value;
+    updateProperty(this.cache.name, "innerText", this.name);
+    updateProperty(this.cache.value, "innerText", this.value)
     /** @type {HTMLOptionElement[]} */
     const optionElements = [...this.cache.value.childNodes].slice(1);
     for (let i = 0; i < Math.max(optionElements.length, this.options.length); i++) {
@@ -80,8 +81,8 @@ class Select extends ComponentBase {
           optionElement = document.createElement("option");
           this.cache.value.insertBefore(optionElement, optionElements[i]);
         }
-        optionElement.value = optionValue;
-        optionElement.text = optionText;
+        updateProperty(optionElement, "value", optionValue);
+        updateProperty(optionElement, "text", optionText);
       } else {
         this.cache.value.removeChild(optionElement);
         i--;

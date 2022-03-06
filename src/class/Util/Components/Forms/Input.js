@@ -1,5 +1,6 @@
 import ComponentBase from "../ComponentBase.js";
 import ElementBuilder from "../../ElementBuilder.js";
+import updateProperty from "../../../../util/updateProperty.js";
 
 /**
  * @typedef ExtraOptions
@@ -52,9 +53,9 @@ class Input extends ComponentBase {
   }
 
   render() {
-    this.cache.name.innerText = this.name;
-    this.cache.value.placeholder = this.hint;
-    this.cache.value.value = this.value ?? "";
+    updateProperty(this.cache.name, "innerText", this.name);
+    updateProperty(this.cache.value, "placeholder", this.hint);
+    updateProperty(this.cache.value, "value", this.value ?? "");
   }
 }
 
