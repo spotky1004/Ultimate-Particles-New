@@ -67,10 +67,7 @@ class Select extends ComponentBase {
   }
 
   export() {
-    return {
-      idx: this.value,
-      value: this.options[this.value],
-    }
+    return this.options[this.value];
   }
 
   render() {

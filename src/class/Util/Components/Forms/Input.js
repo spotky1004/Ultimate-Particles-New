@@ -53,9 +53,7 @@ class Input extends ComponentBase {
   }
 
   export() {
-    return {
-      value: this.value
-    }
+    return this.value;
   }
 
   render() {

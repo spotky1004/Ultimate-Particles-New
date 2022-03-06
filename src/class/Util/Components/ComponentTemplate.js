@@ -1,5 +1,6 @@
 import ComponentBase from "./ComponentBase.js";
 import ElementBuilder from "../ElementBuilder.js";
+import updateProperty from "../../../util/updateProperty.js";
 
 /**
  * @typedef ExtraOptions
@@ -44,9 +45,13 @@ class ComponentTemplate extends ComponentBase {
     this.init();
   }
 
+  export() {
+    return this.value;
+  }
+
   render() {
-    this.cache.name.innerText = this.name;
-    this.cache.value.innerText = this.value;
+    updateProperty(this.cache.name, "innerText", this.name);
+    updateProperty(this.cache.value, "innerText", this.value);
   }
 }
 

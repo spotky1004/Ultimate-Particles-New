@@ -47,7 +47,7 @@ class ComponentBase {
   }
 
   export() {
-    return {};
+    return null;
   }
 
   render() {
