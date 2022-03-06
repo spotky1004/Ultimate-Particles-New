@@ -3,6 +3,7 @@ import ElementBuilder from "../../ElementBuilder.js";
 
 /**
  * @typedef ExtraOptions
+ * @property {string} [hint]
  * @property {string} defaultValue
  */
 /**
@@ -37,6 +38,8 @@ class Input extends ComponentBase {
   constructor(options) {
     super(options);
     const { element, cache } = templateElement.clone();
+    /** @type {typeof options["hint"]} */
+    this.hint = options.hint;
     /** @type {typeof element} */
     this.element = element;
     /** @type {typeof cache} */
@@ -50,7 +53,8 @@ class Input extends ComponentBase {
 
   render() {
     this.cache.name.innerText = this.name;
-    this.cache.value.value = this.value;
+    this.cache.value.placeholder = this.hint;
+    this.cache.value.value = this.value ?? "";
   }
 }
 
