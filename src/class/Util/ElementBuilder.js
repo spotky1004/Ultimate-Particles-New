@@ -1,5 +1,5 @@
 /**
- * @typedef ElementOptions
+ * @typedef ElementBuilderOptions
  * @property {keyof HTMLElementTagNameMap} type
  * @property {string} [cacheAs]
  * @property {string} [classNames]
@@ -7,16 +7,16 @@
  */
 
 /**
- * @template [T=ElementOptions]
+ * @template [T=ElementBuilderOptions]
  */
-class Element {
+class ElementBuilder {
   /**
    * @param {T} options
    */
   constructor(options) {
     /** @type {T} */
     this.options = options;
-    const { parent: element, cache } = Element.createElement(undefined, options);
+    const { parent: element, cache } = ElementBuilder.createElement(undefined, options);
     /** @type {HTMLElementTagNameMap[T["type"]]} */
     this.element = element;
     /**
@@ -28,7 +28,7 @@ class Element {
 
   /**
    * @param {HTMLElement} [parent] 
-   * @param {ElementOptions} options 
+   * @param {ElementBuilderOptions} options 
    * @param {Object.<string, HTMLElement>} cache
    */
   static createElement(parent, options, cache={}) {
@@ -40,7 +40,7 @@ class Element {
       for (let i = 0; i < options.childs.length; i++) {
         const childOptions = options.childs[i];
         let child = document.createElement(childOptions.type);
-        void Element.createElement(child, childOptions, cache);
+        void ElementBuilder.createElement(child, childOptions, cache);
         parent.appendChild(child);
       }
     }
@@ -48,8 +48,8 @@ class Element {
   }
 
   clone() {
-    return new Element(this.options);
+    return new ElementBuilder(this.options);
   }
 }
 
-export default Element;
+export default ElementBuilder;

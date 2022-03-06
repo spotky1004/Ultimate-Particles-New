@@ -1,5 +1,5 @@
 import ComponentBase from "./ComponentBase.js";
-import Element from "../Element.js";
+import ElementBuilder from "../ElementBuilder.js";
 
 /**
  * @typedef ExtraOptions
@@ -9,7 +9,7 @@ import Element from "../Element.js";
  * @typedef {Omit<import("./ComponentBase.js").ComponentBaseOptions, "defaultValue"> & ExtraOptions} Options
  */
 
-const templateElement = new Element(/** @type {const} */ ({
+const templateElement = new ElementBuilder(/** @type {const} */ ({
   type: "div",
   cacheAs: "wrapper",
   classNames: "component__template",
