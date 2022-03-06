@@ -33,6 +33,9 @@ class ElementBuilder {
    */
   static createElement(parent, options, cache={}) {
     if (typeof parent === "undefined") parent = document.createElement(options.type);
+    if (typeof options.classNames !== "undefined") {
+      parent.className = options.classNames;
+    }
     if (typeof options.cacheAs !== "undefined") {
       cache[options.cacheAs] = parent;
     }
