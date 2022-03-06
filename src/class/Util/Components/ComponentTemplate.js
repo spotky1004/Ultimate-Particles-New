@@ -8,12 +8,6 @@ import Element from "../Element.js";
 /**
  * @typedef {Omit<import("./ComponentBase.js").ComponentBaseOptions, "defaultValue"> & ExtraOptions} Options
  */
-/**
- * @typedef Elements
- * @property {HTMLDivElement} wrapper
- * @property {HTMLSpanElement} name
- * @property {HTMLSpanElement} value
- */
 
 const templateElement = new Element(/** @type {const} */ ({
   type: "div",
