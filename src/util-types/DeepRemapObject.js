@@ -2,9 +2,13 @@
 
 /**
  * @template T
+ * @typedef {{ [K in keyof T]-? : T[K] }} CleanupObject
+ */
+/**
+ * @template T
  * @template {keyof T} P
  * @template {keyof T} V
- * @typedef {import("./UnionToIntersection.js").UnionToIntersection<DeepRemapObjectUnion<T, P, V>>} DeepRemapObject
+ * @typedef {CleanupObject<import("./UnionToIntersection.js").UnionToIntersection<DeepRemapObjectUnion<T, P, V>>>} DeepRemapObject
  */
 /**
  * @template T
