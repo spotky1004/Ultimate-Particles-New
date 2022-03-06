@@ -58,4 +58,11 @@ class Input extends ComponentBase {
   }
 }
 
+let t = new Input({
+  name: "Input Component / ",
+  defaultValue: "defaultValue",
+  hint: "This is hint"
+});
+document.getElementById("editor").append(t.element);
+
 export default Input;
