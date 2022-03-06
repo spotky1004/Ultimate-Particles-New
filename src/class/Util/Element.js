@@ -19,7 +19,10 @@ class Element {
     const { parent: element, cache } = Element.createElement(undefined, options);
     /** @type {HTMLElementTagNameMap[T["type"]]} */
     this.element = element;
-    /** @type {Record<import("../../util-types/DeepPickValue.js").DeepPickValue<T, "cacheAs">, HTMLElement>} */
+    /**
+     * @typedef {import("../../util-types/DeepRemapObject").DeepRemapObject<T, "cacheAs", "type">} CacheTypes
+     */
+    /** @type {{ [K in keyof CacheTypes]-? : HTMLElementTagNameMap[CacheTypes[K]] }} */
     this.cache = cache;
   }
 
