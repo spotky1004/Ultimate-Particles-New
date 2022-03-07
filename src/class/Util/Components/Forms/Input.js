@@ -11,7 +11,7 @@ import updateProperty from "../../../../util/updateProperty.js";
  * @typedef {Omit<import("../ComponentBase.js").ComponentBaseOptions, "defaultValue"> & ExtraOptions} Options
  */
 
-const templateElement = new ElementBuilder(/** @type {const} */ ({
+const elementBuilder = new ElementBuilder(/** @type {const} */ ({
   type: "div",
   cacheAs: "wrapper",
   classNames: "component__input",
@@ -38,7 +38,7 @@ class Input extends ComponentBase {
    */
   constructor(options) {
     super(options);
-    const { element, cache } = templateElement.clone();
+    const { element, cache } = elementBuilder.clone();
     /** @type {typeof options["hint"]} */
     this.hint = options.hint;
     /** @type {typeof element} */
