@@ -54,10 +54,6 @@ class Select extends ComponentBase {
     });
   }
 
-  get options() {
-    return this._options;
-  }
-
   /**
    * @param {Options["options"]} options
    */
@@ -66,8 +62,17 @@ class Select extends ComponentBase {
     this.render();
   }
 
-  getValue() {
-    return this.options[this.value];
+  get options() {
+    return this._options;
+  }
+
+  set value(value) {
+    this._value = value;
+    this.render();
+  }
+
+  get value() {
+    return this.options[this._value];
   }
 
   render() {

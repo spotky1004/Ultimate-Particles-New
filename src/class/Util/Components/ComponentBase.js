@@ -42,6 +42,9 @@ class ComponentBase {
     this.render();
   }
 
+  /**
+   * @returns {Options["defaultValue"]}
+   */
   get value() {
     return this._value;
   }

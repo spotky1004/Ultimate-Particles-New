@@ -52,14 +52,29 @@ class Input extends ComponentBase {
     });
   }
 
-  export() {
-    return this.value;
+  set value(value) {
+    this._value = value;
+    this.render();
+  }
+
+  /**
+   * @returns {Options["defaultValue"]}
+   */
+  get value() {
+    return this._value;
   }
 
   render() {
     updateProperty(this.cache.name, "innerText", this.name);
     updateProperty(this.cache.value, "placeholder", this.hint);
     updateProperty(this.cache.value, "value", this.value ?? "");
+  }
+
+  /**
+   * @returns {Input}
+   */
+  clone() {
+    return new Input(this.rawOptions);
   }
 }
 

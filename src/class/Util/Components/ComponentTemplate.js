@@ -45,7 +45,15 @@ class ComponentTemplate extends ComponentBase {
     this.init();
   }
 
-  getValue() {
+  set value(value) {
+    this._value = value;
+    this.render();
+  }
+
+  /**
+   * @returns {Options["defaultValue"]}
+   */
+  get value() {
     return this.value;
   }
 
