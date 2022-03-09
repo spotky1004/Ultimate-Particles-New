@@ -61,7 +61,7 @@ class Input extends ComponentBase {
    * @returns {Options["defaultValue"]}
    */
   get value() {
-    return this._value;
+    return this._value ?? "";
   }
 
   render() {

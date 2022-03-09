@@ -97,7 +97,7 @@ class Select extends ComponentBase {
         i--;
       }
     }
-    this.cache.value.selectedIndex = this.value;
+    this.cache.value.selectedIndex = this._value;
   }
 
   clone() {
