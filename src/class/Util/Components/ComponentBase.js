@@ -54,6 +54,9 @@ class ComponentBase {
     
   }
 
+  /**
+   * @returns {ComponentBase<T, U>}
+   */
   clone() {
     return new ComponentBase(this.rawOptions);
   }
