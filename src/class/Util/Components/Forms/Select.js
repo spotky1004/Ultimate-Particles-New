@@ -94,6 +94,10 @@ class Select extends ComponentBase {
     }
     this.cache.value.selectedIndex = this.value;
   }
+
+  clone() {
+    return new Select(this.rawOptions);
+  }
 }
 
 export default Select;

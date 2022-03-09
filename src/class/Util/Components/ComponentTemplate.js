@@ -53,6 +53,10 @@ class ComponentTemplate extends ComponentBase {
     updateProperty(this.cache.name, "innerText", this.name);
     updateProperty(this.cache.value, "innerText", this.value);
   }
+
+  clone() {
+    return new ComponentTemplate(this.rawOptions);
+  }
 }
 
 export default ComponentTemplate;

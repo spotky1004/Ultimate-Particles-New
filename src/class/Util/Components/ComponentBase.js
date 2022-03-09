@@ -53,6 +53,10 @@ class ComponentBase {
   render() {
     
   }
+
+  clone() {
+    return new ComponentBase(this.rawOptions);
+  }
 }
 
 export default ComponentBase;
