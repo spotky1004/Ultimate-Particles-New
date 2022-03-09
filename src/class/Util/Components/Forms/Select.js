@@ -66,7 +66,7 @@ class Select extends ComponentBase {
     this.render();
   }
 
-  export() {
+  getValue() {
     return this.options[this.value];
   }
 

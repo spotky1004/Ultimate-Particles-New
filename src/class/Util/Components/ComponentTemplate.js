@@ -45,7 +45,7 @@ class ComponentTemplate extends ComponentBase {
     this.init();
   }
 
-  export() {
+  getValue() {
     return this.value;
   }
 

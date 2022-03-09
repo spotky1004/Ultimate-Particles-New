@@ -46,8 +46,8 @@ class ComponentBase {
     return this._value;
   }
 
-  export() {
-    return null;
+  getValue() {
+    return undefined;
   }
 
   render() {
