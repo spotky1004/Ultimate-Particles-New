@@ -31,6 +31,7 @@ class Components extends ComponentBase {
    * @param {T} options 
    */
   constructor(options) {
+    options = {...options};
     /** @type {DefaultValue} */
     const defaultValue = {};
     for (const key in options.forms) {
