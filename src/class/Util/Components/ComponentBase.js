@@ -49,10 +49,6 @@ class ComponentBase {
     return this._value;
   }
 
-  getValue() {
-    return undefined;
-  }
-
   render() {
     
   }
