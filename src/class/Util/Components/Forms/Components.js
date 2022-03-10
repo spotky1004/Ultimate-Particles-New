@@ -55,6 +55,9 @@ class Components extends ComponentBase {
 
   set value(value) {
     this._value = value;
+    for (const key in this.forms) {
+      this.forms[key].value = value[key];
+    }
     this.render();
   }
 
