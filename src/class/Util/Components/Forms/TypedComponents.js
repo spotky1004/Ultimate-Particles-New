@@ -74,6 +74,7 @@ class TypedComponents extends ComponentBase {
     this.cache = cache;
     this.init();
 
+    this.components[this.getType()].init();
     for (let i = 0; i < this.types.length; i++) {
       const optionElement = document.createElement("option");
       optionElement.value = i;
@@ -153,10 +154,12 @@ let tc = new TypedComponents(/** @type {const} */ ({
       forms: {
         x: new Input({
           name: "X pos: ",
+          defaultValue: "0",
           hint: "X coordinate of the Particle"
         }),
         y: new Input({
           name: "Y pos: ",
+          defaultValue: "0",
           hint: "Y coordinate of the Particle"
         })
       }
