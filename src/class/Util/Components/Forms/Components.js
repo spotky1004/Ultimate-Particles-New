@@ -15,14 +15,14 @@ import ElementBuilder from "../../ElementBuilder.js";
 const elementBuilder = new ElementBuilder(/** @type {const} */ ({
   type: "div",
   cacheAs: "wrapper",
-  classNames: "component__form-bundle"
+  classNames: "component__components"
 }));
 
 /**
  * @template [T=Options]
  * @extends {ComponentBase<DefaultValue, T>}
  */
-class FormBundle extends ComponentBase {
+class Components extends ComponentBase {
   /**
    * @typedef {T["forms"]} Forms
    * @typedef {{ [K in keyof Forms]-? : Forms[K]["defaultValue"] }} DefaultValue 
@@ -81,35 +81,8 @@ class FormBundle extends ComponentBase {
       forms[key] = forms[key].clone();
     }
     rawOptions.forms = forms;
-    return new FormBundle(rawOptions);
+    return new Components(rawOptions);
   }
 }
 
-import Input from "./Input.js";
-import Select from "./Select.js";
-
-const b = new FormBundle(/** @type {const} */ ({
-  forms: {
-    type: new Select({
-      name: "Type: ",
-      defaultValue: 2,
-      options: [
-        "number",
-        "integer",
-        "string",
-        "boolean",
-      ]
-    }),
-    value: new Input({
-      name: "Value: ",
-      hint: "Input value here"
-    })
-  }
-}));
-window.bb = b;
-document.getElementById("editor").appendChild(b.element);
-setInterval(() => {
-  console.log(b.value);
-}, 500);
-
-export default FormBundle;
+export default Components;
