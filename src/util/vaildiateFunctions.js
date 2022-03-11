@@ -5,7 +5,7 @@ import StringExpression from "../class/Util/StringExpression.js";
  */
 
 /** @type {VadildateFunction} */
-export function isStringExpression(str) {
+export function isExpression(str) {
   return new StringExpression(str).isVaild;
 }
 
@@ -17,11 +17,16 @@ export function isStringIsNumber(str) {
 
 /** @type {VadildateFunction} */
 export function isStringIsNumberOrExpression(str) {
-  return isStringExpression(str) || isStringIsNumber(str);
+  return isExpression(str) || isStringIsNumber(str);
 }
 
 const hexColorCheckRegexp = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
 /** @type {VadildateFunction} */
 export function isHexColor(str) {
   return hexColorCheckRegexp.test(str);
+}
+
+/** @type {VadildateFunction} */
+export function isHexColorOrExpression(str) {
+  return isHexColor(str) || isExpression(str);
 }
