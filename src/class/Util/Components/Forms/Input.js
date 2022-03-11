@@ -52,7 +52,7 @@ class Input extends ComponentBase {
 
     /** @type {boolean} */
     this.isVaild = true;
-    this.cache.value.addEventListener("change", (e) => {
+    this.cache.value.addEventListener("input", (e) => {
       this.value = this.cache.value.value;
     });
   }
