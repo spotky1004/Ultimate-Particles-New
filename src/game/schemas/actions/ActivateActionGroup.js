@@ -4,7 +4,7 @@ import {
 } from "../../../class/Util/Components/Forms/index.js";
 
 const schema = new ActionSchema("Activate Action Group", {
-  name: new Forms.Input(/** @type {const} */ ({
+  name: new Input(/** @type {const} */ ({
     name: "group name",
     defaultValue: "",
     hint: "Name of the group to activate"
