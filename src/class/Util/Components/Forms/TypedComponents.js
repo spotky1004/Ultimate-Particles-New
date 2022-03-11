@@ -48,7 +48,7 @@ class TypedComponents extends ComponentBase {
   /**
    * @param {T} options 
    * @typedef {keyof T["components"]} Types
-   * @typedef {{ [K in Types]-? : Omit<T, "components"> & { "components": T["components"][K] } }} DefaultValue
+   * @typedef {{ [K in Types]-? : T["components"][K]["value"] }} DefaultValue
    */
   constructor(options) {
     options = {...options};
@@ -178,7 +178,6 @@ let tc = new TypedComponents(/** @type {const} */ ({
     }))
   }
 }));
-tc.components.type1
 document.getElementById("editor").appendChild(tc.element);
 window.tc = tc;
 setInterval(() => {
