@@ -19,3 +19,9 @@ export function isStringIsNumber(str) {
 export function isStringIsNumberOrExpression(str) {
   return isStringExpression(str) || isStringIsNumber(str);
 }
+
+const hexColorCheckRegexp = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+/** @type {VadildateFunction} */
+export function isHexColor(str) {
+  return hexColorCheckRegexp.test(str);
+}
