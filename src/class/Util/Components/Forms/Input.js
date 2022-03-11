@@ -4,8 +4,9 @@ import updateProperty from "../../../../util/updateProperty.js";
 
 /**
  * @typedef ExtraOptions
- * @property {string} [hint]
  * @property {string} defaultValue
+ * @property {string} [hint]
+ * @property {(value: string) => boolean} [vaildiate]
  */
 /**
  * @typedef {Omit<import("../ComponentBase.js").ComponentBaseOptions, "defaultValue"> & ExtraOptions} Options
@@ -45,8 +46,12 @@ class Input extends ComponentBase {
     this.element = element;
     /** @type {typeof cache} */
     this.cache = cache;
+    /** @type {typeof options["vaildiate"]} */
+    this.vaildiate = options.vaildiate ?? (_ => true);
     this.init();
 
+    /** @type {boolean} */
+    this.isVaild = true;
     this.cache.value.addEventListener("change", (e) => {
       this.value = this.cache.value.value;
     });
@@ -54,6 +59,7 @@ class Input extends ComponentBase {
 
   set value(value) {
     this._value = value;
+    this.isVaild = this.vaildiate(this.value);
     this.render();
   }
 
@@ -65,6 +71,7 @@ class Input extends ComponentBase {
   }
 
   render() {
+    this.cache.wrapper.classList[!this.isVaild ? "add" : "remove"]("invaild");
     updateProperty(this.cache.name, "innerText", this.name);
     updateProperty(this.cache.value, "placeholder", this.hint);
     updateProperty(this.cache.value, "value", this.value ?? "");
