@@ -144,44 +144,4 @@ class TypedComponents extends ComponentBase {
   }
 }
 
-import Input from "./Input.js";
-import Select from "./Select.js";
-
-let tc = new TypedComponents(/** @type {const} */ ({
-  name: "Particle Movement Type: ",
-  components: {
-    fixed: new Components(/** @type {const} */ {
-      forms: {
-        x: new Input({
-          name: "X pos: ",
-          defaultValue: "0",
-          hint: "X coordinate of the Particle"
-        }),
-        y: new Input({
-          name: "Y pos: ",
-          defaultValue: "0",
-          hint: "Y coordinate of the Particle"
-        })
-      }
-    }),
-    move: new Components(/** @type {const} */ ({
-      forms: {
-        speed: new Input({
-          name: "Speed: ",
-          hint: "Speed of the Particle"
-        }),
-        deg: new Input({
-          name: "Deg: ",
-          hint: "Deg of the Particle (deg)"
-        })
-      }
-    }))
-  }
-}));
-document.getElementById("editor").appendChild(tc.element);
-window.tc = tc;
-setInterval(() => {
-  console.log(tc.getType(), tc.value);
-}, 500);
-
 export default TypedComponents;
