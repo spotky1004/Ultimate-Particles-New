@@ -48,7 +48,7 @@ const schema = new ActionSchema("AddStatus", {
     hint: "Name of the status"
   }),
   data: new TypedComponents(/** @type {const} */ ({
-    name: "type",
+    name: "Type",
     components: {
       Text: new Components(/** @type {const} */ ({
         forms: {
