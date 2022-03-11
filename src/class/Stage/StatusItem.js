@@ -22,7 +22,7 @@ const StatusItemClassnames = {
  */
 
 /**
- * @template {StatusType} T
+ * @template {StatusItemType} T
  */
 class StatusItem {
   /**
