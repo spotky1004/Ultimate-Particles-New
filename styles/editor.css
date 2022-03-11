@@ -1,3 +1,10 @@
 #editor input, #editor select, #editor option {
   color: #000;
 }
+#editor .component__input {
+  transition: all 0.3s;
+}
+#editor .component__input.invaild {
+  background-color: #f008;
+  padding-left: 1vmin;
+}
