@@ -2,7 +2,7 @@ import ActionSchema from "../../../class/Editor/ActionSchema.js";
 import {
   Input
 } from "../../../class/Util/Components/Forms/index.js";
-import * as vaildiate from "../../../util/vaildiateFunctions.js";
+import * as vaildiate from "../../../util/stringVaildiateFunctions.js";
 
 const schema = new ActionSchema("ActivateActionGroup", {
   name: new Input(/** @type {const} */ ({

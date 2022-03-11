@@ -11,13 +11,13 @@ export function isExpression(str) {
 
 const numberCheckRegexp = /^\d+(\.\d+)?$/;
 /** @type {VadildateFunction} */
-export function isStringIsNumber(str) {
+export function isNumber(str) {
   return numberCheckRegexp.test(str);
 }
 
 /** @type {VadildateFunction} */
-export function isStringIsNumberOrExpression(str) {
-  return isExpression(str) || isStringIsNumber(str);
+export function iNumberOrExpression(str) {
+  return isExpression(str) || isNumber(str);
 }
 
 const hexColorCheckRegexp = /^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
