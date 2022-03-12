@@ -16,25 +16,18 @@ class ActionSchema {
     /** @type {U} */
     this.finalize = finalize;
     /** @type {Components<{ forms: T }>} */
-    this._components = new Components({ forms });
+    this.components = new Components({ forms });
   }
 
   /**
    * @type {ReturnType<U>}
    */
   get value() {
-    return this.finalize(this._components.forms);
-  }
-
-  /**
-   * Create new cloned components
-   */
-  get components() {
-    return this._components.clone();
+    return this.finalize(this.components.forms);
   }
 
   clone() {
-    return new ActionSchema(this.name, this.components.forms);
+    return new ActionSchema(this.name, this.finalize, this.components.clone().forms);
   }
 }
 
