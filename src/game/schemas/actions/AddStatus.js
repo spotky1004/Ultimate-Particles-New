@@ -71,10 +71,4 @@ const schema = new ActionSchema("AddStatus", {
   }))
 });
 
-window.s = schema;
-const comp = schema.components;
-window.comp = comp;
-document.getElementById("editor").appendChild(comp.element);
-console.log(progressComponents);
-
 export default schema;
