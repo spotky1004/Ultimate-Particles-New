@@ -2,7 +2,7 @@ import Components from "../Util/Components/Forms/Components.js";
 
 /**
  * @template [T=Object.<string, import("../Util/Components/Forms/index.js").AnyForm}]
- * @template [U=(value: Components<{ forms: T }>)<V> => V]
+ * @template [U=(value: Components<{ forms: T }>["forms"])<V> => V]
  */
 class ActionSchema {
   /**
@@ -23,7 +23,7 @@ class ActionSchema {
    * @type {ReturnType<U>}
    */
   get value() {
-    return this.finalize(this._components);
+    return this.finalize(this._components.forms);
   }
 
   /**
