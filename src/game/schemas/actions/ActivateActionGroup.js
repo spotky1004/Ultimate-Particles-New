@@ -4,7 +4,12 @@ import {
 } from "../../../class/Util/Components/Forms/index.js";
 import * as vaildiate from "../../../util/stringVaildiateFunctions.js";
 
-const schema = new ActionSchema("ActivateActionGroup", {
+const schema = new ActionSchema("ActivateActionGroup",
+  (forms) => {
+    return {
+      name: forms.name.value
+    };
+  }, {
   name: new Input(/** @type {const} */ ({
     name: "Group name",
     defaultValue: "",

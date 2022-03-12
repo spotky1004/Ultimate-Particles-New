@@ -41,7 +41,15 @@ const progressComponents = new Components(/** @type {const} */ ({
   }
 }));
 
-const schema = new ActionSchema("AddStatus", {
+const schema = new ActionSchema("AddStatus",
+  (forms) => {
+    const dataForm = forms.data;
+    return {
+      name: forms.name.value,
+      type: dataForm.getType(),
+      data: dataForm.value
+    }
+  }, {
   name: new Input({
     name: "Name",
     defaultValue: "",

@@ -8,3 +8,6 @@
   background-color: #f008;
   padding-left: 1vmin;
 }
+#editor > *, * {
+  margin-bottom: 5vh;
+}

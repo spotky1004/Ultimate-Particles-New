@@ -29,34 +29,33 @@ const createAttrComponent = (name, defaultValue, type) => {
   }));
 }
 
-const schema = new ActionSchema("ChangeStageAttribute", /** @type {const}*/ ({
-  value: new TypedComponents(/** @type {const} */ ({
-    name: "Value",
-    components: {
-      bgColor: createAttrComponent("bgColor", "#ffc966", "color"),
-      screenX: createAttrComponent("screenX", "0", "number"),
-      screenY: createAttrComponent("screenY", "0", "number"),
-      screenWidth: createAttrComponent("screenWidth", "100", "number"),
-      screenHeight: createAttrComponent("screenHeight", "100", "number"),
-      screenWidthScale: createAttrComponent("screenWidthScale", "1", "number"),
-      screenHeightScale: createAttrComponent("screenHeightScale", "1", "number"),
-      stageY: createAttrComponent("stageY", "0", "number"),
-      stageX: createAttrComponent("stageX", "0", "number"),
-      stageWidthScale: createAttrComponent("stageWidthScale", "1", "number"),
-      stageHeightScale: createAttrComponent("stageHeightScale", "1", "number"),
-      playerHitboxFactor: createAttrComponent("playerHitboxFactor", "1", "number"),
-      outOfBoundsFactor: createAttrComponent("outOfBoundsFactor", "2", "number")
+const schema = new ActionSchema("ChangeStageAttribute",
+  (forms) => {
+    const valueForm = forms.value;
+    return {
+      name: valueForm.getType(),
+      value: valueForm.value.value
     }
-  }))
-}));
-
-window.s = schema;
-const comp = schema.components;
-window.comp = comp;
-console.log(comp.element);
-document.getElementById("editor").appendChild(comp.element);
-setInterval(() => {
-  console.log(schema.name, comp.value);
-}, 500);
+  }, {
+    value: new TypedComponents(/** @type {const} */ ({
+      name: "Type",
+      components: {
+        bgColor: createAttrComponent("bgColor", "#ffc966", "color"),
+        screenX: createAttrComponent("screenX", "0", "number"),
+        screenY: createAttrComponent("screenY", "0", "number"),
+        screenWidth: createAttrComponent("screenWidth", "100", "number"),
+        screenHeight: createAttrComponent("screenHeight", "100", "number"),
+        screenWidthScale: createAttrComponent("screenWidthScale", "1", "number"),
+        screenHeightScale: createAttrComponent("screenHeightScale", "1", "number"),
+        stageY: createAttrComponent("stageY", "0", "number"),
+        stageX: createAttrComponent("stageX", "0", "number"),
+        stageWidthScale: createAttrComponent("stageWidthScale", "1", "number"),
+        stageHeightScale: createAttrComponent("stageHeightScale", "1", "number"),
+        playerHitboxFactor: createAttrComponent("playerHitboxFactor", "1", "number"),
+        outOfBoundsFactor: createAttrComponent("outOfBoundsFactor", "2", "number")
+      }
+    }))
+  }
+);
 
 export default schema;
