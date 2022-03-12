@@ -7,7 +7,7 @@ import * as vaildiate from "../../../util/stringVaildiateFunctions.js";
 const schema = new ActionSchema("CancelActionGroup",
   (forms) => {
     return {
-      name: forms.value.name
+      name: forms.name.value
     }
   }, {
   name: new Input(/** @type {const} */ ({
