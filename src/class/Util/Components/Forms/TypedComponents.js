@@ -55,8 +55,9 @@ class TypedComponents extends ComponentBase {
     /** @type {DefaultValue} */
     options.defaultValue = {};
     /** @type {{ [K in Types]-? : Components<T["components"][K]> }} */
-    const components = {...options.components};
+    const components = {};
     for (const key in options.components) {
+      components[key] = options.components[key].clone();
       options.defaultValue[key] = {...components[key].defaultValue};
     }
     super(options);
