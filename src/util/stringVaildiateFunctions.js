@@ -30,3 +30,8 @@ export function isHexColor(str) {
 export function isHexColorOrExpression(str) {
   return isHexColor(str) || isExpression(str);
 }
+
+/** @type {VadildateFunction} */
+export function isNotEmpty(str) {
+  return str.length > 0;
+}
