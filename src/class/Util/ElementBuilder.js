@@ -21,8 +21,9 @@ class ElementBuilder {
     this.element = element;
     /**
      * @typedef {import("../../util-types/DeepRemapObject").DeepRemapObject<T, "cacheAs", "type">} CacheTypes
+     * @typedef {{ [K in keyof CacheTypes]-? : HTMLElementTagNameMap[CacheTypes[K]] }} ElementCache
      */
-    /** @type {{ [K in keyof CacheTypes]-? : HTMLElementTagNameMap[CacheTypes[K]] }} */
+    /** @type {ElementCache} */
     this.cache = cache;
   }
 
